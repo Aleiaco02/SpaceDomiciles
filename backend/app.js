@@ -11,7 +11,7 @@ import galaxiesRouter from "./routers/galaxiesRouter.js";
 import stacksRouter from "./routers/stacksRouter.js";
 import CustomersRouter from "./routers/CustomersRouter.js";
 import InvoicesStackRouter from "./routers/InvoicesStackRouter.js";
-
+import invoicesRouter from "./routers/invoiceRouter.js";
 
 const app = express();
 
@@ -32,7 +32,6 @@ app.get("/api", (req, res) => {
   res.send("Server ok!");
 });
 
-
 // router customers
 app.use("/api/customers", CustomersRouter);
 
@@ -47,6 +46,9 @@ app.use("/api/galaxies", galaxiesRouter);
 
 // router tabella stacks
 app.use("/api/stacks", stacksRouter);
+
+// router tabella invoice
+app.use("/api/invoices", invoicesRouter);
 
 // utilizzo middleware gestione errori
 app.use(errorsHandler);

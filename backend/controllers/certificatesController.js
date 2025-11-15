@@ -9,13 +9,6 @@ export function index(req, res) {
   connection.query(sqlString, (err, results) => {
     if (err) return res.status(500).json({ error: "Database query failed" }); // catch error
 
-    // utilizzo del middleWare imagePath per reindirizzare [MIDDLEWARE MANCANTE, ESERCIZIO VECCHIO]
-    // results.map((movie) => {
-    //   if (movie.image.search("https") === -1) {
-    //     // check sul percorso se é giá esistente e preso da fuori progetto
-    //     movie.image = movie.image === "" ? null : req.imagePath + movie.image;
-    //   }
-    // });
     res.json(results);
   });
 }
@@ -40,12 +33,6 @@ export function show(req, res) {
     if (certificateResult.length === 0)
       return res.status(404).json({ error: "Certificate not found" });
     const certificate = certificateResult[0];
-
-    // utilizzo del middleWare imagePath per reindirizzare [MIDDLEWARE MANCANTE, ESERCIZIO VECCHIO]
-    // if (movie.image.search("https") === -1) {
-    //   // check sul percorso se é giá esistente e preso da fuori progetto
-    //   movie.image = movie.image === "" ? null : req.imagePath + movie.image;
-    // }
     res.json(certificate);
   });
 }
@@ -54,13 +41,10 @@ export function show(req, res) {
 export function store(req, res) {
   const { stack_invoices_id, certificate_code, issued_at, pdf_url } = req.body;
 
-  // stringa che computa mySQL nel DB
-  const certificatesSqlString = `
-    INSERT
-    INTO certificates
-        (stack_invoices_id, certificate_code, issued_at, pdf_url,)
+  const certificatesSqlString = `INSERT INTO certificates
+      (stack_invoices_id, certificate_code, issued_at, pdf_url)
     VALUES
-        (?, ?, ?, ?)`;
+      (?, ?, ?, ?)`;
 
   connection.query(
     certificatesSqlString,
@@ -68,15 +52,16 @@ export function store(req, res) {
     (err, results) => {
       if (err)
         return res.status(400).json({
-          // catch error
           error: "Failed to insert new certificate",
           reminder:
             "USE THESE COL NAMES: stack_invoices_id, certificate_code, issued_at, pdf_url",
         });
+
       res.status(201).json({
         id: results.insertId,
         message: "Certificate has been added successfully",
       });
+
       console.log(results);
     }
   );
@@ -94,7 +79,7 @@ export function update(req, res) {
         stack_invoices_id = ?,
         certificate_code = ?,
         issued_at = ?,
-        pdf_url = ?,
+        pdf_url = ?
     WHERE
         id = ?`;
 
@@ -105,7 +90,7 @@ export function update(req, res) {
       if (err)
         return res.status(500).json({
           // catch error
-          error: "Failed to update movie",
+          error: "Failed to update certificate",
           reminder:
             "USE THESE COL NAMES: stack_invoices_id, certificate_code, issued_at, pdf_url",
         });
