@@ -1,4 +1,4 @@
-import connection from "../data/db";
+import connection from "../data/db.js";
 
 // SHOW (Visualizza un cliente con ID)
 export function show(req, res) {

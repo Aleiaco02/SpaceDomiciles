@@ -1,15 +1,12 @@
-import express from "express";
+import express, { Router } from "express";
 import cors from "cors";
 import 'dotenv/config';
 import notFound from "./middlewares/notFound.js";
 import errorsHandler from "./middlewares/errorServer.js";
 
 //controllers
-import CustomerRouter from "./routers/CustomerRouter.js";
-
-
-
-
+import CustomersRouter from "./routers/CustomersRouter.js";
+import InvoicesStackRouter from "./routers/InvoicesStackRouter.js";
 
 const app = express();
 
@@ -29,9 +26,9 @@ app.get("/api", (req, res) => {
 });
 
 // uso del router
+app.use("/api/customers", CustomersRouter);
 
-
-app.use("/customers", CustomerRouter);
+app.use("/api/invoices_stack", InvoicesStackRouter);
 
 // utilizzo middleware gestione errori
 app.use(errorsHandler);
