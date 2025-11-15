@@ -192,31 +192,8 @@ INSERT INTO `stacks` (`id`, `id_planet`, `name`, `price`, `stock`, `slug`, `titl
 (7, 6, 'Ghiaccio Uraniano', 349.99, 120, 'urano-ghiaccio', '1kg Ghiaccio Urano', 'Ghiaccio cosmico dalle profondita'),
 (8, 7, 'Cristalli Nettuniani', 429.99, 90, 'nettuno-cristalli', '500g Cristalli Nettuno', 'Formazioni cristalline uniche');
 
--- =====================================================
--- LE 4 TABELLE RIMANENTI SONO VUOTE (per ora):
--- - invoices
--- - invoices_stack
--- - payments
--- - certificates
--- =====================================================
--- Quste tabelle verranno popolate durante l uso dell app
--- quando i clienti faranno ordini, pagamenti, etc.
 
 SET FOREIGN_KEY_CHECKS=1;
 
--- =====================================================
--- VERIFICA DATI IMPORTATI
--- =====================================================
--- SELECT COUNT(*) FROM galaxies;     -- Dovrebbe essere 2
--- SELECT COUNT(*) FROM planets;      -- Dovrebbe essere 7
--- SELECT COUNT(*) FROM customers;    -- Dovrebbe essere 5
--- SELECT COUNT(*) FROM stacks;       -- Dovrebbe essere 8
--- SELECT COUNT(*) FROM invoices;     -- Dovrebbe essere 0
--- SELECT COUNT(*) FROM invoices_stack; -- Dovrebbe essere 0
--- SELECT COUNT(*) FROM payments;     -- Dovrebbe essere 0
--- SELECT COUNT(*) FROM certificates; -- Dovrebbe essere 0
 
--- =====================================================
--- COMPLETO! 8 TABELLE + DATI
--- =====================================================
 
