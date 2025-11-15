@@ -55,6 +55,7 @@ export function store(req, res) {
           error: "Failed to insert new certificate",
           reminder:
             "USE THESE COL NAMES: stack_invoices_id, certificate_code, issued_at, pdf_url",
+          sqlError: err.sqlMessage, // utile per debug
         });
 
       res.status(201).json({
@@ -93,9 +94,8 @@ export function update(req, res) {
           error: "Failed to update certificate",
           reminder:
             "USE THESE COL NAMES: stack_invoices_id, certificate_code, issued_at, pdf_url",
+          sqlError: err.sqlMessage, // utile per debug
         });
-      if (results.insertId === 0)
-        return res.status(404).json({ error: "Certificate not found" });
       res.status(202).json({ message: "Certificate updated correctly" });
     }
   );
