@@ -50,7 +50,7 @@ CREATE TABLE `stacks`(
   `id_planet` INT UNSIGNED NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   `price` DECIMAL(8, 2) NOT NULL,
-  `stock` MEDIUMINT NOT NULL,
+  `stock` VARCHAR(255) NOT NULL,   -- fare su sql: ALTER TABLE stacks MODIFY stock varchar(255);
   `slug` VARCHAR(255) NOT NULL,
   `title` VARCHAR(255) NOT NULL,
   `description` TEXT NOT NULL
@@ -182,15 +182,36 @@ INSERT INTO `customers` (`id`, `email`, `full_name`, `billing_address`, `default
 -- INSERT DATA INTO STACKS
 -- =====================================================
 
+-- fare REPLACE INTO invece di INSERT
 INSERT INTO `stacks` (`id`, `id_planet`, `name`, `price`, `stock`, `slug`, `title`, `description`) VALUES
-(1, 1, 'Suolo Mercuriano', 249.99, 100, 'mercurio-suolo', '500g Suolo Mercurio', 'Regolite autentica dalla superficie di Mercurio'),
-(2, 2, 'Roccia Venusiana', 199.99, 150, 'venere-roccia', '1kg Roccia Venere', 'Roccia vulcanica dalla superficie di Venere'),
-(3, 3, 'Suolo Marziano Base', 299.99, 200, 'marte-base', '1 Ettaro Marte', 'Suolo arrossato ricco di ossidi'),
-(4, 3, 'Suolo Marziano Premium', 899.99, 50, 'marte-premium', '5 Ettari Marte Premium', 'Terreno selezionato dai crateri fertili'),
-(5, 4, 'Polvere Gioviana', 149.99, 300, 'giove-polvere', '1kg Polvere Giove', 'Campione dalla composizione gassosa'),
-(6, 5, 'Cristalli Saturniani', 399.99, 80, 'saturno-cristalli', '500g Cristalli Saturno', 'Cristalli dalle fasce atmosferiche'),
-(7, 6, 'Ghiaccio Uraniano', 349.99, 120, 'urano-ghiaccio', '1kg Ghiaccio Urano', 'Ghiaccio cosmico dalle profondita'),
-(8, 7, 'Cristalli Nettuniani', 429.99, 90, 'nettuno-cristalli', '500g Cristalli Nettuno', 'Formazioni cristalline uniche');
+(1, 1, 'Capanna spaziale', 19.99, 'disponibile', 'mercurio-suolo-piccolo', '50m² di terreno', 'Compra una piccola capanna spaziale su Mercurio!'),
+(2, 1, 'Casa Spaziale', 49.99, 'disponibile', 'mercurio-suolo-medio', '100m² di terreno', 'Acquista una casa spaziale confortevole su Mercurio!'),
+(3, 1, 'Villa Spaziale', 69.99, 'disponibile', 'mercurio-suolo-grande', '150m² di terreno', 'Ottieni una villa di lusso panoramica su Mercurio!'),
+
+(1, 2, 'Capanna spaziale', 19.99, 'disponibile', 'venere-suolo-piccolo', '50m² di terreno', 'Compra una piccola capanna spaziale su venere!'),
+(2, 2, 'Casa Spaziale', 49.99, 'disponibile', 'venere-suolo-medio', '100m² di terreno', 'Acquista una casa spaziale confortevole su venere!'),
+(3, 2, 'Villa Spaziale', 69.99, 'disponibile', 'venere-suolo-grande', '150m² di terreno', 'Ottieni una villa di lusso panoramica su venere!'),
+
+(4, 3, 'Capanna spaziale', 19.99, 'disponibile', 'Marte-suolo-piccolo', '50m² di terreno', 'Compra una piccola capanna spaziale su Marte!'),
+(5, 3, 'Casa Spaziale', 49.99, 'disponibile', 'Marte-suolo-medio', '100m² di terreno', 'Acquista una casa spaziale confortevole su Marte!'),
+(6, 3, 'Villa Spaziale', 69.99, 'disponibile', 'Marte-suolo-grande', '150m² di terreno', 'Ottieni una villa di lusso panoramica su Marte!'),
+
+(7, 4, 'Capanna spaziale', 19.99, 'disponibile', 'Giove-suolo-piccolo', '50m² di terreno', 'Compra una piccola capanna spaziale su Giove!'),
+(8, 4, 'Casa Spaziale', 49.99, 'disponibile', 'Giove-suolo-medio', '100m² di terreno', 'Acquista una casa spaziale confortevole su Giove!'),
+(9, 4, 'Villa Spaziale', 69.99, 'disponibile', 'Giove-suolo-grande', '150m² di terreno', 'Ottieni una villa di lusso panoramica su Giove!'),
+
+(10, 5, 'Capanna spaziale', 19.99, 'disponibile', 'Saturno-suolo-piccolo', '50m² di terreno', 'Compra una piccola capanna spaziale su Saturno!'),
+(11, 5, 'Casa Spaziale', 49.99, 'disponibile', 'Saturno-suolo-medio', '100m² di terreno', 'Acquista una casa spaziale confortevole su Saturno!'),
+(12, 5, 'Villa Spaziale', 69.99, 'disponibile', 'Saturno-suolo-grande', '150m² di terreno', 'Ottieni una villa di lusso panoramica su Saturno!'),
+
+(13, 6, 'Capanna spaziale', 19.99, 'disponibile', 'Urano-suolo-piccolo', '50m² di terreno', 'Compra una piccola capanna spaziale su Urano!'),
+(14, 6, 'Casa Spaziale', 49.99, 'disponibile', 'Urano-suolo-medio', '100m² di terreno', 'Acquista una casa spaziale confortevole su Urano!'),
+(15, 6, 'Villa Spaziale', 69.99, 'disponibile', 'Urano-suolo-grande', '150m² di terreno', 'Ottieni una villa di lusso panoramica su Urano!'),
+
+(16, 7, 'Capanna spaziale', 19.99, 'disponibile', 'Nettuno-suolo-piccolo', '50m² di terreno', 'Compra una piccola capanna spaziale su Nettuno!'),
+(17, 7, 'Casa Spaziale', 49.99, 'disponibile', 'Nettuno-suolo-medio', '100m² di terreno', 'Acquista una casa spaziale confortevole su Nettuno!'),
+(18, 7, 'Villa Spaziale', 69.99, 'disponibile', 'Nettuno-suolo-grande', '150m² di terreno', 'Ottieni una villa di lusso panoramica su Nettuno!');
+
 
 
 SET FOREIGN_KEY_CHECKS=1;
