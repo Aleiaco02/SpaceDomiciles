@@ -12,6 +12,7 @@ import stacksRouter from "./routers/stacksRouter.js";
 import CustomersRouter from "./routers/CustomersRouter.js";
 import InvoicesStackRouter from "./routers/InvoicesStackRouter.js";
 import invoicesRouter from "./routers/invoiceRouter.js";
+import planetsRouter from "./routers/planetsRouter.js";
 
 const app = express();
 
@@ -49,6 +50,9 @@ app.use("/api/stacks", stacksRouter);
 
 // router tabella invoice
 app.use("/api/invoices", invoicesRouter);
+
+// router tabella planets
+app.use("/api/planets", planetsRouter);
 
 // utilizzo middleware gestione errori
 app.use(errorsHandler);
