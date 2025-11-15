@@ -1,6 +1,6 @@
 import connection from "../data/db.js";
 
-// INDEX
+// INDEX - lista di tutti i pianeti
 export function index(req, res) {
   const sql = "SELECT * FROM planets";
 
@@ -10,7 +10,7 @@ export function index(req, res) {
   });
 }
 
-// SHOW
+// SHOW - dettaglio di un singolo pianeta
 export function show(req, res) {
   const { id } = req.params;
 
@@ -29,7 +29,7 @@ export function show(req, res) {
   });
 }
 
-// STORE
+// STORE - crea un nuovo pianeta
 export function store(req, res) {
   const {
     id_galaxy,
@@ -79,7 +79,7 @@ export function store(req, res) {
   );
 }
 
-// UPDATE
+// UPDATE - aggiorna completamente un pianeta esistente
 export function update(req, res) {
   const { id } = req.params;
 
@@ -130,10 +130,10 @@ export function update(req, res) {
   );
 }
 
-// PATCH
+// PATCH - aggiorna parzialmente un pianeta esistente
 export function patch(req, res) {
   const { id } = req.params;
-  const fields = req.body;
+  const fields = req.body; // campi da aggiornare
 
   const sql = `
     UPDATE planets
@@ -150,7 +150,7 @@ export function patch(req, res) {
   });
 }
 
-// DELETE
+// DELETE - elimina un pianeta esistente
 export function destroy(req, res) {
   const { id } = req.params;
 
