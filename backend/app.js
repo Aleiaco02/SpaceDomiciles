@@ -5,6 +5,9 @@ import notFound from "./middlewares/notFound.js";
 import errorsHandler from "./middlewares/errorServer.js";
 import connection from "./data/db.js";
 
+//controllers
+import CustomerRouter from "./routers/CustomerRouter.js";
+
 
 
 const app = express();
@@ -32,6 +35,8 @@ app.get("/test-db", (req, res) => {
         res.json(rows);
     });
 });
+
+app.use("/customers", CustomerRouter);
 
 // utilizzo middleware gestione errori
 app.use(errorsHandler);
