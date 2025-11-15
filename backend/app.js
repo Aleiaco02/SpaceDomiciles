@@ -1,9 +1,14 @@
 import express from "express";
 import cors from "cors";
+
 import "dotenv/config";
 import notFound from "./middlewares/notFound.js";
 import errorsHandler from "./middlewares/errorServer.js";
+
+// import router;
 import certificatesRouter from "./routers/certificatesRouter.js";
+import galaxiesRouter from "./routers/galaxiesRouter.js";
+import stacksRouter from "./routers/stacksRouter.js";
 
 const app = express();
 
@@ -24,8 +29,13 @@ app.get("/api", (req, res) => {
   res.send("Server ok!");
 });
 
-// uso del router
+// router certicates
 app.use("/api/certificates", certificatesRouter);
+// router tabella galaxies
+app.use("/api/galaxies", galaxiesRouter);
+
+// router tabella stacks
+app.use("/api/stacks", stacksRouter);
 
 // utilizzo middleware gestione errori
 app.use(errorsHandler);
