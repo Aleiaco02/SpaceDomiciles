@@ -3,6 +3,7 @@ import cors from "cors";
 import 'dotenv/config';
 import notFound from "./middlewares/notFound.js";
 import errorsHandler from "./middlewares/errorServer.js";
+import connection from "./data/db.js";
 
 
 
@@ -24,6 +25,13 @@ app.get("/", (req, res) => {
 });
 
 // uso del router
+
+app.get("/test-db", (req, res) => {
+    connection.query("SELECT 1 + 1 AS result", (err, rows) => {
+        if (err) return res.status(500).json({ error: err });
+        res.json(rows);
+    });
+});
 
 // utilizzo middleware gestione errori
 app.use(errorsHandler);
