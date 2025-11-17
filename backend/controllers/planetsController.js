@@ -54,8 +54,7 @@ export function store(req, res) {
 
       res.status(201).json({
         id: result.insertId,
-        message: "Planet created",
-      });
+        message: "Pianeta creato con successo"});
     }
   );
 }
@@ -87,7 +86,7 @@ export function update(req, res) {
       if (result.affectedRows === 0)
         return res.status(404).json({error: "Planet not found"});
 
-      res.status(200).json({message: "Planet updated"});
+      res.status(200).json({message: "Pianeta modificato completamente"});
     }
   );
 }
@@ -108,7 +107,7 @@ export function patch(req, res) {
     if (result.affectedRows === 0)
       return res.status(404).json({error: "Planet not found"});
 
-    res.status(200).json({message: "Planet updated partially"});
+    res.status(200).json({message: "Pianeta modificato parzialmente"});
   });
 }
 
@@ -127,6 +126,6 @@ export function destroy(req, res) {
     if (result.affectedRows === 0)
       return res.status(404).json({error: "Planet not found"});
 
-    res.sendStatus(204);
+    res.status(200).json({message: "Pianeta eliminato con successo"});
   });
 }
