@@ -1,13 +1,11 @@
+import NavBar from "../MicroComponents/NavBar";
+import "./MyHeader.css";
+
 export default function MyHeader() {
   return (
-    <div>
-      <nav>
-        <ul>
-          <li>1</li>
-          <li>2</li>
-          <li>3</li>
-        </ul>
-      </nav>
-    </div>
+    <header className="back-header">
+      <NavBar />
+    </header>
   );
 }
+
