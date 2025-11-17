@@ -1,16 +1,17 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 
-const DefaultContext = createContext();
+export const DefaultContext = createContext();
 
-function DefaultProvider({ children }) {
+export function DefaultProvider({ children }) {
+  const apiBaseUrl = "http://localhost:3000";
+
   return (
-    <DefaultContext.Provider value={""}>{children}</DefaultContext.Provider>
+    <DefaultContext.Provider value={{ apiBaseUrl }}>
+      {children}
+    </DefaultContext.Provider>
   );
 }
 
-function useDefaultContext() {
-  const context = useContext(DefaultContext);
-  return context;
+export function useDefaultContext() {
+  return useContext(DefaultContext);
 }
-
-export { DefaultProvider, useDefaultContext };
