@@ -55,15 +55,12 @@ export function store(req, res) {
     surface_available,
     distance_from_earth,
     description,
-    image,
   } = req.body;
-
+  let { image } = req.body;
   // Se l'immagine NON contiene http/https, aggiungi req.imagePath
   if (image && !image.startsWith("http")) {
     image = req.imagePath + image;
   }
-
-
 
   const sql = `
     INSERT INTO planets 
@@ -115,8 +112,8 @@ export function update(req, res) {
     surface_available,
     distance_from_earth,
     description,
-    image,
   } = req.body;
+  let { image } = req.body;
 
   // Se l'immagine NON contiene http/https, aggiungi req.imagePath
   if (image && !image.startsWith("http")) {
