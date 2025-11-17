@@ -10,6 +10,7 @@ import { DefaultProvider } from "./Contexts/DefaultContext";
 
 // PAGINE
 import HomePage from "./Pages/HomePage";
+import MilkyWayPage from "./Pages/MilkyWayPage";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Routes>
             <Route element={<DefaultLayout />}>
               <Route index element={<HomePage />} />
+              <Route path="/milky-way" element={<MilkyWayPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

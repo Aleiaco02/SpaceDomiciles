@@ -7,8 +7,7 @@ export function index(req, res) {
     connection.query(sql, (err, result) => {
         if (err) return res.status(500).json({ error: "Database error" });
         result.map((x) => {
-            if (x.image.search("https") === -1) {
-                // check sul percorso se é giá esistente e preso da fuori progetto
+            if (x.image && !x.image.startsWith("http")) {
                 x.image = x.image === "" ? null : req.imagePath + x.image;
             }
         });
@@ -27,8 +26,7 @@ export function show(req, res) {
             return res.status(404).json({ error: "Galaxy not found" });
         }
         result.map((x) => {
-            if (x.image.search("https") === -1) {
-                // check sul percorso se é giá esistente e preso da fuori progetto
+            if (x.image && !x.image.startsWith("http")) {
                 x.image = x.image === "" ? null : req.imagePath + x.image;
             }
         });
