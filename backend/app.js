@@ -4,6 +4,7 @@ import cors from "cors";
 import "dotenv/config";
 import notFound from "./middlewares/notFound.js";
 import errorsHandler from "./middlewares/errorServer.js";
+import setImagePath from "./middlewares/imagePath.js";
 
 // import router;
 import certificatesRouter from "./routers/certificatesRouter.js";
@@ -16,6 +17,9 @@ import planetsRouter from "./routers/planetsRouter.js";
 import paymentsRouter from "./routers/paymentsRouter.js";
 
 const app = express();
+
+// middleware imagepath
+app.use(setImagePath);
 
 // middleware bodyparser
 app.use(express.json());
@@ -56,7 +60,7 @@ app.use("/api/invoices", invoicesRouter);
 app.use("/api/planets", planetsRouter);
 
 // router tabella payments
-app.use('/api/payments', paymentsRouter);
+app.use("/api/payments", paymentsRouter);
 
 // utilizzo middleware gestione errori
 app.use(errorsHandler);
