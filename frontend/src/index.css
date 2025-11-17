@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Edu+TAS+Beginner:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,700;1,700&display=swap');
+
+* {
+    font-family: "Audiowide", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-shadow: 0 0 18px rgba(255, 255, 255, 0.7);
+    color: rgba(239, 239, 239, 0.69);
+}
+
+.container-jumbotrone {
+    background-color: black;
+}
+
+.titolo-jumbotrone {
+    font-size: 60px;
+    margin-top: 70px;
+}
+
+.descrizione-jumbotrone {}
