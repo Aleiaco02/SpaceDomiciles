@@ -58,6 +58,13 @@ export function store(req, res) {
     image,
   } = req.body;
 
+  // Se l'immagine NON contiene http/https, aggiungi req.imagePath
+  if (image && !image.startsWith("http")) {
+    image = req.imagePath + image;
+  }
+
+
+
   const sql = `
     INSERT INTO planets 
     (id_galaxy, name, planet_size, temperature_min, temperature_max, population, surface_available, distance_from_earth, description, image)
@@ -110,6 +117,11 @@ export function update(req, res) {
     description,
     image,
   } = req.body;
+
+  // Se l'immagine NON contiene http/https, aggiungi req.imagePath
+  if (image && !image.startsWith("http")) {
+    image = req.imagePath + image;
+  }
 
   const sql = `
     UPDATE planets
