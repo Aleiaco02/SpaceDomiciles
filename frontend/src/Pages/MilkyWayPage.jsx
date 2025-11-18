@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "./MilkyWayPage.css";
 
 export default function MilkyWayPage() {
@@ -21,17 +22,19 @@ export default function MilkyWayPage() {
         <h2 className="mw-subtitle">I pianeti</h2>
         <div className="mw-cards-grid">
           {planets.map((planet) => (
-            <div key={planet.id} className="mw-card" style={{ backgroundImage: `url(${planet.image})` }}>
-              <h3>{planet.name}</h3>
+            <div key={planet.id} className="mw-card">
+              <Link to={`/milky-way/${planet.id}`} className="mw-explore">
+                <h3>{planet.name}</h3>
+              </Link>
+              <div className={`mw-planet-img mw-img-${planet.name.toLowerCase().replace(/\s+/g, '-')}`} style={{backgroundImage: `url(${planet.image})`}}></div>
               <div className="mw-bottom">
                 <p className="mw-desc">{planet.description}</p>
                 <div className="mw-divider"></div>
-                <span className="mw-explore">Esplora il pianeta →</span>
+                <Link to={`/milky-way/${planet.id}`} className="mw-explore">Esplora il pianeta →</Link>
               </div>
             </div>
           ))}
         </div>
-
       </div>
     </div>
   );
