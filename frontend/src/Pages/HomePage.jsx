@@ -3,7 +3,8 @@ import Galaxy from "../Components/ReactBits/Galaxy";
 import GradientText from "../Components/ReactBits/GradientText";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobe, faCertificate, faStar } from "@fortawesome/free-solid-svg-icons";
-
+import { Link } from 'react-router-dom';
+import milkyWay from "/img/milky-way.png";
 
 export default function HomePage() {
   const handleAnimationComplete = () => {
@@ -12,7 +13,7 @@ export default function HomePage() {
 
   return (
     // Basic usage
-    <div style={{ width: '100%', height: '100vh', position: 'relative' }} className="container-jumbotrone">
+    <div style={{ width: '100%', height: '200vh', position: 'relative' }} className="container-jumbotrone">
       <Galaxy
         saturation={0.8}
         hueShift={140}
@@ -80,6 +81,18 @@ export default function HomePage() {
             <p>Possiedi un pezzo di universo per sempre</p>
           </div>
 
+        </div>
+
+        <div className="cards-container-2">
+          <Link to="/milky-way" className="glass-card-2">
+
+            <img src={milkyWay} alt="Via Lattea" className="card-image" />
+
+            <GradientText className="card-title">
+              Esplora la Via Lattea
+            </GradientText>
+            <p>Scopri stelle, pianeti e sistemi abitabili.</p>
+          </Link>
         </div>
 
 
