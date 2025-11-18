@@ -1,51 +1,51 @@
 import { useState, useEffect, useContext } from "react";
 import { DefaultContext } from "../Contexts/DefaultContext";
+import "./MilkyWayPage.css";
+import galaxyIcon from "/img/galaxy-icon.png";
 
 export default function MilkyWayPage() {
+  const { apiBaseUrl } = useContext(DefaultContext);
   const [galaxy, setGalaxy] = useState(null);
   const [planets, setPlanets] = useState([]);
 
-  const { apiBaseUrl } = useContext(DefaultContext);
-
   useEffect(() => {
-    async function loadData() {
-      // fetch galaxy
-      const resGalaxy = await fetch(`${apiBaseUrl}/api/galaxies/1`);
-      const galaxyData = await resGalaxy.json();
-      setGalaxy(galaxyData);
+    async function load() {
+      const galaxyRes = await fetch(`${apiBaseUrl}/api/galaxies/1`);
+      const planetsRes = await fetch(`${apiBaseUrl}/api/planets`);
 
-      // fetch planets
-      const resPlanets = await fetch(`${apiBaseUrl}/api/planets`);
-      const planetsData = await resPlanets.json();
-      setPlanets(planetsData);
+      setGalaxy(await galaxyRes.json());
+      setPlanets(await planetsRes.json());
     }
-
-    loadData();
+    load();
   }, [apiBaseUrl]);
 
-  // Se la galassia non è ancora stata caricata, non mostrare nulla
-  if (!galaxy) {
-    return null;
-  }
+  if (!galaxy) return <p>Loading...</p>;
 
   return (
-    <div>
-      <h1>{galaxy.name}</h1>
-      <p>{galaxy.description}</p>
+    <div className="galaxy-page">
 
-      <section>
-        <h2>Available Planets</h2>
+      
+      <div className="mw-wrapper">
+        <div className="mw-header">
+          <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon"/>
+          <h1>{galaxy.name}</h1>
+          <h2>{galaxy.description}</h2>
+        </div>
 
-        {planets.length === 0 ? (
-          <p>No planets available.</p>
-        ) : (
-          <ul>
-            {planets.map((planet) => (
-              <li key={planet.id}>{planet.name}</li>
-            ))}
-          </ul>
-        )}
-      </section>
+        <h2 className="mw-subtitle">Pianeti Disponibili </h2>
+
+        <div className="mw-cards-grid">
+          {planets.map((planet) => (
+            <div key={planet.id} className="mw-card" style={{backgroundImage: `url(${planet.image})`}}>
+              <img src={planet.image} alt={planet.name} className="mw-planet-top"/>
+              <h3>{planet.name}</h3>
+              <p className="mw-desc">{planet.description}</p>
+              <div className="mw-divider"></div>
+              <a className="mw-explore" href="#"> Esplora il pianeta → </a>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
