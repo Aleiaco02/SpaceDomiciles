@@ -1,5 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import "./NavBar.css";
+import galaxyIcon from "/img/galaxy-icon.png";
 
 export default function NavBar() {
   return (
@@ -7,7 +8,7 @@ export default function NavBar() {
       <div className="nav-cont">
         <NavLink to="/">
           <div className="rocket">
-            <i className="fa-solid fa-shuttle-space"></i>
+            <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon logo-dim" />
             <p>Space Domicile</p>
           </div>
         </NavLink>
