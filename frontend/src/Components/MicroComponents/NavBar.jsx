@@ -26,14 +26,14 @@ export default function NavBar() {
           </NavLink>
 
           <NavLink
-            to="/aboutus"
+            to="/about-us"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             <span>Chi Siamo</span>
           </NavLink>
 
           <NavLink
-            to="/contactus"
+            to="/contact-us"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             <span>Contattaci!</span>

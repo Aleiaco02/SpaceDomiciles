@@ -26,8 +26,8 @@ function App() {
               <Route index element={<HomePage />} />
               <Route path="/milky-way" element={<MilkyWayPage />} />
               <Route path="/milky-way/:slug" element={<Planet />} />
-              <Route path="/aboutus" element={<AboutUsPage />} />
-              <Route path="/contactus" element={<ContactUs />} />
+              <Route path="/about-us" element={<AboutUsPage />} />
+              <Route path="/contact-us" element={<ContactUs />} />
             </Route>
           </Routes>
         </BrowserRouter>
