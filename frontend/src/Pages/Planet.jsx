@@ -11,13 +11,15 @@ import { useState, useEffect } from "react";
 // importo gli stili css della pagina
 import "../styles/Planet.css";
 
+import packageCard from "../Components/MicroComponents/packageCard";
 const Planet = () => {
   // creo istanza di Navigate
   const redirect = useNavigate();
 
-  // variabile di stato del singolo film
+  // variabile di stato del singolo pianeta
   const [planet, setPlanet] = useState();
-
+  // variabile di stato delle stack del pianeta
+  const [stacks, setStacks] = useState();
   // recupero il parametro dinamico grazie a useParams
   const { slug } = useParams();
 
@@ -33,9 +35,19 @@ const Planet = () => {
         if (error.status === 404) redirect("/404");
       });
   };
-
+  const fetchStack = () => {
+    axios
+      .get("http://localhost:3000/api/stacks/planet/" + slug)
+      .then((response) => {
+        setStacks(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   // faccio partire la chiamata solo al primo montaggio del componente
   useEffect(fecthPlanet, []);
+  useEffect(fetchStack, []);
 
   return (
     <>
@@ -101,89 +113,7 @@ const Planet = () => {
           <div className="cosmic-container">
             <h2 className="section-title">Scegli il Tuo Pacchetto</h2>
             <div className="packages">
-              <div className="package-card">
-                <div className="package-header">
-                  <h3 className="package-name">Starter</h3>
-                  <div className="package-size">50m²</div>
-                </div>
-                <div className="package-price">
-                  <span className="price-currency">&euro; </span>
-                  <span className="price-amount">999</span>
-                </div>
-                <ul className="package-features">
-                  <li>
-                    <i className="fas fa-check"></i> Certificato di proprietà
-                  </li>
-                  <li>
-                    <i className="fas fa-check"></i> Coordinate GPS galattiche
-                  </li>
-                  <li>
-                    <i className="fas fa-check"></i> Mappa personalizzata
-                  </li>
-                  <li>
-                    <i className="fas fa-check"></i> 50m² di terreno
-                  </li>
-                </ul>
-              </div>
-
-              <div className="package-card">
-                <div className="package-header">
-                  <h3 className="package-name">Explorer</h3>
-                  <div className="package-size">100m²</div>
-                </div>
-                <div className="package-price">
-                  <span className="price-currency">&euro; </span>
-                  <span className="price-amount">1799</span>
-                </div>
-                <ul className="package-features">
-                  <li>
-                    <i className="fas fa-check"></i> Certificato di proprietà
-                  </li>
-                  <li>
-                    <i className="fas fa-check"></i> Coordinate GPS galattiche
-                  </li>
-                  <li>
-                    <i className="fas fa-check"></i> Mappa personalizzata
-                  </li>
-                  <li>
-                    <i className="fas fa-check"></i> 100m² di terreno
-                  </li>
-                  <li>
-                    <i className="fas fa-check"></i> Cornice Premium inclusa
-                  </li>
-                </ul>
-              </div>
-
-              <div className="package-card">
-                <div className="package-header">
-                  <h3 className="package-name">Pioneer</h3>
-                  <div className="package-size">150m²</div>
-                </div>
-                <div className="package-price">
-                  <span className="price-currency">&euro; </span>
-                  <span className="price-amount">2499</span>
-                </div>
-                <ul className="package-features">
-                  <li>
-                    <i className="fas fa-check"></i> Certificato di proprietà
-                  </li>
-                  <li>
-                    <i className="fas fa-check"></i> Coordinate GPS galattiche
-                  </li>
-                  <li>
-                    <i className="fas fa-check"></i> Mappa personalizzata
-                  </li>
-                  <li>
-                    <i className="fas fa-check"></i> 150m² di terreno
-                  </li>
-                  <li>
-                    <i className="fas fa-check"></i> Cornice Premium inclusa
-                  </li>
-                  <li>
-                    <i className="fas fa-check"></i> Nome sul registro pubblico
-                  </li>
-                </ul>
-              </div>
+              {stacks?.map((stack) => packageCard(stack))}
             </div>
           </div>
         </section>
