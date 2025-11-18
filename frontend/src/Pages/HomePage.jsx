@@ -36,8 +36,9 @@ export default function HomePage() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
+          // justifyContent: "center",
           pointerEvents: "none",
+          paddingTop: 200
         }}
       >
         <BlurText
