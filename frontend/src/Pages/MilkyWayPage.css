@@ -19,8 +19,12 @@
 }
 
 @keyframes galaxySpin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .mw-header h1 {
@@ -72,8 +76,6 @@
   overflow: hidden;
 }
 
-
-
 /* IMMAGINE DEL PIANETA */
 .mw-planet-img {
   width: 100%;
@@ -84,12 +86,12 @@
   background-repeat: no-repeat;
 }
 
-.mw-img-giove, .mw-img-saturno {
+.mw-img-giove,
+.mw-img-saturno {
   width: 110%;
   height: 400px !important;
   translate: -10px -100px;
 }
-
 
 .mw-img-urano {
   height: 165px !important;
@@ -152,6 +154,7 @@
   opacity: 0.9;
   margin-bottom: 12px;
   margin-inline: 20px;
+  color: white;
 }
 
 .mw-divider {
@@ -189,26 +192,85 @@
   color: #fff;
   background-color: #050011;
 
-  background-image:
-  radial-gradient(1px 1px at 10% 5%, rgba(255,255,255,0.7), transparent 60%),
-  radial-gradient(1px 1px at 95% 8%, rgba(255,255,255,0.6), transparent 60%),
-  radial-gradient(1px 1px at 8% 95%, rgba(255,255,255,0.55), transparent 60%),
-  radial-gradient(1px 1px at 92% 90%, rgba(255,255,255,0.6), transparent 60%),
-  radial-gradient(1.5px 1.5px at 5% 40%, rgba(255,255,255,0.45), transparent 60%),
-  radial-gradient(1.5px 1.5px at 95% 30%, rgba(255,255,255,0.45), transparent 60%),
-  radial-gradient(2px 2px at 25% 12%, rgba(255,255,255,0.6), transparent 60%),
-  radial-gradient(2px 2px at 75% 15%, rgba(255,255,255,0.55), transparent 60%),
-  radial-gradient(2px 2px at 22% 88%, rgba(255,255,255,0.6), transparent 60%),
-  radial-gradient(2px 2px at 78% 85%, rgba(255,255,255,0.55), transparent 60%),
-  radial-gradient(4px 4px at 12% 20%, rgba(200,160,255,0.5), transparent 70%),
-  radial-gradient(4px 4px at 88% 25%, rgba(180,150,255,0.45), transparent 70%),
-  radial-gradient(4px 4px at 15% 80%, rgba(220,170,255,0.5), transparent 70%),
-  radial-gradient(4px 4px at 85% 78%, rgba(200,160,255,0.5), transparent 70%),
-  radial-gradient(circle at 50% 50%, rgba(200, 100, 255, 0.12), transparent 65%),
-  radial-gradient(circle at center,
-    rgba(20, 0, 40, 0.4) 0%,
-    rgba(8, 0, 20, 0.75) 55%,
-    rgba(2, 0, 5, 1) 100%
-  );
+  background-image: radial-gradient(
+      1px 1px at 10% 5%,
+      rgba(255, 255, 255, 0.7),
+      transparent 60%
+    ),
+    radial-gradient(
+      1px 1px at 95% 8%,
+      rgba(255, 255, 255, 0.6),
+      transparent 60%
+    ),
+    radial-gradient(
+      1px 1px at 8% 95%,
+      rgba(255, 255, 255, 0.55),
+      transparent 60%
+    ),
+    radial-gradient(
+      1px 1px at 92% 90%,
+      rgba(255, 255, 255, 0.6),
+      transparent 60%
+    ),
+    radial-gradient(
+      1.5px 1.5px at 5% 40%,
+      rgba(255, 255, 255, 0.45),
+      transparent 60%
+    ),
+    radial-gradient(
+      1.5px 1.5px at 95% 30%,
+      rgba(255, 255, 255, 0.45),
+      transparent 60%
+    ),
+    radial-gradient(
+      2px 2px at 25% 12%,
+      rgba(255, 255, 255, 0.6),
+      transparent 60%
+    ),
+    radial-gradient(
+      2px 2px at 75% 15%,
+      rgba(255, 255, 255, 0.55),
+      transparent 60%
+    ),
+    radial-gradient(
+      2px 2px at 22% 88%,
+      rgba(255, 255, 255, 0.6),
+      transparent 60%
+    ),
+    radial-gradient(
+      2px 2px at 78% 85%,
+      rgba(255, 255, 255, 0.55),
+      transparent 60%
+    ),
+    radial-gradient(
+      4px 4px at 12% 20%,
+      rgba(200, 160, 255, 0.5),
+      transparent 70%
+    ),
+    radial-gradient(
+      4px 4px at 88% 25%,
+      rgba(180, 150, 255, 0.45),
+      transparent 70%
+    ),
+    radial-gradient(
+      4px 4px at 15% 80%,
+      rgba(220, 170, 255, 0.5),
+      transparent 70%
+    ),
+    radial-gradient(
+      4px 4px at 85% 78%,
+      rgba(200, 160, 255, 0.5),
+      transparent 70%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(200, 100, 255, 0.12),
+      transparent 65%
+    ),
+    radial-gradient(
+      circle at center,
+      rgba(20, 0, 40, 0.4) 0%,
+      rgba(8, 0, 20, 0.75) 55%,
+      rgba(2, 0, 5, 1) 100%
+    );
 }
-
