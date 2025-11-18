@@ -44,7 +44,7 @@ const Planet = () => {
                 <section className="planet-details-section">
                     <div className="planet-visual">
                         <div className="planet-visual-container">
-                            <img className="planet-visual-image" src={planet?.image} alt={planet?.name} />
+                            <img src={planet?.image} alt={planet?.name} />
                             <div className="planet-visual-name">{planet?.name}</div>
                         </div>
                     </div>
