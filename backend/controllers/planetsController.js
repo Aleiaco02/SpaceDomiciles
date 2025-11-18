@@ -18,15 +18,15 @@ export function index(req, res) {
 
 // SHOW - dettaglio di un singolo pianeta
 export function show(req, res) {
-  const { id } = req.params;
+  const { slug } = req.params;
 
   const sql = `
     SELECT *
     FROM planets
-    WHERE id = ?
+    WHERE slug = ?
   `;
 
-  connection.query(sql, [id], (err, result) => {
+  connection.query(sql, [slug], (err, result) => {
     if (err) return res.status(500).json({ error: "Query failed" });
 
     if (result.length === 0) {
@@ -249,7 +249,9 @@ export function patch(req, res) {
 
   connection.query(sql, values, (err, result) => {
     if (err)
-      return res.status(500).json({ error: "Patch failed", sqlError: err.sqlMessage });
+      return res
+        .status(500)
+        .json({ error: "Patch failed", sqlError: err.sqlMessage });
 
     if (result.affectedRows === 0)
       return res.status(404).json({ error: "Planet not found" });
@@ -257,7 +259,6 @@ export function patch(req, res) {
     res.status(200).json({ message: "Pianeta modificato parzialmente" });
   });
 }
-
 
 // DELETE - elimina un pianeta esistente
 export function destroy(req, res) {

@@ -14,7 +14,7 @@ export default function MilkyWayPage() {
 
   return (
     <div className="galaxy-page">
-      <div className="mw-wrapper">       
+      <div className="mw-wrapper">
         <div className="mw-header">
           <h1>La Via Lattea</h1>
           <p>Esplora i pianeti del nostro sistema solare</p>
@@ -23,14 +23,21 @@ export default function MilkyWayPage() {
         <div className="mw-cards-grid">
           {planets.map((planet) => (
             <div key={planet.id} className="mw-card">
-              <Link to={`/milky-way/${planet.id}`} className="mw-explore">
+              <Link to={`/milky-way/${planet.slug}`} className="mw-explore">
                 <h3>{planet.name}</h3>
               </Link>
-              <div className={`mw-planet-img mw-img-${planet.name.toLowerCase().replace(/\s+/g, '-')}`} style={{backgroundImage: `url(${planet.image})`}}></div>
+              <div
+                className={`mw-planet-img mw-img-${planet.name
+                  .toLowerCase()
+                  .replace(/\s+/g, "-")}`}
+                style={{ backgroundImage: `url(${planet.image})` }}
+              ></div>
               <div className="mw-bottom">
                 <p className="mw-desc">{planet.description}</p>
                 <div className="mw-divider"></div>
-                <Link to={`/milky-way/${planet.id}`} className="mw-explore">Esplora il pianeta →</Link>
+                <Link to={`/milky-way/${planet.slug}`} className="mw-explore">
+                  Esplora il pianeta →
+                </Link>
               </div>
             </div>
           ))}
