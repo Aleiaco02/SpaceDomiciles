@@ -12,15 +12,15 @@ export default function NavBar() {
           </div>
         </NavLink>
         <div className="links">
-        <NavLink to="/milky-way">
-          <span>Pianeti</span>
+        <NavLink to="/milky-way" className={({ isActive }) => isActive ? "active" : ""}>
+          <span>Via Lattea<i class="fa-regular fa-heart marg"></i></span>
         </NavLink>
 
-        <NavLink to="/aboutus">
+        <NavLink to="/aboutus" className={({ isActive }) => isActive ? "active" : ""}>
           <span>Chi Siamo</span>
         </NavLink>
 
-        <NavLink to="/contactus">
+        <NavLink to="/contactus" className={({ isActive }) => isActive ? "active" : ""}>
           <span>Contattaci!</span>
         </NavLink>
         </div>
