@@ -12,7 +12,7 @@ export default function HomePage() {
 
   return (
     // Basic usage
-    <div style={{ width: '100%', height: '900px', position: 'relative' }} className="container-jumbotrone">
+    <div style={{ width: '100%', height: '100vh', position: 'relative' }} className="container-jumbotrone">
       <Galaxy
         saturation={0.8}
         hueShift={140}
