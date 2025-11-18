@@ -1,11 +1,12 @@
+import "./CartTabCSS.css";
 export default function CartTab() {
   return (
-    <div class="cartTab">
+    <div className="cartTab">
       <h1>Shopping Cart</h1>
-      <div class="listCart"></div>
-      <div class="btn">
-        <button class="close">CLOSE</button>
-        <button class="checkOut">Check Out</button>
+      <div className="listCart"></div>
+      <div className="btn">
+        <button className="close">CLOSE</button>
+        <button className="checkOut">Check Out</button>
       </div>
     </div>
   );

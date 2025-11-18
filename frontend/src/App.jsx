@@ -13,6 +13,7 @@ import HomePage from "./Pages/HomePage";
 import MilkyWayPage from "./Pages/MilkyWayPage";
 import AboutUsPage from "./Pages/AboutUsPage";
 import ContactUs from "./Pages/ContactUsPage";
+import CartTab from "./Components/MacroComponents/CartTab";
 
 function App() {
   return (

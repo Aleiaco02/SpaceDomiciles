@@ -6,6 +6,7 @@ export default function DefaultLayout() {
     <>
       <MyHeader />
       <main>
+        <CartTab />
         <Outlet />
       </main>
     </>
