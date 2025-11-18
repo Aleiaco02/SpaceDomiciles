@@ -12,7 +12,7 @@ export default function NavBar() {
           </div>
         </NavLink>
         <div className="links">
-        <NavLink to="/planets">
+        <NavLink to="/milky-way">
           <span>Pianeti</span>
         </NavLink>
 
