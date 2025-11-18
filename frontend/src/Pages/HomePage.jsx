@@ -2,8 +2,13 @@ import BlurText from "../Components/ReactBits/BlurText";
 import Galaxy from "../Components/ReactBits/Galaxy";
 import GradientText from "../Components/ReactBits/GradientText";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobe, faCertificate, faStar } from "@fortawesome/free-solid-svg-icons";
-
+import {
+  faGlobe,
+  faCertificate,
+  faStar,
+} from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
+import milkyWay from "/img/milky-way.png";
 
 export default function HomePage() {
   const handleAnimationComplete = () => {
@@ -12,7 +17,10 @@ export default function HomePage() {
 
   return (
     // Basic usage
-    <div style={{ width: '100%', height: '100vh', position: 'relative' }} className="container-jumbotrone">
+    <div
+      style={{ width: "100%", height: "200vh", position: "relative" }}
+      className="container-jumbotrone"
+    >
       <Galaxy
         saturation={0.8}
         hueShift={140}
@@ -20,18 +28,20 @@ export default function HomePage() {
         starSpeed={1.3}
         mouseRepulsion={false}
       />
-      <div style={{
-        position: "absolute",
-        inset: 0,
-        zIndex: 10,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        pointerEvents: "none"
-      }}>
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 10,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          pointerEvents: "none",
+        }}
+      >
         <BlurText
-          text="Benvenuto in Space Domiciles"
+          text="Benvenuto in Space Domicile"
           delay={400}
           animateBy="words"
           direction="top"
@@ -42,21 +52,18 @@ export default function HomePage() {
           className="descrizione-jumbotrone"
           style={{ display: "inline-block", textAlign: "center" }}
         >
-          Il futuro dell’umanità non è più sulla Terra.
-          Oggi puoi rivendicare il tuo posto tra le stelle.
+          Il futuro dell’umanità non è più sulla Terra. Oggi puoi rivendicare il
+          tuo posto tra le stelle.
           <br />
           Non guardare lo spazio. Entraci dentro.
         </GradientText>
 
         <div className="cards-wrapper">
-
           <div className="glass-card">
             <div className="icon">
               <FontAwesomeIcon icon={faGlobe} />
             </div>
-            <GradientText className="card-title">
-              Pianeti Reali
-            </GradientText>
+            <GradientText className="card-title">Pianeti Reali</GradientText>
             <p>Terreni su pianeti realmente scoperti dalla NASA e dall’ESA</p>
           </div>
 
@@ -79,14 +86,19 @@ export default function HomePage() {
             </GradientText>
             <p>Possiedi un pezzo di universo per sempre</p>
           </div>
-
         </div>
 
+        <div className="cards-container-2">
+          <Link to="/milky-way" className="glass-card-2">
+            <img src={milkyWay} alt="Via Lattea" className="card-image" />
 
-
+            <GradientText className="card-title">
+              Esplora la Via Lattea
+            </GradientText>
+            <p>Scopri stelle, pianeti e sistemi abitabili.</p>
+          </Link>
+        </div>
       </div>
     </div>
-
-
   );
 }
