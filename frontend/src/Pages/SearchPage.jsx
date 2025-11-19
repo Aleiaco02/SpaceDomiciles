@@ -1,21 +1,27 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import "./MilkyWayPage.css";
 import { useDefaultContext } from "../Contexts/DefaultContext";
-
-export default function MilkyWayPage() {
-  const { planets } = useDefaultContext();
+import { Link } from "react-router-dom";
+export default function SearchPage() {
+  // dati e funzioni dal context
+  const { handleSubmit, UserTitle, setUserTitle, filteredPlanets } =
+    useDefaultContext();
 
   return (
-    <div className="galaxy-page">
-      <div className="mw-wrapper">
-        <div className="mw-header">
-          <h1>La Via Lattea</h1>
-          <p>Esplora i pianeti del nostro sistema solare</p>
-        </div>
-        <h2 className="mw-subtitle">I pianeti</h2>
-        <div className="mw-cards-grid">
-          {planets.map((planet) => (
+    <div className="galaxy-page pos contact">
+      <form onSubmit={handleSubmit}>
+        <input
+          name="title"
+          type="text"
+          placeholder="Planet name"
+          value={UserTitle}
+          onChange={(e) => {
+            setUserTitle(e.target.value);
+          }}
+        />
+      </form>
+      <div className="mw-cards-grid">
+        {/* display di tutti i pianeti a meno che non venga submitato qualcosa */}
+        {filteredPlanets.length > 0 ? (
+          filteredPlanets.map((planet) => (
             <Link to={`/milky-way/${planet.slug}`} key={planet.id}>
               <div key={planet.id} className="mw-card">
                 <div className="mw-explore">
@@ -34,8 +40,10 @@ export default function MilkyWayPage() {
                 </div>
               </div>
             </Link>
-          ))}
-        </div>
+          ))
+        ) : (
+          <p>inserisci il nome di un pianeta</p>
+        )}
       </div>
     </div>
   );
