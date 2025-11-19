@@ -26,6 +26,16 @@ const Planet = () => {
     const [stacks, setStacks] = useState();
     // recupero il parametro dinamico grazie a useParams
     const { slug } = useParams();
+    // variabile id del pianeta successivo
+    const [nextId, setNextId] = useState();
+    // variabile id del pianeta precedente
+    const [prevId, setPrevId] = useState();
+    // variabile di statp della lista dei pianeti
+    const [planets, setPlanets] = useState();
+    //variabile di stato del pianeta successivo
+    const [nextPlanet, setNextPlanet] = useState();
+    //variabile di stato del pianeta precedente
+    const [prevPlanet, setPrevPlanet] = useState();
 
     //funzione carrello
     const { addToCart } = useCart();
@@ -52,9 +62,50 @@ const Planet = () => {
                 console.log(error);
             });
     };
+
+    // recupero la lista dei pianeti
+    const fetchClosePlanets = () => {
+        setNextId(planet?.id + 1);
+        setPrevId(planet?.id - 1);
+        console.log("prev", prevId);
+        console.log("next", nextId);
+        axios
+            .get("http://localhost:3000/api/planets/")
+            .then((response) => {
+                setPlanets(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+                if (error.status === 404) redirect("/404");
+            });
+    }
+
+    // trovo i pianeti vicini
+    const findClosePlanets = () => {
+        if (planets && nextId) {
+            // seleziono il pianeta precedente
+            if (prevId > 0) {
+                setPrevPlanet(planets.find(planet => planet.id === prevId));
+            }
+            else {
+                setPrevPlanet(null);
+            }
+            // seleziono il pianeta successivo
+            setNextPlanet(planets.find(planet => planet.id === nextId));
+            console.log(prevPlanet);
+            console.log(nextPlanet);
+        }
+    }
+
     // faccio partire la chiamata solo al primo montaggio del componente
-    useEffect(fecthPlanet, []);
+    useEffect(fecthPlanet, [slug]);
     useEffect(fetchStack, []);
+
+    // richiamo la funzione ad ogni modifica della variabile di stato planet
+    useEffect(fetchClosePlanets, [planet]);
+
+    // richiamo la funzione ad ogni modifica della variabile di stato planets
+    useEffect(findClosePlanets, [planets]);
 
     return (
         <>
@@ -135,7 +186,44 @@ const Planet = () => {
                         </div>
                     </div>
                 </section>
-            </div>
+
+                {/* Sezione prodotti correlati (pianeti vicini) */}
+                <section className="planet-close">
+                    <h2 className="section-title">Pianeti vicini</h2>
+                    <div className="planet-close-container">
+                        {prevPlanet &&
+                            <div className="planet-close-card">
+                                <h2 className="section-title">Previous</h2>
+                                <Link to={`/milky-way/${prevPlanet.slug}`} className="planet-visual close-planet">
+                                    <div className="planet-visual-container">
+                                        <img
+                                            className="planet-visual-image"
+                                            src={prevPlanet?.image}
+                                            alt={prevPlanet?.name}
+                                        />
+                                        <div className="planet-visual-name">{prevPlanet?.name}</div>
+                                    </div>
+                                </Link>
+                            </div>
+                        }
+                        {nextPlanet &&
+                            <div className="planet-close-card">
+                                <h2 className="section-title">Next</h2>
+                                <Link to={`/milky-way/${nextPlanet.slug}`} className="planet-visual close-planet">
+                                    <div className="planet-visual-container">
+                                        <img
+                                            className="planet-visual-image"
+                                            src={nextPlanet?.image}
+                                            alt={nextPlanet?.name}
+                                        />
+                                        <div className="planet-visual-name">{nextPlanet?.name}</div>
+                                    </div>
+                                </Link>
+                            </div>
+                        }
+                    </div >
+                </section >
+            </div >
         </>
     );
 
