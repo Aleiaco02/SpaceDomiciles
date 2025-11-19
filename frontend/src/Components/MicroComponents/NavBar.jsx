@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
 import "./NavBar.css";
 import galaxyIcon from "/img/galaxy-icon.png";
+import CartBadge from "./CartBadge";
+
 export default function NavBar() {
   return (
     <nav>
@@ -24,6 +26,12 @@ export default function NavBar() {
               Via Lattea<i className="fa-regular fa-heart marg"></i>
             </span>
           </NavLink>
+          <NavLink
+            to="/search"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            <span>Cerca</span>
+          </NavLink>
 
           <NavLink
             to="/about-us"
@@ -40,9 +48,9 @@ export default function NavBar() {
           </NavLink>
         </div>
 
-        <button className="cart">
-          <i className="fa-solid fa-cart-arrow-down"></i>
-        </button>
+        <NavLink to="/cart" className="cart">
+          <CartBadge />
+        </NavLink>
       </div>
     </nav>
   );

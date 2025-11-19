@@ -7,7 +7,7 @@ export function index(req, res) {
   connection.query(sql, (err, results) => {
     if (err) return res.status(500).json({ error: "Database error" });
     results.map((x) => {
-      if (x.image.search("https") === -1) {
+      if (x.image.search("http") === -1) {
         // check sul percorso se é giá esistente e preso da fuori progetto
         x.image = x.image === "" ? null : req.imagePath + x.image;
       }
@@ -34,7 +34,7 @@ export function show(req, res) {
     }
 
     result.map((x) => {
-      if (x.image.search("https") === -1) {
+      if (x.image.search("http") === -1) {
         // check sul percorso se é giá esistente e preso da fuori progetto
         x.image = x.image === "" ? null : req.imagePath + x.image;
       }
@@ -55,16 +55,17 @@ export function store(req, res) {
     surface_available,
     distance_from_earth,
     description,
+    slug,
   } = req.body;
   let { image } = req.body;
-  // Se l'immagine NON contiene http/https, aggiungi req.imagePath
+  // Se l'immagine NON contiene http/http, aggiungi req.imagePath
   if (image && !image.startsWith("http")) {
     image = req.imagePath + image;
   }
 
   const sql = `
     INSERT INTO planets 
-    (id_galaxy, name, planet_size, temperature_min, temperature_max, population, surface_available, distance_from_earth, description, image)
+    (id_galaxy, name, planet_size, temperature_min, temperature_max, population, surface_available, distance_from_earth, description, slug, image)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
@@ -80,6 +81,7 @@ export function store(req, res) {
       surface_available,
       distance_from_earth,
       description,
+      slug,
       image,
     ],
     (err, result) => {
@@ -115,7 +117,7 @@ export function update(req, res) {
   } = req.body;
   let { image } = req.body;
 
-  // Se l'immagine NON contiene http/https, aggiungi req.imagePath
+  // Se l'immagine NON contiene http/http, aggiungi req.imagePath
   if (image && !image.startsWith("http")) {
     image = req.imagePath + image;
   }
@@ -175,7 +177,7 @@ export function patch(req, res) {
   } = req.body;
   let { image } = req.body;
 
-  // Se l'immagine NON contiene http/https, aggiungi req.imagePath
+  // Se l'immagine NON contiene http/http, aggiungi req.imagePath
   if (image && !image.startsWith("http")) {
     image = req.imagePath + image;
   }

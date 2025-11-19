@@ -40,6 +40,13 @@ export default function packageCard(props) {
           </>
         )}
       </ul>
+      {/* Pulsante aggiunto*/}
+      <button
+        className="add-to-cart-button"
+        onClick={() => props.onAddToCart(props)}
+      >
+        Aggiungi al carrello
+      </button>
     </div>
   );
 }
