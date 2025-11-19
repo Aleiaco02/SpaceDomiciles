@@ -8,6 +8,10 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 // import state e effetc
 import { useState, useEffect } from "react";
 
+//importo funzionalità carrello
+import { useCart } from "../Contexts/CartContext";
+
+
 // importo gli stili css della pagina
 import "../styles/Planet.css";
 
@@ -22,6 +26,9 @@ const Planet = () => {
     const [stacks, setStacks] = useState();
     // recupero il parametro dinamico grazie a useParams
     const { slug } = useParams();
+
+    //funzione carrello
+    const { addToCart } = useCart();
 
     // preparo la funzione per la chiamata axios
     const fecthPlanet = () => {
@@ -113,7 +120,18 @@ const Planet = () => {
                     <div className="cosmic-container">
                         <h2 className="section-title">Scegli il Tuo Pacchetto</h2>
                         <div className="packages">
-                            {stacks?.map((stack) => packageCard(stack))}
+                            {(planet && stacks) ? (
+                                stacks.map((stack) =>
+                                    packageCard({
+                                        ...stack,
+                                        planet_name: planet.name,
+                                        planet_image: planet.image,
+                                        onAddToCart: addToCart,
+                                    })
+                                )
+                            ) : (
+                                <p>Caricamento pacchetti...</p>
+                            )}
                         </div>
                     </div>
                 </section>
