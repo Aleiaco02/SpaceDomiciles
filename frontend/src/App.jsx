@@ -15,6 +15,7 @@ import AboutUsPage from "./Pages/AboutUsPage";
 import ContactUs from "./Pages/ContactUsPage";
 import CartTab from "./Components/MacroComponents/CartTab";
 import Planet from "./Pages/Planet";
+import ComingSoon from "./Pages/ComingSoon";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
               <Route path="/milky-way/:slug" element={<Planet />} />
               <Route path="/about-us" element={<AboutUsPage />} />
               <Route path="/contact-us" element={<ContactUs />} />
+              <Route path="/coming-soon" element={<ComingSoon />} />
             </Route>
           </Routes>
         </BrowserRouter>
