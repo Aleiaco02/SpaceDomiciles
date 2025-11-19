@@ -1,5 +1,6 @@
 import "./ContactUsPage.css";
 import galaxyIcon from "/img/galaxy-icon.png";
+import { Link } from "react-router-dom";
 
 export default function ContactUs() {
   return (
@@ -18,7 +19,11 @@ export default function ContactUs() {
         <i class="fa-brands fa-pinterest"></i>
         <i class="fa-brands fa-square-x-twitter"></i>
       </div>
-      <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon"/>
+      <div className="gal-dim">
+      <Link path to="/">
+        <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon" />
+      </Link>
+      </div>
     </div>
   );
 }

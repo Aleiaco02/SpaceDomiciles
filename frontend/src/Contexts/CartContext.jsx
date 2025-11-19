@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 
 const CartContext = createContext();
 
@@ -6,19 +6,23 @@ export function CartProvider({ children }) {
   const [items, setItems] = useState({});
   const [loading, setLoading] = useState(true);
 
-  // Carica carrello da localStorage al montaggio
+  // Carica il carrello da localStorage una sola volta al primo render
   useEffect(() => {
-    const savedCart = localStorage.getItem("cart");
-    if (savedCart) {
-      setItems(JSON.parse(savedCart));
+    try {
+      const savedCart = localStorage.getItem("cart");
+      setItems(savedCart ? JSON.parse(savedCart) : {});
+    } catch (err) {
+      setItems({});
     }
     setLoading(false);
   }, []);
 
-  // Salva carrello su localStorage ad ogni modifica
+  // Salva ogni aggiornamento nel localStorage
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(items));
-  }, [items]);
+    if (!loading) {
+      localStorage.setItem("cart", JSON.stringify(items));
+    }
+  }, [items, loading]);
 
   const addToCart = (product) => {
     setItems((current) => {

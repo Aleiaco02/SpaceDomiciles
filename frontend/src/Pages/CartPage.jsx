@@ -46,9 +46,11 @@ export default function CarrelloPage() {
         )}
         <h2>Totale: €{total.toFixed(2)}</h2>
       </div>
+      <div className="gal-dim">
       <Link to="/">
         <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon" />
       </Link>
+      </div>
     </div>
   );
 }
