@@ -1,16 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./MilkyWayPage.css";
+import { useDefaultContext } from "../Contexts/DefaultContext";
 
 export default function MilkyWayPage() {
-  const [planets, setPlanets] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:3000/api/planets")
-      .then((res) => res.json())
-      .then((data) => setPlanets(data))
-      .catch((err) => console.error("Errore nel caricamento pianeti:", err));
-  }, []);
+  const { planets } = useDefaultContext();
 
   return (
     <div className="galaxy-page">
@@ -22,7 +16,7 @@ export default function MilkyWayPage() {
         <h2 className="mw-subtitle">I pianeti</h2>
         <div className="mw-cards-grid">
           {planets.map((planet) => (
-            <Link to={`/milky-way/${planet.slug}`}>
+            <Link to={`/milky-way/${planet.slug}`} key={planet.id}>
               <div key={planet.id} className="mw-card">
                 <div className="mw-explore">
                   <h3>{planet.name}</h3>

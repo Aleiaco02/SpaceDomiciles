@@ -26,6 +26,12 @@ export default function NavBar() {
               Via Lattea<i className="fa-regular fa-heart marg"></i>
             </span>
           </NavLink>
+          <NavLink
+            to="/search"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            <span>Cerca</span>
+          </NavLink>
 
           <NavLink
             to="/about-us"
