@@ -1,13 +1,13 @@
-import { Router } from "express";
-import { index, show, store, update, patch, destroy } from "../controllers/paymentsController.js";
+import {Router} from "express";
+import {index, showSingle, store, update, patch, destroy} from "../controllers/paymentsController.js";
 
-const paymentsRouter = Router();
+const router = Router();
 
-paymentsRouter.get("/", index);
-paymentsRouter.get("/:id", show);
-paymentsRouter.post("/", store);
-paymentsRouter.put("/:id", update);
-paymentsRouter.patch("/:id", patch);
-paymentsRouter.delete("/:id", destroy);
+router.get("/", index);
+router.get("/:id", showSingle);
+router.post("/", store);
+router.put("/:id", update);
+router.patch("/:id", patch);
+router.delete("/:id", destroy);
 
-export default paymentsRouter;
+export default router;

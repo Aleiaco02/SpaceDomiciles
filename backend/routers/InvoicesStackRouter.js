@@ -1,12 +1,13 @@
-import { Router } from "express";
-import { index, show, store, update, destroy } from "../controllers/InvoicesStackController.js";
+import {Router} from "express";
+import {index, show, store, update, modify, destroy} from "../controllers/invoicesStackController.js";
 
-const InvoicesStackController = Router();
+const router = Router();
 
-InvoicesStackController.get('/', index);
-InvoicesStackController.get('/:id', show);
-InvoicesStackController.post('/', store);
-InvoicesStackController.put('/:id', update);
-InvoicesStackController.delete('/:id', destroy);
+router.get("/", index);
+router.get("/:id", show);
+router.post("/", store);
+router.put("/:id", update);
+router.patch("/:id", modify);
+router.delete("/:id", destroy);
 
-export default InvoicesStackController;
+export default router;

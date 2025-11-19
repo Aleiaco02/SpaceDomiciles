@@ -1,20 +1,13 @@
-import { Router } from "express";
-import {
-  index,
-  show,
-  store,
-  update,
-  patch,
-  destroy,
-} from "../controllers/planetsController.js";
+import {Router} from "express";
+import {index, showSingle, store, update, patch, destroy} from "../controllers/planetsController.js";
 
-const planetsRouter = Router();
+const router = Router();
 
-planetsRouter.get("/", index);
-planetsRouter.get("/:slug", show);
-planetsRouter.post("/", store);
-planetsRouter.put("/:id", update);
-planetsRouter.patch("/:id", patch);
-planetsRouter.delete("/:id", destroy);
+router.get("/", index);
+router.get("/single/:slug", showSingle);
+router.post("/", store);
+router.put("/:id", update);
+router.patch("/:id", patch);
+router.delete("/:id", destroy);
 
-export default planetsRouter;
+export default router;

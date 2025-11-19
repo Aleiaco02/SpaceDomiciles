@@ -1,280 +1,222 @@
 import connection from "../data/db.js";
 
-// INDEX - lista di tutti i pianeti
+// VALIDAZIONE DATI PIANETA
+function validatePlanet(data) {
+    const errors = [];
+
+    if (!data.id_galaxy || isNaN(data.id_galaxy)) {
+        errors.push("id_galaxy must be a valid number");
+    }
+
+    if (!data.name || data.name.length < 3) {
+        errors.push("name must be at least 3 characters long");
+    }
+
+    if (data.planet_size === undefined || isNaN(data.planet_size) || data.planet_size <= 0) {
+        errors.push("planet_size must be a positive number");
+    }
+
+    if (data.temperature_min === undefined || isNaN(data.temperature_min)) {
+        errors.push("temperature_min must be a valid number");
+    }
+
+    if (data.temperature_max === undefined || isNaN(data.temperature_max)) {
+        errors.push("temperature_max must be a valid number");
+    }
+
+    if (
+        data.temperature_min !== undefined &&
+        data.temperature_max !== undefined &&
+        Number(data.temperature_min) > Number(data.temperature_max)
+    ) {
+        errors.push("temperature_min cannot be greater than temperature_max");
+    }
+
+    if (data.population === undefined || isNaN(data.population) || data.population < 0) {
+        errors.push("population must be a positive number");
+    }
+
+    if (data.surface_available === undefined || isNaN(data.surface_available) || data.surface_available < 0) {
+        errors.push("surface_available must be a positive number");
+    }
+
+    if (data.distance_from_earth === undefined || isNaN(data.distance_from_earth) || data.distance_from_earth < 0) {
+        errors.push("distance_from_earth must be a positive number");
+    }
+
+    if (!data.slug || data.slug.length < 3) {
+        errors.push("slug must be at least 3 characters long");
+    }
+
+    if (!data.description || data.description.length < 5) {
+        errors.push("description must be at least 5 characters long");
+    }
+
+    if (!data.image || data.image.length < 3) {
+        errors.push("image must be a valid filename");
+    }
+
+    return errors;
+}
+
+// INDEX – lista pianeti
 export function index(req, res) {
-  const sql = "SELECT * FROM planets";
+    const sql = "SELECT * FROM planets";
 
-  connection.query(sql, (err, results) => {
-    if (err) return res.status(500).json({ error: "Database error" });
-    results.map((x) => {
-      if (x.image.search("https") === -1) {
-        // check sul percorso se é giá esistente e preso da fuori progetto
-        x.image = x.image === "" ? null : req.imagePath + x.image;
-      }
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: "Database error" });
+
+        res.json(results);
     });
-    res.json(results);
-  });
 }
 
-// SHOW - dettaglio di un singolo pianeta
-export function show(req, res) {
-  const { slug } = req.params;
+// SHOW – pianeta singolo via slug
+export function showSingle(req, res) {
+    const { slug } = req.params;
 
-  const sql = `
-    SELECT *
-    FROM planets
-    WHERE slug = ?
-  `;
+    const sql = "SELECT * FROM planets WHERE slug = ?";
 
-  connection.query(sql, [slug], (err, result) => {
-    if (err) return res.status(500).json({ error: "Query failed" });
+    connection.query(sql, [slug], (err, result) => {
+        if (err) return res.status(500).json({ error: "Database error" });
 
-    if (result.length === 0) {
-      return res.status(404).json({ error: "Planet not found" });
-    }
+        if (result.length === 0) {
+            return res.status(404).json({ error: "Planet not found" });
+        }
 
-    result.map((x) => {
-      if (x.image.search("https") === -1) {
-        // check sul percorso se é giá esistente e preso da fuori progetto
-        x.image = x.image === "" ? null : req.imagePath + x.image;
-      }
+        res.json(result[0]);
     });
-    res.json(result[0]);
-  });
 }
 
-// STORE - crea un nuovo pianeta
+// STORE – crea nuovo pianeta
 export function store(req, res) {
-  const {
-    id_galaxy,
-    name,
-    planet_size,
-    temperature_min,
-    temperature_max,
-    population,
-    surface_available,
-    distance_from_earth,
-    description,
-  } = req.body;
-  let { image } = req.body;
-  // Se l'immagine NON contiene http/https, aggiungi req.imagePath
-  if (image && !image.startsWith("http")) {
-    image = req.imagePath + image;
-  }
+    const data = req.body;
 
-  const sql = `
-    INSERT INTO planets 
-    (id_galaxy, name, planet_size, temperature_min, temperature_max, population, surface_available, distance_from_earth, description, image)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `;
+    const errors = validatePlanet(data);
+    if (errors.length > 0) return res.status(400).json({ errors });
 
-  connection.query(
-    sql,
-    [
-      id_galaxy,
-      name,
-      planet_size,
-      temperature_min,
-      temperature_max,
-      population,
-      surface_available,
-      distance_from_earth,
-      description,
-      image,
-    ],
-    (err, result) => {
-      if (err) {
-        return res.status(400).json({
-          error: "Insert failed",
-          sqlError: err.sqlMessage,
-        });
-      }
+    const {
+        id_galaxy,
+        name,
+        planet_size,
+        temperature_min,
+        temperature_max,
+        population,
+        surface_available,
+        distance_from_earth,
+        description,
+        image,
+        slug,
+    } = data;
 
-      res.status(201).json({
-        id: result.insertId,
-        message: "Pianeta creato con successo",
-      });
-    }
-  );
+    const sql = `
+        INSERT INTO planets
+        (id_galaxy, name, planet_size, temperature_min, temperature_max,
+         population, surface_available, distance_from_earth, description, image, slug)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    connection.query(
+        sql,
+        [
+            id_galaxy,
+            name,
+            planet_size,
+            temperature_min,
+            temperature_max,
+            population,
+            surface_available,
+            distance_from_earth,
+            description,
+            image,
+            slug,
+        ],
+        (err, result) => {
+            if (err && err.code === "ER_DUP_ENTRY") {
+                return res.status(400).json({ error: `Slug '${slug}' already exists` });
+            }
+
+            if (err) {
+                return res.status(500).json({
+                    error: "Database error",
+                    details: err.sqlMessage,
+                });
+            }
+
+            res.status(201).json({ id: result.insertId, message: "Planet created" });
+        }
+    );
 }
 
-// UPDATE - aggiorna completamente un pianeta esistente
+// UPDATE – aggiornamento completo
 export function update(req, res) {
-  const { id } = req.params;
+    const id = req.params.id;
+    const data = req.body;
 
-  const {
-    id_galaxy,
-    name,
-    planet_size,
-    temperature_min,
-    temperature_max,
-    population,
-    surface_available,
-    distance_from_earth,
-    description,
-  } = req.body;
-  let { image } = req.body;
+    const errors = validatePlanet(data);
+    if (errors.length > 0) return res.status(400).json({ errors });
 
-  // Se l'immagine NON contiene http/https, aggiungi req.imagePath
-  if (image && !image.startsWith("http")) {
-    image = req.imagePath + image;
-  }
+    connection.query("UPDATE planets SET ? WHERE id = ?", [data, id], (err, result) => {
+        if (err && err.code === "ER_DUP_ENTRY") {
+            return res.status(400).json({ error: "Slug already exists" });
+        }
 
-  const sql = `
-    UPDATE planets
-    SET id_galaxy = ?, name = ?, planet_size = ?, temperature_min = ?, temperature_max = ?,
-        population = ?, surface_available = ?, distance_from_earth = ?, description = ?, image = ?
-    WHERE id = ?
-  `;
+        if (err) return res.status(500).json({ error: "Database error" });
 
-  connection.query(
-    sql,
-    [
-      id_galaxy,
-      name,
-      planet_size,
-      temperature_min,
-      temperature_max,
-      population,
-      surface_available,
-      distance_from_earth,
-      description,
-      image,
-      id,
-    ],
-    (err, result) => {
-      if (err) {
-        return res.status(500).json({
-          error: "Update failed",
-          sqlError: err.sqlMessage,
-        });
-      }
+        if (result.affectedRows === 0)
+            return res.status(404).json({ error: "Planet not found" });
 
-      if (result.affectedRows === 0)
-        return res.status(404).json({ error: "Planet not found" });
-
-      res.status(200).json({ message: "Pianeta modificato completamente" });
-    }
-  );
+        res.json({ message: "Planet updated" });
+    });
 }
 
-// PATCH - aggiorna parzialmente un pianeta esistente
+// PATCH – aggiornamento parziale
 export function patch(req, res) {
-  const { id } = req.params;
+    const id = req.params.id;
+    const data = req.body;
 
-  const {
-    id_galaxy,
-    name,
-    planet_size,
-    temperature_min,
-    temperature_max,
-    population,
-    surface_available,
-    distance_from_earth,
-    description,
-  } = req.body;
-  let { image } = req.body;
+    const fake = {
+        id_galaxy: data.id_galaxy ?? 1,
+        name: data.name ?? "aaa",
+        planet_size: data.planet_size ?? 1,
+        temperature_min: data.temperature_min ?? -200,
+        temperature_max: data.temperature_max ?? 200,
+        population: data.population ?? 0,
+        surface_available: data.surface_available ?? 0,
+        distance_from_earth: data.distance_from_earth ?? 0,
+        description: data.description ?? "aaaaa",
+        image: data.image ?? "img.png",
+        slug: data.slug ?? "aaa",
+    };
 
-  // Se l'immagine NON contiene http/https, aggiungi req.imagePath
-  if (image && !image.startsWith("http")) {
-    image = req.imagePath + image;
-  }
+    const errors = validatePlanet(fake);
+    if (errors.length > 0) return res.status(400).json({ errors });
 
-  // Campi aggiornabili
-  const fields = [];
-  const values = [];
+    connection.query("UPDATE planets SET ? WHERE id = ?", [data, id], (err, result) => {
+        if (err && err.code === "ER_DUP_ENTRY") {
+            return res.status(400).json({ error: "Slug already exists" });
+        }
 
-  if (id_galaxy !== undefined) {
-    fields.push("id_galaxy = ?");
-    values.push(id_galaxy);
-  }
+        if (err) return res.status(500).json({ error: "Database error" });
 
-  if (name !== undefined) {
-    fields.push("name = ?");
-    values.push(name);
-  }
+        if (result.affectedRows === 0)
+            return res.status(404).json({ error: "Planet not found" });
 
-  if (planet_size !== undefined) {
-    fields.push("planet_size = ?");
-    values.push(planet_size);
-  }
-
-  if (temperature_min !== undefined) {
-    fields.push("temperature_min = ?");
-    values.push(temperature_min);
-  }
-
-  if (temperature_max !== undefined) {
-    fields.push("temperature_max = ?");
-    values.push(temperature_max);
-  }
-
-  if (population !== undefined) {
-    fields.push("population = ?");
-    values.push(population);
-  }
-
-  if (surface_available !== undefined) {
-    fields.push("surface_available = ?");
-    values.push(surface_available);
-  }
-
-  if (distance_from_earth !== undefined) {
-    fields.push("distance_from_earth = ?");
-    values.push(distance_from_earth);
-  }
-
-  if (description !== undefined) {
-    fields.push("description = ?");
-    values.push(description);
-  }
-
-  if (image !== undefined) {
-    fields.push("image = ?");
-    values.push(image);
-  }
-
-  // Nessun campo inviato
-  if (fields.length === 0) {
-    return res.status(400).json({ error: "No valid fields provided" });
-  }
-
-  const sql = `
-    UPDATE planets
-    SET ${fields.join(", ")}
-    WHERE id = ?
-  `;
-
-  values.push(id);
-
-  connection.query(sql, values, (err, result) => {
-    if (err)
-      return res
-        .status(500)
-        .json({ error: "Patch failed", sqlError: err.sqlMessage });
-
-    if (result.affectedRows === 0)
-      return res.status(404).json({ error: "Planet not found" });
-
-    res.status(200).json({ message: "Pianeta modificato parzialmente" });
-  });
+        res.json({ message: "Planet partially updated" });
+    });
 }
 
-// DELETE - elimina un pianeta esistente
+// DELETE – elimina pianeta
 export function destroy(req, res) {
-  const { id } = req.params;
+    const id = req.params.id;
 
-  const sql = `
-    DELETE FROM planets
-    WHERE id = ?
-  `;
+    if (isNaN(id)) return res.status(400).json({ error: "Invalid ID" });
 
-  connection.query(sql, [id], (err, result) => {
-    if (err) return res.status(500).json({ error: "Delete failed" });
+    connection.query("DELETE FROM planets WHERE id = ?", [id], (err, result) => {
+        if (err) return res.status(500).json({ error: "Database error" });
 
-    if (result.affectedRows === 0)
-      return res.status(404).json({ error: "Planet not found" });
+        if (result.affectedRows === 0)
+            return res.status(404).json({ error: "Planet not found" });
 
-    res.status(200).json({ message: "Pianeta eliminato con successo" });
-  });
+        res.json({ message: "Planet deleted" });
+    });
 }

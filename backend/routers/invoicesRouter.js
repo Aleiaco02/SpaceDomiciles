@@ -1,6 +1,5 @@
 import {Router} from "express";
-import {index, showSingle, store, update, patch, destroy} 
-from "../controllers/galaxiesController.js";
+import {index, showSingle, store, update, patch, destroy} from "../controllers/invoicesController.js";
 
 const router = Router();
 
