@@ -1,13 +1,16 @@
 import { useDefaultContext } from "../Contexts/DefaultContext";
 import { Link } from "react-router-dom";
+import "../styles/Search.css";
+
 export default function SearchPage() {
   // dati e funzioni dal context
   const { handleSubmit, UserTitle, setUserTitle, filteredPlanets } =
     useDefaultContext();
 
   return (
-    <div className="galaxy-page pos contact">
-      <form onSubmit={handleSubmit}>
+    <div className="galaxy-page pos">
+      <form onSubmit={handleSubmit} className="searchbar">
+        <h1 className="mw-subtitle">Cerca il tuo pianeta nell'universo</h1>
         <input
           name="title"
           type="text"
@@ -16,14 +19,19 @@ export default function SearchPage() {
           onChange={(e) => {
             setUserTitle(e.target.value);
           }}
+          className="search-input"
         />
       </form>
       <div className="mw-cards-grid">
         {/* display di tutti i pianeti a meno che non venga submitato qualcosa */}
         {filteredPlanets.length > 0 ? (
           filteredPlanets.map((planet) => (
-            <Link to={`/milky-way/${planet.slug}`} key={planet.id}>
-              <div key={planet.id} className="mw-card">
+            <Link
+              to={`/milky-way/${planet.slug}`}
+              key={planet.id}
+              className="mw-card-search"
+            >
+              <div key={planet.id}>
                 <div className="mw-explore">
                   <h3>{planet.name}</h3>
                 </div>
