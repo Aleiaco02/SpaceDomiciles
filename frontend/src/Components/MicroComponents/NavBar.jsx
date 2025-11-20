@@ -19,32 +19,42 @@ export default function NavBar() {
         </NavLink>
         <div className="links">
           <NavLink
-            to="/milky-way"
+            to="/galaxies"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             <span>
-              Via Lattea<i className="fa-regular fa-heart marg"></i>
+              Galassie
+              <i class="fa-solid fa-shuttle-space marg"></i>
             </span>
           </NavLink>
           <NavLink
             to="/search"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
-            <span>Cerca</span>
+            <span>
+              Cerca
+              <i class="fa-solid fa-magnifying-glass marg"></i>
+            </span>
           </NavLink>
 
           <NavLink
             to="/about-us"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
-            <span>Chi Siamo</span>
+            <span>
+              Chi Siamo
+            <i class="fa-regular fa-address-card marg"></i>
+            </span>
           </NavLink>
 
           <NavLink
             to="/contact-us"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
-            <span>Contattaci!</span>
+            <span>
+              Contattaci!
+              <i class="fa-regular fa-message marg"></i>
+              </span>
           </NavLink>
         </div>
 
