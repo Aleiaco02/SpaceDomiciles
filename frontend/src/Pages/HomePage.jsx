@@ -6,6 +6,7 @@ import {
   faGlobe,
   faCertificate,
   faStar,
+  faRocket,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -122,6 +123,16 @@ export default function HomePage() {
               Investimento Unico
             </GradientText>
             <p>Possiedi un pezzo di universo per sempre</p>
+          </div>
+
+          <div className="glass-card">
+            <div className="icon">
+              <FontAwesomeIcon icon={faRocket} />
+            </div>
+            <GradientText className="card-title">
+              Spedizione gratuita
+            </GradientText>
+            <p>Del tuo attestato con un minimo d'acquisto di 1500€</p>
           </div>
         </div>
 
