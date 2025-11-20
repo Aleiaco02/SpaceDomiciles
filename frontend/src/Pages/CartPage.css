@@ -22,9 +22,16 @@
   margin-left: 12px;
   box-shadow: 0 2px 8px #ff7c7c44;
   transition: background 0.15s;
+  transition: 0.5s ease;
 }
 .empty-cart-btn:disabled {
   opacity: 0.50;
   cursor: not-allowed;
   background: #444;
+}
+
+.empty-cart-btn:hover {
+  transform: scale(1.05);
+  transition: 0.5s ease;
+  background: #710000;
 }
