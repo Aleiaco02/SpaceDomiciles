@@ -2,7 +2,6 @@ import { useDefaultContext } from "../Contexts/DefaultContext";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/Search.css";
-import { useState, useMemo } from "react";
 export default function SearchPage() {
   // dati e funzioni dal context
   // const { handleSubmit, UserTitle, setUserTitle } =
@@ -30,48 +29,6 @@ export default function SearchPage() {
         p.planet_size >= filters.sizeMin && p.planet_size <= filters.sizeMax
     )
     .filter((p) => p.surface_available >= filters.surfaceAvailable);
-  const [sortOption, setSortOption] = useState("");
-  const [sortDir, setSortDir] = useState("asc");
-
-  const sortedPlanets = useMemo(() => {
-    let arr = [...filteredPlanets]; // evita mutazioni
-
-    arr.sort((a, b) => {
-      let valueA, valueB;
-
-      switch (sortOption) {
-        case "name":
-          valueA = a.name.toLowerCase();
-          valueB = b.name.toLowerCase();
-          break;
-
-        case "size":
-          valueA = a.planet_size;
-          valueB = b.planet_size;
-          break;
-
-        case "population":
-          valueA = a.population;
-          valueB = b.population;
-          break;
-
-        case "distance":
-          valueA = a.distance_from_earth;
-          valueB = b.distance_from_earth;
-          break;
-
-        default:
-          return 0;
-      }
-
-      if (valueA < valueB) return sortDir === "asc" ? -1 : 1;
-      if (valueA > valueB) return sortDir === "asc" ? 1 : -1;
-      return 0;
-    });
-
-    return arr;
-  }, [filteredPlanets, sortOption, sortDir]);
-
   return (
     <div className="galaxy-page pos">
       {/* Sezione filtri */}
