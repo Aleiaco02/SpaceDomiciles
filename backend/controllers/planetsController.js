@@ -73,7 +73,7 @@ export function index(req, res) {
 }
 
 // SHOW – pianeta singolo via slug
-export function showSingle(req, res) {
+export function show(req, res) {
     const { slug } = req.params;
     const sql = "SELECT * FROM planets WHERE slug = ?";
 

@@ -1,10 +1,10 @@
 import {Router} from "express";
-import {index, showSingle, store, update, patch, destroy} from "../controllers/planetsController.js";
+import {index,show,store,update,patch,destroy} from "../controllers/planetsController.js";
 
 const router = Router();
 
 router.get("/", index);
-router.get("/single/:slug", showSingle);
+router.get("/:slug", show);
 router.post("/", store);
 router.put("/:id", update);
 router.patch("/:id", patch);
