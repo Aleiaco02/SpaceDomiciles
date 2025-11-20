@@ -18,6 +18,7 @@ import Planet from "./Pages/Planet";
 import CartPage from "./Pages/CartPage";
 import SearchPage from "./Pages/SearchPage";
 import ComingSoon from "./Pages/ComingSoon";
+import CheckOutPage from "./Pages/CheckOutPage";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="/coming-soon" element={<ComingSoon />} />
+                <Route path="/checkout" element={<CheckOutPage/>} />
               </Route>
             </Routes>
           </BrowserRouter>
