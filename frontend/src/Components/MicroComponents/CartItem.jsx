@@ -1,4 +1,3 @@
-import React from "react";
 import "./CartItem.css";
 
 export default function CartItem({ item, onQtyChange }) {

@@ -1,21 +1,3 @@
-// import "./CartPage.css";
-// import galaxyIcon from "/img/galaxy-icon.png";
-// import { Link } from "react-router-dom";
-
-// export default function CartPage() {
-//     return (
-//         <div className="galaxy-page">
-//             <div className="cont-cart">
-//                 <h1>Carrello</h1>
-//                 <Link path to="/">
-//                     <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon" />
-//                 </Link>
-//             </div>
-//         </div>
-//     );
-// }
-
-
 import "./CartPage.css";
 import galaxyIcon from "/img/galaxy-icon.png";
 import { Link } from "react-router-dom";
