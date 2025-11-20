@@ -50,6 +50,11 @@
   font-size: 1.2rem;
   color: #7ffcff;
 }
+
+.checkout-btn-row {
+    display: flex;
+}
+
 .checkout-btn {
   margin-top: 22px;
   padding: 11px 40px;
@@ -61,4 +66,30 @@
   font-size: 1.1rem;
   cursor: pointer;
   box-shadow: 0 2px 12px #7ffcff55;
+  margin-left: 10px;
 }
+
+.back-to-cart-btn {
+  margin-bottom: 0 !important;
+  margin-top: 22px;
+  padding: 10px 40px;
+  background: linear-gradient(135deg,#40e6f9,#7ffcff);
+  color: #191831;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 12px #7ffcff55;
+}
+
+
+
+
+
+
+
+
+
+
+
