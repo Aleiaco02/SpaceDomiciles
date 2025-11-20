@@ -1,13 +1,13 @@
-import { Router } from "express";
-import { index, show, store, update, destroy } from "../controllers/CustomersController.js";
+import {Router} from "express";
+import {index, showSingle, store, update, patch, destroy} from "../controllers/customersController.js";
 
-const CustomersRouter = Router();
+const router = Router();
 
-CustomersRouter.get('/', index);
-CustomersRouter.get('/:id', show);
-CustomersRouter.post('/', store);
-CustomersRouter.put('/:id', update);
-CustomersRouter.delete('/:id', destroy);
+router.get("/", index);
+router.get("/:id", showSingle);
+router.post("/", store);
+router.put("/:id", update);
+router.patch("/:id", patch);
+router.delete("/:id", destroy);
 
-
-export default CustomersRouter;
+export default router;

@@ -6,11 +6,13 @@ import {
   faGlobe,
   faCertificate,
   faStar,
+  faRocket,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import milkyWay from "/img/milky-way.png";
 import andromeda from "/img/andromeda.png";
+import sombrero from "/img/sombrero.png";
 import axios from "axios";
 
 export default function HomePage() {
@@ -39,12 +41,19 @@ export default function HomePage() {
     }
   };
 
+  // 👇 FETCH ALL'AVVIO
   useEffect(() => {
     fetchPlanets();
   }, []);
 
+  // 👇 LOG DEI DATI QUANDO ARRIVANO
+  useEffect(() => {
+    console.log("PLANET1:", planet1);
+    console.log("PLANET2:", planet2);
+    console.log("PLANET3:", planet3);
+  }, [planet1, planet2, planet3]);
+
   return (
-    // Basic usage
     <div
       style={{ width: "100%", height: "280vh", position: "relative" }}
       className="container-jumbotrone"
@@ -56,6 +65,7 @@ export default function HomePage() {
         starSpeed={1.3}
         mouseRepulsion={false}
       />
+
       <div
         style={{
           position: "absolute",
@@ -64,9 +74,8 @@ export default function HomePage() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          // justifyContent: "center",
           pointerEvents: "none",
-          paddingTop: 200
+          paddingTop: 200,
         }}
       >
         <BlurText
@@ -77,6 +86,7 @@ export default function HomePage() {
           onAnimationComplete={handleAnimationComplete}
           className="titolo-jumbotrone"
         />
+
         <GradientText
           className="descrizione-jumbotrone"
           style={{ display: "inline-block", textAlign: "center" }}
@@ -115,6 +125,16 @@ export default function HomePage() {
             </GradientText>
             <p>Possiedi un pezzo di universo per sempre</p>
           </div>
+
+          <div className="glass-card">
+            <div className="icon">
+              <FontAwesomeIcon icon={faRocket} />
+            </div>
+            <GradientText className="card-title">
+              Spedizione gratuita
+            </GradientText>
+            <p>Del tuo attestato con un minimo d'acquisto di 1500€</p>
+          </div>
         </div>
 
         <h2 className="classe">SCEGLI LA TUA GALASSIA PREFERITA</h2>
@@ -133,7 +153,7 @@ export default function HomePage() {
 
           <div className="cards-container-2">
             <Link to="/coming-soon" className="glass-card-2">
-              <img src={andromeda} alt="Via Lattea" className="card-image" />
+              <img src={andromeda} alt="Andromeda" className="card-image" />
 
               <GradientText className="card-title">
                 <h2>Esplora Andromeda</h2>
@@ -143,11 +163,11 @@ export default function HomePage() {
           </div>
 
           <div className="cards-container-2">
-            <Link to="/milky-way" className="glass-card-2">
-              <img src={milkyWay} alt="Via Lattea" className="card-image" />
+            <Link to="/coming-soon" className="glass-card-2">
+              <img src={sombrero} alt="Sombrero" className="card-image card-image-sombrero" />
 
               <GradientText className="card-title">
-                <h2>Esplora la Via Lattea</h2>
+                <h2>Esplora Sombrero</h2>
               </GradientText>
               <p>Scopri stelle, pianeti e sistemi abitabili.</p>
             </Link>
@@ -170,11 +190,13 @@ export default function HomePage() {
             </div>
           )}
 
-
           {planet2 && (
             <div className="cards-container-2">
               <Link to={`milky-way/${planet2.slug}`} className="glass-card-2">
-                <img src={planet2.image} className="card-image pianeta-piccolo" />
+                <img
+                  src={planet2.image}
+                  className="card-image pianeta-piccolo"
+                />
                 <GradientText className="card-title">
                   <h2>{planet2.name}</h2>
                 </GradientText>
@@ -183,10 +205,13 @@ export default function HomePage() {
             </div>
           )}
 
-          {planet1 && (
+          {planet3 && (
             <div className="cards-container-2">
               <Link to={`milky-way/${planet3.slug}`} className="glass-card-2">
-                <img src={planet3.image} className="card-image pianeta-piccolo" />
+                <img
+                  src={planet3.image}
+                  className="card-image pianeta-piccolo"
+                />
                 <GradientText className="card-title">
                   <h2>{planet3.name}</h2>
                 </GradientText>
@@ -194,6 +219,7 @@ export default function HomePage() {
               </Link>
             </div>
           )}
+
         </div>
       </div>
     </div>

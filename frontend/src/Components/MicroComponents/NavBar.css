@@ -148,3 +148,7 @@ nav a span:hover::after {
   width: 60px !important;
   margin: 0 !important;
 }
+
+.marg {
+  margin-left: 10px;
+}

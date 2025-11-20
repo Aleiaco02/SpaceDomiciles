@@ -1,164 +1,99 @@
 import connection from "../data/db.js";
 
-// INDEX
+// INDEX - lista di tutte le galassie
 export function index(req, res) {
     const sql = "SELECT * FROM galaxies";
-
-    connection.query(sql, (err, result) => {
+    connection.query(sql, (err, results) => {
         if (err) return res.status(500).json({ error: "Database error" });
-        result.map((x) => {
-            if (x.image && !x.image.startsWith("http")) {
-                x.image = x.image === "" ? null : req.imagePath + x.image;
-            }
-        });
-        res.json(result);
+        res.json(results);
     });
 }
 
-// SHOW
-export function show(req, res) {
+// SHOW – singola galassia
+export function showSingle(req, res) {
     const sql = "SELECT * FROM galaxies WHERE id = ?";
-
-    connection.query(sql, [req.params.id], (err, result) => {
+    connection.query(sql, [req.params.id], (err, results) => {
         if (err) return res.status(500).json({ error: "Database error" });
-
-        if (result.length === 0) {
-            return res.status(404).json({ error: "Galaxy not found" });
-        }
-        result.map((x) => {
-            if (x.image && !x.image.startsWith("http")) {
-                x.image = x.image === "" ? null : req.imagePath + x.image;
-            }
-        });
-        res.json(result[0]);
+        if (results.length === 0) return res.status(404).json({ error: "Galaxy not found" });
+        res.json(results[0]);
     });
 }
 
-// STORE
+// STORE – crea una nuova galassia
 export function store(req, res) {
-    // recupero i dati dal body
     const { name, description } = req.body;
-    let { image } = req.body;
+    let errors = [];
 
-    // Se l'immagine NON contiene http/https, aggiungi req.imagePath
-    if (image && !image.startsWith("http")) {
-        image = req.imagePath + image;
-    }
+    if (!name || name.length < 2) errors.push("name must be at least 2 characters long");
+    if (!description || description.length < 5) errors.push("description must be at least 5 characters long");
 
-    const sql = `
-        INSERT INTO galaxies 
-        (name, description,image)
-        VALUES (?, ?, ?)
-    `;
+    if (errors.length > 0) return res.status(400).json({ errors });
 
-    connection.query(sql, [name, description, image], (err, result) => {
-        if (err) return res.status(500).json({ error: "Database error" });
+    const sql = "INSERT INTO galaxies (name, description) VALUES (?, ?)";
+    connection.query(sql, [name, description], (err, result) => {
+        if (err) {
+            if (err.code === "ER_DUP_ENTRY")
+                return res.status(400).json({ error: "Galaxy name must be unique" });
 
-        res.status(201).json({
-            id: result.insertId,
-            message: "Galaxy created",
-        });
+            return res.status(500).json({ error: "Database error" });
+        }
+
+        res.status(201).json({ message: "Galaxy created", id: result.insertId });
     });
 }
 
-// UPDATE
+// PUt - aggiornamento completo galassia
 export function update(req, res) {
-    const id = req.params.id;
     const { name, description } = req.body;
-    let { image } = req.body;
+    let errors = [];
 
-    // Se l'immagine NON contiene http/https, aggiungi req.imagePath
-    if (image && !image.startsWith("http")) {
-        image = req.imagePath + image;
-    }
+    if (!name || name.length < 2) errors.push("name must be at least 2 characters long");
+    if (!description || description.length < 5) errors.push("description must be at least 5 characters long");
+
+    if (errors.length > 0) return res.status(400).json({ errors });
 
     const sql = `
-        UPDATE galaxies
-        SET name = ?, description = ?, image =?
+        UPDATE galaxies 
+        SET name = ?, description = ?
         WHERE id = ?
     `;
 
-    connection.query(sql, [name, description, image, id], (err, result) => {
-        if (err) return res.status(500).json({ error: "Database error" });
+    connection.query(sql, [name, description, req.params.id], (err) => {
+        if (err) {
+            if (err.code === "ER_DUP_ENTRY")
+                return res.status(400).json({ error: "Galaxy name must be unique" });
 
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ error: "Galaxy not found" });
+            return res.status(500).json({ error: "Database error" });
         }
-
         res.json({ message: "Galaxy updated" });
     });
 }
 
-
-// PATCH
+// PATCH – aggiornamento parziale galassia
 export function patch(req, res) {
-    const id = req.params.id;
-    const { name, description } = req.body;
-    let { image } = req.body;
+    const fields = req.body;
+    const keys = Object.keys(fields);
 
-    // Se c'è un'immagine, applica imagePath
-    if (image && !image.startsWith("http")) {
-        image = req.imagePath + image;
-    }
+    if (keys.length === 0) return res.status(400).json({ error: "No fields to update" });
 
-    // Prepara solo i campi effettivamente inviati
-    const fields = [];
-    const values = [];
+    const sql = `UPDATE galaxies SET ${keys.map(k => `${k} = ?`).join(", ")} WHERE id = ?`;
 
-    if (name !== undefined) {
-        fields.push("name = ?");
-        values.push(name);
-    }
+    connection.query(sql, [...Object.values(fields), req.params.id], (err) => {
+        if (err) {
+            if (err.code === "ER_DUP_ENTRY")
+                return res.status(400).json({ error: "Galaxy name must be unique" });
 
-    if (description !== undefined) {
-        fields.push("description = ?");
-        values.push(description);
-    }
-
-    if (image !== undefined) {
-        fields.push("image = ?");
-        values.push(image);
-    }
-
-    // Nessun campo → errore
-    if (fields.length === 0) {
-        return res.status(400).json({ error: "No valid fields provided" });
-    }
-
-    const sql = `
-    UPDATE galaxies
-    SET ${fields.join(", ")}
-    WHERE id = ?
-  `;
-
-    values.push(id);
-
-    connection.query(sql, values, (err, result) => {
-        if (err) return res.status(500).json({ error: "Database error" });
-
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ error: "Galaxy not found" });
+            return res.status(500).json({ error: "Database error" });
         }
-
-        res.json({ message: "Galaxy patched successfully" });
+        res.json({ message: "Galaxy updated (patch)" });
     });
 }
 
-
-// DESTROY
+// DELETE – elimina una galassia
 export function destroy(req, res) {
-    const id = req.params.id;
-
     const sql = "DELETE FROM galaxies WHERE id = ?";
-
-    connection.query(sql, [id], (err, result) => {
+    connection.query(sql, [req.params.id], (err) => {
         if (err) return res.status(500).json({ error: "Database error" });
-
-        // se nessuna riga è stata eliminata → ID non trovato
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ error: "Galaxy not found" });
-        }
-
         res.json({ message: "Galaxy deleted" });
     });
 }

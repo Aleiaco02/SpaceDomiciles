@@ -10,11 +10,12 @@ import setImagePath from "./middlewares/imagePath.js";
 import certificatesRouter from "./routers/certificatesRouter.js";
 import galaxiesRouter from "./routers/galaxiesRouter.js";
 import stacksRouter from "./routers/stacksRouter.js";
-import CustomersRouter from "./routers/CustomersRouter.js";
-import InvoicesStackRouter from "./routers/InvoicesStackRouter.js";
-import invoicesRouter from "./routers/invoiceRouter.js";
+import customersRouter from "./routers/customersRouter.js";
+import invoicesStackRouter from "./routers/invoicesStackRouter.js";
+import invoicesRouter from "./routers/invoicesRouter.js";
 import planetsRouter from "./routers/planetsRouter.js";
 import paymentsRouter from "./routers/paymentsRouter.js";
+import createOrderRouter from "./routers/createOrderRouter.js";
 
 const app = express();
 
@@ -39,10 +40,10 @@ app.get("/api", (req, res) => {
 });
 
 // router customers
-app.use("/api/customers", CustomersRouter);
+app.use("/api/customers", customersRouter);
 
 //router invoices stack
-app.use("/api/invoices_stack", InvoicesStackRouter);
+app.use("/api/invoices_stack", invoicesStackRouter);
 
 // router certicates
 app.use("/api/certificates", certificatesRouter);
@@ -61,6 +62,9 @@ app.use("/api/planets", planetsRouter);
 
 // router tabella payments
 app.use("/api/payments", paymentsRouter);
+
+// router create order
+app.use("/api/create_order", createOrderRouter);
 
 // utilizzo middleware gestione errori
 app.use(errorsHandler);

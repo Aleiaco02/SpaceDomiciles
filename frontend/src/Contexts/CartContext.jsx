@@ -5,6 +5,7 @@ const CartContext = createContext();
 export function CartProvider({ children }) {
   const [items, setItems] = useState({});
   const [loading, setLoading] = useState(true);
+  const clearCart = () => setItems({});
 
   // Carica il carrello da localStorage una sola volta al primo render
   useEffect(() => {
@@ -51,7 +52,7 @@ export function CartProvider({ children }) {
   };
 
   return (
-    <CartContext.Provider value={{ items, addToCart, onQtyChange, loading }}>
+    <CartContext.Provider value={{ items, addToCart, onQtyChange, loading, clearCart }}>
       {children}
     </CartContext.Provider>
   );

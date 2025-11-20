@@ -20,10 +20,11 @@ export default function ContactUs() {
         <i class="fa-brands fa-square-x-twitter"></i>
       </div>
       <div className="gal-dim">
-      <Link path to="/">
-        <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon" />
-      </Link>
+        <Link path to="/">
+          <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon" />
+        </Link>
       </div>
+      <p className="go-back-text">Tocca la galassia per il respawn in Home</p>
     </div>
   );
 }

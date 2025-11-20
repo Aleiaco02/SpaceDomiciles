@@ -1,31 +1,13 @@
-// import di express e proprietá di routing
-import { Router } from "express";
-import {
-  index,
-  show,
-  store,
-  update,
-  patch,
-  destroy,
-} from "../controllers/certificatesController.js";
-const certificatesRouter = Router();
+import {Router} from "express";
+import {index,show,store,update,modify,destroy} from "../controllers/certificatesController.js";
 
-// index
-certificatesRouter.get("/", index);
+const router = Router();
 
-// show
-certificatesRouter.get("/:id", show);
+router.get("/", index);
+router.get("/:id", show);
+router.post("/", store);
+router.put("/:id", update);
+router.patch("/:id", modify);
+router.delete("/:id", destroy);
 
-// store
-certificatesRouter.post("/", store);
-
-// update
-certificatesRouter.put("/:id", update);
-
-// patch
-certificatesRouter.patch("/:id", patch);
-
-// delete
-certificatesRouter.delete("/:id", destroy);
-
-export default certificatesRouter;
+export default router;
