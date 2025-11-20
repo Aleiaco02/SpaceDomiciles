@@ -1,13 +1,100 @@
 .searchbar {
   text-align: center;
-  margin: 0 0 50px 0;
+  margin-left: -50px;
+  display: flex;
+  justify-content: space-around;
+  padding-bottom: 100px;
+
+  .range {
+    display: flex;
+    justify-content: center;
+    gap: 10%;
+  }
+
+  .slider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .big-bar {
+    width: 120%;
+  }
+
+  .filter-element {
+    width: 30%;
+  }
+
   .search-input {
-    min-width: 30%;
+    min-width: 20%;
     padding: 5px;
     box-shadow: 0 0 25px rgba(120, 70, 255, 0.3);
-    font-family: arial; /* maggiore visibilita' */
+    font-family: arial;
+    /* maggiore visibilita' */
   }
 }
+
+/* gestisco l'input di testo ricerca pianeta */
+input[type="text"] {
+  width: 250px;
+  height: 30px;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #310446;
+  border-radius: 15px;
+  outline: none;
+  /* rimuove il bordo blu al focus */
+  color: #fff;
+  background-color: #340e50;
+}
+
+/* gestisco i colori della barra e della manopola per i vari browser */
+input[type="range"] {
+  -webkit-appearance: none;
+  /* Chrome/Safari */
+  border-radius: 4px;
+  background: #4b156b;
+  /* colore barra base */
+  outline: none;
+}
+
+/* Thumb (manopola) */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #cf33ff;
+  /* colore manopola */
+  cursor: pointer;
+  margin-top: -6px;
+  /* allinea la thumb alla track */
+}
+
+/* manopola Firefox */
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #cf33ff;
+  cursor: pointer;
+}
+
+/* barra Firefox  */
+input[type="range"]::-moz-range-track {
+  height: 8px;
+  background: #4b156b;
+  border-radius: 4px;
+}
+
+/* barra Chrome track */
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 4px;
+  background: #4b156b;
+}
+
 .mw-card-search {
   position: relative;
   padding: 35px 25px;
