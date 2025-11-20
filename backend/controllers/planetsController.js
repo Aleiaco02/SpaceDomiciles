@@ -24,11 +24,7 @@ function validatePlanet(data) {
         errors.push("temperature_max must be a valid number");
     }
 
-    if (
-        data.temperature_min !== undefined &&
-        data.temperature_max !== undefined &&
-        Number(data.temperature_min) > Number(data.temperature_max)
-    ) {
+    if (Number(data.temperature_min) > Number(data.temperature_max)) {
         errors.push("temperature_min cannot be greater than temperature_max");
     }
 
@@ -66,6 +62,12 @@ export function index(req, res) {
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).json({ error: "Database error" });
 
+        results.map((x) => {
+            if (x.image && x.image.search("http") === -1) {
+                x.image = x.image === "" ? null : req.imagePath + x.image;
+            }
+        });
+
         res.json(results);
     });
 }
@@ -73,7 +75,6 @@ export function index(req, res) {
 // SHOW – pianeta singolo via slug
 export function showSingle(req, res) {
     const { slug } = req.params;
-
     const sql = "SELECT * FROM planets WHERE slug = ?";
 
     connection.query(sql, [slug], (err, result) => {
@@ -82,6 +83,12 @@ export function showSingle(req, res) {
         if (result.length === 0) {
             return res.status(404).json({ error: "Planet not found" });
         }
+
+        result.map((x) => {
+            if (x.image && x.image.search("http") === -1) {
+                x.image = x.image === "" ? null : req.imagePath + x.image;
+            }
+        });
 
         res.json(result[0]);
     });
@@ -94,19 +101,11 @@ export function store(req, res) {
     const errors = validatePlanet(data);
     if (errors.length > 0) return res.status(400).json({ errors });
 
-    const {
-        id_galaxy,
-        name,
-        planet_size,
-        temperature_min,
-        temperature_max,
-        population,
-        surface_available,
-        distance_from_earth,
-        description,
-        image,
-        slug,
-    } = data;
+    let { image } = data;
+
+    if (image && !image.startsWith("http")) {
+        image = req.imagePath + image;
+    }
 
     const sql = `
         INSERT INTO planets
@@ -118,21 +117,21 @@ export function store(req, res) {
     connection.query(
         sql,
         [
-            id_galaxy,
-            name,
-            planet_size,
-            temperature_min,
-            temperature_max,
-            population,
-            surface_available,
-            distance_from_earth,
-            description,
+            data.id_galaxy,
+            data.name,
+            data.planet_size,
+            data.temperature_min,
+            data.temperature_max,
+            data.population,
+            data.surface_available,
+            data.distance_from_earth,
+            data.description,
             image,
-            slug,
+            data.slug,
         ],
         (err, result) => {
             if (err && err.code === "ER_DUP_ENTRY") {
-                return res.status(400).json({ error: `Slug '${slug}' already exists` });
+                return res.status(400).json({ error: `Slug '${data.slug}' already exists` });
             }
 
             if (err) {
@@ -155,13 +154,16 @@ export function update(req, res) {
     const errors = validatePlanet(data);
     if (errors.length > 0) return res.status(400).json({ errors });
 
+    if (data.image && !data.image.startsWith("http")) {
+        data.image = req.imagePath + data.image;
+    }
+
     connection.query("UPDATE planets SET ? WHERE id = ?", [data, id], (err, result) => {
         if (err && err.code === "ER_DUP_ENTRY") {
             return res.status(400).json({ error: "Slug already exists" });
         }
 
         if (err) return res.status(500).json({ error: "Database error" });
-
         if (result.affectedRows === 0)
             return res.status(404).json({ error: "Planet not found" });
 
@@ -190,6 +192,10 @@ export function patch(req, res) {
 
     const errors = validatePlanet(fake);
     if (errors.length > 0) return res.status(400).json({ errors });
+
+    if (data.image && !data.image.startsWith("http")) {
+        data.image = req.imagePath + data.image;
+    }
 
     connection.query("UPDATE planets SET ? WHERE id = ?", [data, id], (err, result) => {
         if (err && err.code === "ER_DUP_ENTRY") {

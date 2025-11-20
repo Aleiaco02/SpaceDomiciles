@@ -8,17 +8,45 @@ import {
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import milkyWay from "/img/milky-way.png";
+import andromeda from "/img/andromeda.png";
+import axios from "axios";
 
 export default function HomePage() {
   const handleAnimationComplete = () => {
     console.log("Animation completed!");
   };
 
+  const [planet1, setPlanet1] = useState(null);
+  const [planet2, setPlanet2] = useState(null);
+  const [planet3, setPlanet3] = useState(null);
+
+  const fetchPlanets = async () => {
+    try {
+      const [p1, p2, p3] = await Promise.all([
+        axios.get("http://localhost:3000/api/planets/mars"),
+        axios.get("http://localhost:3000/api/planets/jupiter"),
+        axios.get("http://localhost:3000/api/planets/saturn"),
+      ]);
+
+      setPlanet1(p1.data);
+      setPlanet2(p2.data);
+      setPlanet3(p3.data);
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPlanets();
+  }, []);
+
   return (
     // Basic usage
     <div
-      style={{ width: "100%", height: "200vh", position: "relative" }}
+      style={{ width: "100%", height: "280vh", position: "relative" }}
       className="container-jumbotrone"
     >
       <Galaxy
@@ -89,15 +117,83 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="cards-container-2">
-          <Link to="/milky-way" className="glass-card-2">
-            <img src={milkyWay} alt="Via Lattea" className="card-image" />
+        <h2 className="classe">SCEGLI LA TUA GALASSIA PREFERITA</h2>
 
-            <GradientText className="card-title">
-              Esplora la Via Lattea
-            </GradientText>
-            <p>Scopri stelle, pianeti e sistemi abitabili.</p>
-          </Link>
+        <div className="container-galassie">
+          <div className="cards-container-2">
+            <Link to="/milky-way" className="glass-card-2">
+              <img src={milkyWay} alt="Via Lattea" className="card-image" />
+
+              <GradientText className="card-title">
+                <h2>Esplora la Via Lattea</h2>
+              </GradientText>
+              <p>Scopri stelle, pianeti e sistemi abitabili.</p>
+            </Link>
+          </div>
+
+          <div className="cards-container-2">
+            <Link to="/coming-soon" className="glass-card-2">
+              <img src={andromeda} alt="Via Lattea" className="card-image" />
+
+              <GradientText className="card-title">
+                <h2>Esplora Andromeda</h2>
+              </GradientText>
+              <p>Scopri stelle, pianeti e sistemi abitabili.</p>
+            </Link>
+          </div>
+
+          <div className="cards-container-2">
+            <Link to="/milky-way" className="glass-card-2">
+              <img src={milkyWay} alt="Via Lattea" className="card-image" />
+
+              <GradientText className="card-title">
+                <h2>Esplora la Via Lattea</h2>
+              </GradientText>
+              <p>Scopri stelle, pianeti e sistemi abitabili.</p>
+            </Link>
+          </div>
+        </div>
+
+        <h2 className="classe">I PIANETI PIU' POPOLARI</h2>
+
+        <div className="container-galassie">
+
+          {planet1 && (
+            <div className="cards-container-2">
+              <Link to={`milky-way/${planet1.slug}`} className="glass-card-2">
+                <img src={planet1.image} className="card-image" />
+                <GradientText className="card-title">
+                  <h2>{planet1.name}</h2>
+                </GradientText>
+                <p>{planet1.description}</p>
+              </Link>
+            </div>
+          )}
+
+
+          {planet2 && (
+            <div className="cards-container-2">
+              <Link to={`milky-way/${planet2.slug}`} className="glass-card-2">
+                <img src={planet2.image} className="card-image pianeta-piccolo" />
+                <GradientText className="card-title">
+                  <h2>{planet2.name}</h2>
+                </GradientText>
+                <p>{planet2.description}</p>
+              </Link>
+            </div>
+          )}
+
+          {planet1 && (
+            <div className="cards-container-2">
+              <Link to={`milky-way/${planet3.slug}`} className="glass-card-2">
+                <img src={planet3.image} className="card-image pianeta-piccolo" />
+                <GradientText className="card-title">
+                  <h2>{planet3.name}</h2>
+                </GradientText>
+                <p>{planet3.description}</p>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </div>

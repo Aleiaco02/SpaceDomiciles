@@ -42,3 +42,8 @@
     color: #ffffff;
     transform: scale(1.05);
 }
+
+.gal-dim {
+  width: 200px;
+  margin: 0 auto;
+}
