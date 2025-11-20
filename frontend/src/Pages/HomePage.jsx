@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import milkyWay from "/img/milky-way.png";
 import andromeda from "/img/andromeda.png";
+import sombrero from "/img/sombrero.png";
 import axios from "axios";
 
 export default function HomePage() {
@@ -162,11 +163,11 @@ export default function HomePage() {
           </div>
 
           <div className="cards-container-2">
-            <Link to="/milky-way" className="glass-card-2">
-              <img src={milkyWay} alt="Via Lattea" className="card-image" />
+            <Link to="/coming-soon" className="glass-card-2">
+              <img src={sombrero} alt="Sombrero" className="card-image card-image-sombrero" />
 
               <GradientText className="card-title">
-                <h2>Esplora la Via Lattea</h2>
+                <h2>Esplora Sombrero</h2>
               </GradientText>
               <p>Scopri stelle, pianeti e sistemi abitabili.</p>
             </Link>
