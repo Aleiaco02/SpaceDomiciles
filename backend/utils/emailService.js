@@ -1,60 +1,74 @@
 // utils/emailService.js
 // ==========================================================
-// Questo file gestisce l'invio delle email tramite Nodemailer.
-// Viene usato dal createOrderController per inviare al cliente
-// l'email con il certificato generato.
+// Gestione email tramite Nodemailer
 // ==========================================================
 
 import nodemailer from "nodemailer";
 
 // ----------------------------------------------------------
-// 1) Configurazione SMTP
+// CONFIGURAZIONE SMTP (ETHEREAL PER TEST)
 // ----------------------------------------------------------
-// Usiamo Ethereal: un servizio che permette di vedere email
-// finte (solo per test), senza inviarle realmente.
-// ----------------------------------------------------------
-
 const transporter = nodemailer.createTransport({
   host: "smtp.ethereal.email",
   port: 587,
   auth: {
-    user: "laney.veum@ethereal.email",   // <-- tuo user Ethereal
-    pass: "M115EQe2kFUN5JV8kS"            // <-- tua password Ethereal
+    user: "laney.veum@ethereal.email",
+    pass: "M115EQe2kFUN5JV8kS"
   }
 });
 
 // ----------------------------------------------------------
-// 2) Funzione che invia l'email del certificato al cliente
+// INVIA UNA SOLA EMAIL AL CLIENTE CON TUTTI I CERTIFICATI
 // ----------------------------------------------------------
-// - "to" = email del cliente
-// - "certificate" = oggetto con informazioni sul certificato
-// ----------------------------------------------------------
-
-export async function sendCertificateEmail(to, certificate) {
+export async function sendAllCertificatesEmail(to, certificates) {
+  let listHTML = certificates
+    .map(c => `
+      <li>
+        <strong>${c.certificate_code}</strong> — 
+        <a href="${c.pdf_url}">${c.pdf_url}</a>
+      </li>
+    `)
+    .join("");
 
   const mailOptions = {
     from: '"SpaceDomiciles" <laney.veum@ethereal.email>',
     to: to,
-    subject: `Your Certificate #${certificate.certificate_code}`,
+    subject: `Your Certificates (${certificates.length})`,
     html: `
-      <h2> Certificate Issued!</h2>
-      <p>Your purchase has been confirmed and your certificate is ready.</p>
-
-      <p><strong>Certificate Code:</strong> ${certificate.certificate_code}</p>
-      <p><strong>Issued At:</strong> ${certificate.issued_at}</p>
-
-      <p>You can download the PDF here:</p>
-      <a href="${certificate.pdf_url}">${certificate.pdf_url}</a>
-
-      <br><br>
-      <p>Thank you for choosing SpaceDomiciles 🚀</p>
+      <h2>Your Certificates Are Ready 🚀</h2>
+      <p>Here are all the certificates for your recent purchase:</p>
+      <ul>
+        ${listHTML}
+      </ul>
+      <br>
+      <p>Thank you for choosing SpaceDomiciles!</p>
     `
   };
 
-  // Invia realmente l'email via Nodemailer
   const info = await transporter.sendMail(mailOptions);
+  console.log("📨 Email unica certificati inviata:", info.messageId);
+  return info;
+}
 
-  console.log("📨 Email sent:", info.messageId);
+// ----------------------------------------------------------
+// EMAIL AL VENDITORE
+// ----------------------------------------------------------
+export async function sendVendorEmail(orderData) {
+  const mailOptions = {
+    from: '"SpaceDomiciles" <laney.veum@ethereal.email>',
+    to: "venditore@spacedomiciles.com",
+    subject: `📦 Nuovo ordine ricevuto (#${orderData.order_id})`,
+    html: `
+      <h2>Nuovo ordine ricevuto</h2>
+      <p><strong>ID ordine:</strong> ${orderData.order_id}</p>
+      <p><strong>Email cliente:</strong> ${orderData.customer_email}</p>
+      <p><strong>Totale:</strong> ${orderData.total_price}€</p>
+      <br>
+      <p>Accedi al pannello per maggiori dettagli.</p>
+    `
+  };
 
+  const info = await transporter.sendMail(mailOptions);
+  console.log("📢 Email venditore inviata:", info.messageId);
   return info;
 }

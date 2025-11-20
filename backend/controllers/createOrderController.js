@@ -5,13 +5,12 @@
 // 1) crea la invoice
 // 2) crea le righe in invoices_stack
 // 3) genera i certificati
-// 4) invia l'email al cliente
-//
-// È la chiamata più importante del progetto.
+// 4) invia UNA sola email al cliente
+// 5) invia email al venditore
 // ==========================================================
 
 import connection from "../data/db.js";
-import { sendCertificateEmail } from "../utils/emailService.js";
+import {sendAllCertificatesEmail, sendVendorEmail} from "../utils/emailService.js";
 
 // ----------------------------------------------------------
 // Utility: genera codice univoco per i certificati
@@ -160,19 +159,28 @@ export async function createOrder(req, res) {
         pdf_url
       ]);
 
-      const certificateObj = {
+      certificates.push({
         id: certResult.insertId,
         invoices_stack_id: item.invoices_stack_id,
         certificate_code: code,
         issued_at: new Date(),
         pdf_url
-      };
-
-      certificates.push(certificateObj);
-
-      // Invia email per OGNI certificato
-      await sendCertificateEmail(invoice_email, certificateObj);
+      });
     }
+
+    // ------------------------------------------------------
+    // INVIA UNA SOLA EMAIL CON TUTTI I CERTIFICATI
+    // ------------------------------------------------------
+    await sendAllCertificatesEmail(invoice_email, certificates);
+
+    // ------------------------------------------------------
+    // INVIA EMAIL AL VENDITORE
+    // ------------------------------------------------------
+    await sendVendorEmail({
+      order_id: invoice_id,
+      customer_email: invoice_email,
+      total_price: total_amount
+    });
 
     // ------------------------------------------------------
     // RISPOSTA FINALE
