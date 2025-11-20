@@ -98,7 +98,7 @@ const Planet = () => {
 
   const handleGoToCart = () => {
     setShowModal(false);
-    redirect("/carrello");
+    redirect("/cart");
   };
 
   const handleContinueShopping = () => setShowModal(false);
