@@ -40,10 +40,11 @@ export default function AboutUsPage() {
             </a>
           </p>
           <div className="gal-dim">
-          <Link path to="/">
-            <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon" />
-          </Link>
+            <Link path to="/">
+              <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon" />
+            </Link>
           </div>
+          <p className="go-back-text">Premi la galassia e fai un salto nell’iperspazio fino alla Home</p>
         </div>
       </div>
     </>
