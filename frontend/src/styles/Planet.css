@@ -299,3 +299,81 @@
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+/* ALERT */
+.addtocart-modal-overlay {
+  position: fixed;
+  z-index: 1200;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(20,20,45,0.67);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addtocart-modal {
+  background: #222040;
+  border-radius: 18px;
+  box-shadow: 0 8px 30px #7ffcff59, 0 2px 10px #000b;
+  padding: 32px 30px;
+  text-align: center;
+  min-width: 300px;
+  max-width: 90vw;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.addtocart-check {
+  display: block;
+  color: #7ffcff;
+  font-size: 3.1rem;
+  margin-bottom: 12px;
+}
+
+.addtocart-msg {
+  font-size: 1.25rem;
+  margin-bottom: 24px;
+  font-weight: 600;
+  color: #ebf4fa;
+}
+
+.addtocart-btn-group {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+}
+
+.alert-cart-btn, .alert-continue-btn {
+  padding: 8px 20px;
+  font-size: 1.08rem;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.18s, color 0.21s;
+  margin-bottom: 0;
+}
+
+.alert-cart-btn {
+  background: #7ffcff;
+  color: #222040;
+}
+
+.alert-cart-btn:hover {
+  background: #3b78f9;
+  color: white;
+}
+
+.alert-continue-btn {
+  background: #35325e;
+  color: #fafafa;
+}
+
+.alert-continue-btn:hover {
+  background: #483e80;
+}
+
+
+
