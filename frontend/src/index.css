@@ -120,10 +120,14 @@
     width: 250px;
 }
 
+.card-image-sombrero {
+    width: 290px;
+    height: 250px;
+}
+
 .classe {
     color: rgba(239, 239, 239, 0.69);
     margin-top: 160px;
-
 }
 
 .container-galassie {
@@ -155,7 +159,7 @@
 .container-coming-soon h1 {
     display: flex;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 150px;
     font-size: 40px;
 }
 
@@ -166,9 +170,7 @@
     font-size: 20px;
     text-align: center;
     line-height: 50px;
-    margin-bottom: 100px;
-
-
+    margin-bottom: 15px;
 }
 
 .cards-container-2 p {
@@ -186,4 +188,11 @@
 
 .icon {
     font-size: 20px;
+}
+
+.go-back-text {
+    display: flex ;
+    justify-content: center;
+    margin-top: 10px !important;
+    font-size: 15px !important;
 }

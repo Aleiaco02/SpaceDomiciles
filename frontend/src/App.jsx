@@ -19,6 +19,7 @@ import CartPage from "./Pages/CartPage";
 import SearchPage from "./Pages/SearchPage";
 import ComingSoon from "./Pages/ComingSoon";
 import CheckOutPage from "./Pages/CheckOutPage";
+import GalaxiesPage from "./Pages/GalaxiesPage";
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="/coming-soon" element={<ComingSoon />} />
                 <Route path="/checkout" element={<CheckOutPage/>} />
+                <Route path="/galaxies" element={<GalaxiesPage/>} />
               </Route>
             </Routes>
           </BrowserRouter>
