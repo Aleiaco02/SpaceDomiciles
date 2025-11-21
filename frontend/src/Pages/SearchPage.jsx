@@ -39,7 +39,7 @@ export default function SearchPage() {
           <h4>Nome pianeta</h4>
           <input
             name="title"
-            type="text"
+            type="search"
             placeholder="Cerca pianeta..."
             value={filters.search}
             onChange={(e) => {

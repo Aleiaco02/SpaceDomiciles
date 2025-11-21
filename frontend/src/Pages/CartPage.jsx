@@ -41,6 +41,7 @@ export default function CarrelloPage() {
             open={open}
             onConfirm={emptyCart}
             onCancel={() => setOpen(false)}
+            text={"Stai svuotando l'intero carrelo, vuoi procedere?"}
           />
         )}
       </AnimatePresence>

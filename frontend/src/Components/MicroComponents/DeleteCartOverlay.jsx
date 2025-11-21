@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export default function DeleteCartOverlay({ open, onConfirm, onCancel }) {
+export default function DeleteCartOverlay({ open, onConfirm, onCancel, text }) {
   return (
     // animazione di uscita dall'overlay
     <motion.div
@@ -20,7 +20,7 @@ export default function DeleteCartOverlay({ open, onConfirm, onCancel }) {
         transition={{ duration: 0.2 }}
       >
         <div className="divDeleteContent">
-          <h2>Stai per svuotare l'intero carrello, vuoi procedere?</h2>
+          <h2>{text}</h2>
           <div>
             <button className="checkout-btn" onClick={onConfirm}>
               Conferma
