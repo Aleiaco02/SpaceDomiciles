@@ -7,73 +7,101 @@ export default function CheckOutPage() {
     // oggetti carrello
     const { items } = useCart();
 
-    const [billing, setBilling] = useState({
+    // SHIPPING DATA (dati di spedizione)
+    const [shipping, setShipping] = useState({
         nome: "",
         cognome: "",
         email: "",
         telefono: "",
         indirizzo: "",
+        civico: "",
         città: "",
         CAP: "",
-        paese: "",
+        provincia: "",
+        paese: "Italia",
     });
 
-    const [shipping, setShipping] = useState({
+    // BILLING DATA (dati di fatturazione)
+    const [billing, setBilling] = useState({
+        nome: "",
+        cognome: "",
         indirizzo: "",
+        civico: "",
         città: "",
         CAP: "",
-        paese: "",
+        provincia: "",
+        paese: "Italia",
+
+        // Campi aziendali (eventuali)
+        azienda: "",
+        piva: "",
+        pec: "",
+        sdi: "",
     });
 
-    // ➤ Checkbox: dati di fatturazione uguali alla spedizione
+    // Checkbox: dati di fatturazione uguali alla spedizione
+    // DEFAULT = false → billing libero e modificabile
     const [sameAsShipping, setSameAsShipping] = useState(false);
 
-    // Funzione cambio campi
-    const onChangeBilling = (e) =>
-        setBilling({ ...billing, [e.target.name]: e.target.value });
+    // Toggle: acquisto come azienda (se vorrai riattivarlo in futuro)
+    const [isCompany, setIsCompany] = useState(false);
 
-    const onChangeShipping = (e) =>
+    // Shipping handler
+    const handleShipping = (e) =>
         setShipping({ ...shipping, [e.target.name]: e.target.value });
 
-    // Copia dati spedizione → fatturazione
-    const handleSameAsShipping = () => {
-        const newValue = !sameAsShipping;
-        setSameAsShipping(newValue);
+    // Billing handler
+    const handleBilling = (e) =>
+        setBilling({ ...billing, [e.target.name]: e.target.value });
 
-        if (newValue) {
-            // copia indirizzo spedizione nei dati di fatturazione
+    // Copia dati spedizione → fatturazione OPPURE reset se togli la spunta
+    const handleSameAsShipping = () => {
+        const newVal = !sameAsShipping;
+        setSameAsShipping(newVal);
+
+        if (newVal) {
+            // Copia tutti i valori shipping → billing
             setBilling((prev) => ({
                 ...prev,
+                nome: shipping.nome,
+                cognome: shipping.cognome,
                 indirizzo: shipping.indirizzo,
+                civico: shipping.civico,
                 città: shipping.città,
                 CAP: shipping.CAP,
+                provincia: shipping.provincia,
                 paese: shipping.paese,
             }));
         } else {
-            // reset se deselezioni
-            setBilling((prev) => ({
-                ...prev,
+            // ❗ Svuota completamente tutti i campi di fatturazione
+            setBilling({
+                nome: "",
+                cognome: "",
                 indirizzo: "",
+                civico: "",
                 città: "",
                 CAP: "",
-                paese: "",
-            }));
+                provincia: "",
+                paese: "Italia",
+                azienda: "",
+                piva: "",
+                pec: "",
+                sdi: "",
+            });
         }
     };
 
-    // Calcolo totale
+    // Totale carrello
     const totale = Object.values(items).reduce(
         (acc, item) => acc + item.price * item.quantity,
         0
     );
 
-    // LOGICA SPEDIZIONE GRATIS
     const FREE_SHIPPING_THRESHOLD = 1500;
     const SHIPPING_COST = 4.99;
 
     const shippingCost =
         totale >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
-
     const totaleFinale = totale + shippingCost;
 
     const navigate = useNavigate();
@@ -84,46 +112,104 @@ export default function CheckOutPage() {
                 <h2>Checkout ordine</h2>
 
                 <div className="checkout-row">
-                    {/* Dati spedizione */}
+                    
+                    {/* 📦 DATI DI SPEDIZIONE */}
                     <div className="checkout-panel">
                         <h3>Dati di spedizione</h3>
+
                         <form>
-                            <input name="nome" placeholder="Nome" onChange={onChangeBilling} value={billing.nome} />
-                            <input name="cognome" placeholder="Cognome" onChange={onChangeBilling} value={billing.cognome} />
-                            <input name="email" placeholder="Email" onChange={onChangeBilling} value={billing.email} />
-                            <input name="telefono" placeholder="Telefono" onChange={onChangeBilling} value={billing.telefono} />
-                            <input name="indirizzo" placeholder="Indirizzo" onChange={onChangeBilling} value={billing.indirizzo} />
-                            <input name="città" placeholder="Città" onChange={onChangeBilling} value={billing.città} />
-                            <input name="CAP" placeholder="CAP" onChange={onChangeBilling} value={billing.CAP} />
-                            <input name="paese" placeholder="Paese" onChange={onChangeBilling} value={billing.paese} />
+                            <input name="nome" placeholder="Nome" value={shipping.nome} onChange={handleShipping} />
+                            <input name="cognome" placeholder="Cognome" value={shipping.cognome} onChange={handleShipping} />
+                            <input name="email" placeholder="Email" value={shipping.email} onChange={handleShipping} />
+                            <input name="telefono" placeholder="Telefono" value={shipping.telefono} onChange={handleShipping} />
+
+                            <input name="indirizzo" placeholder="Indirizzo" value={shipping.indirizzo} onChange={handleShipping} />
+                            <input name="civico" placeholder="Civico" value={shipping.civico} onChange={handleShipping} />
+                            <input name="città" placeholder="Città" value={shipping.città} onChange={handleShipping} />
+                            <input name="CAP" placeholder="CAP" value={shipping.CAP} onChange={handleShipping} />
+                            <input name="provincia" placeholder="Provincia" value={shipping.provincia} onChange={handleShipping} />
+                            <input name="paese" placeholder="Paese" value={shipping.paese} onChange={handleShipping} />
                         </form>
-                    </div>
 
-                    {/* Dati fatturazione */}
-                    <div className="checkout-panel">
-                        <h3>Dati di fatturazione</h3>
-
-                        {/* Checkbox SAME AS SHIPPING */}
-                        <div style={{ marginBottom: "10px" }}>
+                        {/* Checkbox: stessi dati della spedizione */}
+                        <div style={{ marginTop: "10px" }}>
                             <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                                 <input
                                     type="checkbox"
                                     checked={sameAsShipping}
                                     onChange={handleSameAsShipping}
                                 />
-                                I dati di fatturazione sono gli stessi della spedizione
+                                Usa gli stessi dati per la fatturazione
                             </label>
                         </div>
+                    </div>
+
+                    {/* 🧾 DATI DI FATTURAZIONE */}
+                    <div className="checkout-panel">
+                        <h3>Dati di fatturazione</h3>
 
                         <form>
-                            <input name="indirizzo" placeholder="Indirizzo" onChange={onChangeShipping} value={shipping.indirizzo} />
-                            <input name="città" placeholder="Città" onChange={onChangeShipping} value={shipping.città} />
-                            <input name="CAP" placeholder="CAP" onChange={onChangeShipping} value={shipping.CAP} />
-                            <input name="paese" placeholder="Paese" onChange={onChangeShipping} value={shipping.paese} />
+                            <input
+                                name="nome"
+                                placeholder="Nome"
+                                value={billing.nome}
+                                onChange={handleBilling}
+                                disabled={sameAsShipping}
+                            />
+                            <input
+                                name="cognome"
+                                placeholder="Cognome"
+                                value={billing.cognome}
+                                onChange={handleBilling}
+                                disabled={sameAsShipping}
+                            />
+
+                            <input
+                                name="indirizzo"
+                                placeholder="Indirizzo"
+                                value={billing.indirizzo}
+                                onChange={handleBilling}
+                                disabled={sameAsShipping}
+                            />
+                            <input
+                                name="civico"
+                                placeholder="Civico"
+                                value={billing.civico}
+                                onChange={handleBilling}
+                                disabled={sameAsShipping}
+                            />
+                            <input
+                                name="città"
+                                placeholder="Città"
+                                value={billing.città}
+                                onChange={handleBilling}
+                                disabled={sameAsShipping}
+                            />
+                            <input
+                                name="CAP"
+                                placeholder="CAP"
+                                value={billing.CAP}
+                                onChange={handleBilling}
+                                disabled={sameAsShipping}
+                            />
+                            <input
+                                name="provincia"
+                                placeholder="Provincia"
+                                value={billing.provincia}
+                                onChange={handleBilling}
+                                disabled={sameAsShipping}
+                            />
+                            <input
+                                name="paese"
+                                placeholder="Paese"
+                                value={billing.paese}
+                                onChange={handleBilling}
+                                disabled={sameAsShipping}
+                            />
                         </form>
                     </div>
 
-                    {/* Riepilogo ordine */}
+                    {/* 🧮 RIEPILOGO ORDINE */}
                     <div className="checkout-panel order-summary">
                         <h3>Riepilogo ordine</h3>
 
@@ -132,13 +218,12 @@ export default function CheckOutPage() {
                                 <li key={item.id}>
                                     {item.name}
                                     {item.planet_name ? ` (${item.planet_name}) ` : " "}
-                                    &times; {item.quantity}
+                                    × {item.quantity}
                                     <span>€{(item.price * item.quantity).toFixed(2)}</span>
                                 </li>
                             ))}
                         </ul>
 
-                        {/* Spedizione */}
                         <div className="checkout-total">
                             <strong>Costi di spedizione:</strong>{" "}
                             {shippingCost === 0 ? (
@@ -148,7 +233,6 @@ export default function CheckOutPage() {
                             )}
                         </div>
 
-                        {/* Totale finale */}
                         <div className="checkout-total">
                             <strong>Totale:</strong> €{totaleFinale.toFixed(2)}
                         </div>
@@ -159,7 +243,6 @@ export default function CheckOutPage() {
                     <button
                         className="back-to-cart-btn"
                         onClick={() => navigate("/cart")}
-                        style={{ marginBottom: "14px" }}
                     >
                         ⬅ Torna al carrello
                     </button>
