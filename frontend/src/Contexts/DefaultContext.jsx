@@ -6,8 +6,18 @@ export const DefaultContext = createContext();
 
 export function DefaultProvider({ children }) {
 
-  // logica pagina search
+  const apiBaseUrl = "http://localhost:3000";
+  // caricamento pianeti
+  const [planets, setPlanets] = useState([]);
+  useEffect(() => {
+    fetch(apiBaseUrl + "/api/planets")
+      .then((res) => res.json())
+      .then((data) => setPlanets(data))
+      .catch((err) => console.error("Errore nel caricamento pianeti:", err));
+  }, []);
 
+
+  // logica pagina search
   // variabile di stato che contiene l'elenco dei filtri
   const [filters, setFilters] = useState({
     search: "",
@@ -22,27 +32,12 @@ export function DefaultProvider({ children }) {
   const updateFilters = (newValues) =>
     setFilters(prev => ({ ...prev, ...newValues }));
 
-  // variabile di stato campo di ricerca utente
-  const [UserTitle, setUserTitle] = useState("");
-  const [SearchedFilm, setSearchedFilm] = useState("");
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    // setSearchedFilm(UserTitle);
-    updateFilters(e);
-    console.log(UserTitle);
-  }
-
   return (
     <DefaultContext.Provider
       value={{
-        // handleSubmit,
-        // UserTitle,
-        // setUserTitle,
-        // setSearchedFilm,
-        // SearchedFilm,
         filters,
-        updateFilters
+        updateFilters,
+        planets
       }}
     >
       {children}
