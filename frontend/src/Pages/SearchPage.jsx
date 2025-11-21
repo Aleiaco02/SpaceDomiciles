@@ -89,7 +89,7 @@ export default function SearchPage() {
               <input
                 type="range"
                 min="0"
-                max="100000000000"
+                max="10000000000"
                 value={filters.sizeMin}
                 onChange={(e) =>
                   updateFilters({ sizeMin: Number(e.target.value) })
@@ -102,7 +102,7 @@ export default function SearchPage() {
                 className="big-bar"
                 type="range"
                 min="0"
-                max="60000000000"
+                max="70000000000"
                 value={filters.sizeMax}
                 onChange={(e) =>
                   updateFilters({ sizeMax: Number(e.target.value) })

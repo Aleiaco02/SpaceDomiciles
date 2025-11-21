@@ -5,7 +5,6 @@ import axios from "axios";
 export const DefaultContext = createContext();
 
 export function DefaultProvider({ children }) {
-
   const apiBaseUrl = "http://localhost:3000";
   // caricamento pianeti
   const [planets, setPlanets] = useState([]);
@@ -16,7 +15,6 @@ export function DefaultProvider({ children }) {
       .catch((err) => console.error("Errore nel caricamento pianeti:", err));
   }, []);
 
-
   // logica pagina search
   // variabile di stato che contiene l'elenco dei filtri
   const [filters, setFilters] = useState({
@@ -24,20 +22,20 @@ export function DefaultProvider({ children }) {
     temperatureMin: -273,
     temperatureMax: 500,
     sizeMin: 0,
-    sizeMax: 1000000000000,
-    surfaceAvailable: 0
+    sizeMax: 70000000000,
+    surfaceAvailable: 0,
   });
 
   // funzione che aggiorna l'elenco dei filtri
   const updateFilters = (newValues) =>
-    setFilters(prev => ({ ...prev, ...newValues }));
+    setFilters((prev) => ({ ...prev, ...newValues }));
 
   return (
     <DefaultContext.Provider
       value={{
         filters,
         updateFilters,
-        planets
+        planets,
       }}
     >
       {children}
