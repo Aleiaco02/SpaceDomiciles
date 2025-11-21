@@ -16,15 +16,16 @@ export function DefaultProvider({ children }) {
   }, []);
 
   // logica pagina search
-  // variabile di stato che contiene l'elenco dei filtri
-  const [filters, setFilters] = useState({
+  const defaultFilter = {
     search: "",
     temperatureMin: -273,
     temperatureMax: 500,
     sizeMin: 0,
     sizeMax: 70000000000,
     surfaceAvailable: 0,
-  });
+  };
+  // variabile di stato che contiene l'elenco dei filtri
+  const [filters, setFilters] = useState(defaultFilter);
 
   // funzione che aggiorna l'elenco dei filtri
   const updateFilters = (newValues) =>
@@ -36,6 +37,7 @@ export function DefaultProvider({ children }) {
         filters,
         updateFilters,
         planets,
+        defaultFilter,
       }}
     >
       {children}

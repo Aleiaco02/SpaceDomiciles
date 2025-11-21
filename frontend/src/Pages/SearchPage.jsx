@@ -7,7 +7,7 @@ export default function SearchPage() {
   // const { handleSubmit, UserTitle, setUserTitle } =
   //   useDefaultContext();
 
-  const { filters, updateFilters } = useDefaultContext();
+  const { filters, updateFilters, defaultFilter } = useDefaultContext();
 
   const apiBaseUrl = "http://localhost:3000";
   // caricamento lista pianeti
@@ -113,6 +113,9 @@ export default function SearchPage() {
           <p>
             {filters.sizeMin} – {filters.sizeMax} KM2
           </p>
+          <button onClick={() => updateFilters(defaultFilter)}>
+            Reset filtri
+          </button>
         </div>
       </section>
       <div className="mw-cards-grid">
