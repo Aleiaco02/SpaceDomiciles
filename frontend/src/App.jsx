@@ -1,6 +1,7 @@
 import "./App.css";
 // DIPENDENZE REACT
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 
 // LAYOUT
 import DefaultLayout from "./Layout/DefaultLayout";
@@ -22,14 +23,18 @@ import CheckOutPage from "./Pages/CheckOutPage";
 import GalaxiesPage from "./Pages/GalaxiesPage";
 import NotFoundPage from "./Pages/NotFoundPage";
 
+//components
+import CartDrawer from "./Components/MicroComponents/CartDrawer";
+
 function App() {
+  const [drawerOpen, setDrawerOpen] = useState(false);
   return (
     <>
       <CartProvider>
         <DefaultProvider>
           <BrowserRouter>
             <Routes>
-              <Route element={<DefaultLayout />}>
+              <Route element={<DefaultLayout setDrawerOpen={setDrawerOpen}/>}>
                 <Route index element={<HomePage />} />
                 <Route path="/milky-way" element={<MilkyWayPage />} />
                 <Route path="/milky-way/:slug" element={<Planet />} />
@@ -43,6 +48,7 @@ function App() {
                 <Route path="*" element={<NotFoundPage />} />
               </Route>
             </Routes>
+            <CartDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
           </BrowserRouter>
         </DefaultProvider>
       </CartProvider>

@@ -3,7 +3,7 @@ import "./NavBar.css";
 import galaxyIcon from "/img/galaxy-icon.png";
 import CartBadge from "./CartBadge";
 
-export default function NavBar() {
+export default function NavBar({setDrawerOpen}) {
   return (
     <nav>
       <div className="nav-cont">
@@ -58,9 +58,9 @@ export default function NavBar() {
           </NavLink>
         </div>
 
-        <NavLink to="/cart" className="cart">
+        <button onClick={() => setDrawerOpen(true)} className="cart">
           <CartBadge />
-        </NavLink>
+        </button>
       </div>
     </nav>
   );

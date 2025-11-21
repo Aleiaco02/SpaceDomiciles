@@ -34,10 +34,6 @@ const Planet = () => {
     // Funzionalità carrello
     const { addToCart } = useCart();
 
-    // Stato popup overlay
-    const [showModal, setShowModal] = useState(false);
-    const [modalPackageName, setModalPackageName] = useState("");
-
     // Funzioni per chiamate API
     const fecthPlanet = () => {
         axios
@@ -97,19 +93,10 @@ const Planet = () => {
     useEffect(fetchClosePlanets, [planet]);
     useEffect(findClosePlanets, [planets]);
 
-    // Funzione da passare alle card: aggiunge al carrello + mostra il modal
-    const handleAddToCartAndModal = (packageProps) => {
+    // Funzione da passare alle card: aggiunge al carrello
+    const handleAddToCart = (packageProps) => {
         addToCart(packageProps);
-        setModalPackageName(packageProps.name);
-        setShowModal(true);
     };
-
-    const handleGoToCart = () => {
-        setShowModal(false);
-        redirect("/cart");
-    };
-
-    const handleContinueShopping = () => setShowModal(false);
 
     // Render completo
     return (
@@ -182,7 +169,7 @@ const Planet = () => {
                                         {...stack}
                                         planet_name={planet.name}
                                         planet_image={planet.image}
-                                        onAddToCart={handleAddToCartAndModal}
+                                        onAddToCart={handleAddToCart}
                                     />
                                 ))
                             ) : (
@@ -233,26 +220,6 @@ const Planet = () => {
                     </div >
                 </section >
             </div>
-
-            {/* MODAL OVERLAY */}
-            {showModal && (
-                <div className="addtocart-modal-overlay">
-                    <div className="addtocart-modal">
-                        <span className="addtocart-check">&#10003;</span>
-                        <div className="addtocart-msg">
-                            {modalPackageName} aggiunto al carrello con successo!
-                        </div>
-                        <div className="addtocart-btn-group">
-                            <button className="alert-cart-btn" onClick={handleGoToCart}>
-                                Vai al carrello
-                            </button>
-                            <button className="alert-continue-btn" onClick={handleContinueShopping}>
-                                Continua ad acquistare
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
         </>
     );
 };

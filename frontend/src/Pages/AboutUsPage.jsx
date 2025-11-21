@@ -40,7 +40,7 @@ export default function AboutUsPage() {
             </a>
           </p>
           <div className="gal-dim">
-            <Link path to="/">
+            <Link to="/">
               <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon" />
             </Link>
           </div>

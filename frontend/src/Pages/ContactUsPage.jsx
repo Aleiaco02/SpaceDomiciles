@@ -14,13 +14,13 @@ export default function ContactUs() {
       </p>
       <p>Siamo a disposizione per rispondere alle tue curiosità o per aiutarti nell'acquisto del suolo spaziale.</p>
       <div className="social">
-        <i class="fa-brands fa-facebook"></i>
-        <i class="fa-brands fa-instagram"></i>
-        <i class="fa-brands fa-pinterest"></i>
-        <i class="fa-brands fa-square-x-twitter"></i>
+        <i className="fa-brands fa-facebook"></i>
+        <i className="fa-brands fa-instagram"></i>
+        <i className="fa-brands fa-pinterest"></i>
+        <i className="fa-brands fa-square-x-twitter"></i>
       </div>
       <div className="gal-dim">
-        <Link path to="/">
+        <Link to="/">
           <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon" />
         </Link>
       </div>

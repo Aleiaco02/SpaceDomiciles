@@ -1,13 +1,16 @@
 import { createContext, useState, useContext, useEffect } from "react";
+import Toast from "../Components/MicroComponents/Toast";
 
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [items, setItems] = useState({});
   const [loading, setLoading] = useState(true);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+
   const clearCart = () => setItems({});
 
-  // Carica il carrello da localStorage una sola volta al primo render
   useEffect(() => {
     try {
       const savedCart = localStorage.getItem("cart");
@@ -18,7 +21,6 @@ export function CartProvider({ children }) {
     setLoading(false);
   }, []);
 
-  // Salva ogni aggiornamento nel localStorage
   useEffect(() => {
     if (!loading) {
       localStorage.setItem("cart", JSON.stringify(items));
@@ -29,11 +31,15 @@ export function CartProvider({ children }) {
     setItems((current) => {
       const exists = current[product.id];
       if (exists) {
+        setToastMessage(`${product.name} aggiunto al carrello!`);
+        setShowToast(true);
         return {
           ...current,
           [product.id]: { ...exists, quantity: exists.quantity + 1 },
         };
       } else {
+        setToastMessage(`${product.name} aggiunto al carrello!`);
+        setShowToast(true);
         return { ...current, [product.id]: { ...product, quantity: 1 } };
       }
     });
@@ -56,6 +62,11 @@ export function CartProvider({ children }) {
       value={{ items, addToCart, onQtyChange, loading, clearCart }}
     >
       {children}
+      <Toast 
+        show={showToast} 
+        message={toastMessage} 
+        onClose={() => setShowToast(false)} 
+      /> {/* <-- TOAST DENTRO IL PROVIDER */}
     </CartContext.Provider>
   );
 }
