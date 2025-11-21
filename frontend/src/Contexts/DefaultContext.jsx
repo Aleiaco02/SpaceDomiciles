@@ -5,6 +5,7 @@ import axios from "axios";
 export const DefaultContext = createContext();
 
 export function DefaultProvider({ children }) {
+
   const apiBaseUrl = "http://localhost:3000";
   // caricamento pianeti
   const [planets, setPlanets] = useState([]);
@@ -15,40 +16,28 @@ export function DefaultProvider({ children }) {
       .catch((err) => console.error("Errore nel caricamento pianeti:", err));
   }, []);
 
+
   // logica pagina search
-  const [UserTitle, setUserTitle] = useState("");
-  const [SearchedFilm, setSearchedFilm] = useState("");
-  const [filteredPlanets, setFilteredPlanets] = useState([]);
-  function handleSubmit(e) {
-    e.preventDefault();
-    setSearchedFilm(UserTitle);
-    console.log(UserTitle);
-  }
+  // variabile di stato che contiene l'elenco dei filtri
+  const [filters, setFilters] = useState({
+    search: "",
+    temperatureMin: -273,
+    temperatureMax: 500,
+    sizeMin: 0,
+    sizeMax: 1000000000000,
+    surfaceAvailable: 0
+  });
 
-  useEffect(() => {
-    if (!SearchedFilm) {
-      setFilteredPlanets(planets);
-      return;
-    }
-
-    const filtered = planets.filter((p) =>
-      p.name.toLowerCase().includes(SearchedFilm.toLowerCase())
-    );
-
-    setFilteredPlanets(filtered);
-  }, [SearchedFilm, planets]);
+  // funzione che aggiorna l'elenco dei filtri
+  const updateFilters = (newValues) =>
+    setFilters(prev => ({ ...prev, ...newValues }));
 
   return (
     <DefaultContext.Provider
       value={{
-        handleSubmit,
-        UserTitle,
-        setUserTitle,
-        setSearchedFilm,
-        SearchedFilm,
-        planets,
-        setPlanets,
-        filteredPlanets,
+        filters,
+        updateFilters,
+        planets
       }}
     >
       {children}

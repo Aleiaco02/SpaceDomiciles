@@ -82,7 +82,8 @@
 }
 
 .checkout-btn-row {
-  display: flex;
+    display: flex;
+    gap:10px;
 }
 
 .checkout-btn {
@@ -97,6 +98,7 @@
   cursor: pointer;
   box-shadow: 0 2px 12px #7ffcff55;
   margin-left: 10px;
+  transition: 0.5s ease;;
 }
 
 .back-to-cart-btn {
@@ -111,4 +113,17 @@
   font-size: 1.1rem;
   cursor: pointer;
   box-shadow: 0 2px 12px #7ffcff55;
+  transition: 0.5s ease;
+}
+
+.checkout-btn:hover {
+  transform: scale(1.05);
+  transition: 0.5s ease;
+  background: linear-gradient(135deg,#4ed5e3,#41d4d7);
+}
+
+.back-to-cart-btn:hover {
+  transform: scale(1.05);
+  transition: 0.5s ease;
+  background: linear-gradient(135deg,#4ed5e3,#41d4d7);
 }
