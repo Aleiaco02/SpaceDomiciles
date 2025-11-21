@@ -146,7 +146,7 @@ export default function SearchPage() {
             </Link>
           ))
         ) : (
-          <p>inserisci il nome di un pianeta</p>
+          <p>Pianeta non trovato, inserisci il nome di un pianeta</p>
         )}
       </div>
     </div>
