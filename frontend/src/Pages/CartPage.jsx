@@ -1,13 +1,27 @@
 import "./CartPage.css";
+// libreria react
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useCart } from "../Contexts/CartContext";
+import { AnimatePresence } from "framer-motion";
+
 import galaxyIcon from "/img/galaxy-icon.png";
-import {Link, useNavigate} from "react-router-dom";
-import {useCart} from "../Contexts/CartContext";
+
+// componenti
 import CartItem from "../Components/MicroComponents/CartItem";
+import DeleteCartOverlay from "../Components/MicroComponents/deleteCartOverlay";
 
 export default function CarrelloPage() {
   const { items, onQtyChange, loading, clearCart } = useCart();
-
   const navigate = useNavigate();
+
+  // variabili per l'uso dell'overlay di cancel cart
+  const [open, setOpen] = useState(false);
+  const emptyCart = () => {
+    console.log("Carrello svuotato");
+    clearCart();
+    setOpen(false);
+  };
 
   const itemsArray = Object.values(items);
   const total = itemsArray.reduce(
@@ -21,6 +35,15 @@ export default function CarrelloPage() {
 
   return (
     <div className="galaxy-page">
+      <AnimatePresence>
+        {open && (
+          <DeleteCartOverlay
+            open={open}
+            onConfirm={emptyCart}
+            onCancel={() => setOpen(false)}
+          />
+        )}
+      </AnimatePresence>
       <div className="cont-cart">
         <h1>Carrello</h1>
         {itemsArray.length === 0 ? (
@@ -33,21 +56,18 @@ export default function CarrelloPage() {
 
         <h2>Totale: €{total.toFixed(2)}</h2>
 
-        {itemsArray.length > 0 && (
-          total >= FREE_SHIPPING_THRESHOLD ? (
-            <p style={{ color: "white", marginTop: "10px"}}>
-               Hai diritto alla spedizione gratuita! 🚀
+        {itemsArray.length > 0 &&
+          (total >= FREE_SHIPPING_THRESHOLD ? (
+            <p style={{ color: "white", marginTop: "10px" }}>
+              Hai diritto alla spedizione gratuita! 🚀
             </p>
           ) : (
             <p style={{ color: "#888", marginTop: "10px" }}>
               Ti mancano{" "}
-              <strong>
-                €{(FREE_SHIPPING_THRESHOLD - total).toFixed(2)}
-              </strong>{" "}
+              <strong>€{(FREE_SHIPPING_THRESHOLD - total).toFixed(2)}</strong>{" "}
               per ottenere la spedizione gratuita 🚀
             </p>
-          )
-        )}
+          ))}
 
         <button
           className="checkout-btn"
@@ -55,12 +75,12 @@ export default function CarrelloPage() {
           disabled={itemsArray.length === 0}
           style={{ marginTop: "22px" }}
         >
-          Vai al checkout 
+          Vai al checkout
         </button>
 
         <button
           className="empty-cart-btn"
-          onClick={clearCart}
+          onClick={() => setOpen(true)}
           disabled={itemsArray.length === 0}
         >
           Svuota carrello

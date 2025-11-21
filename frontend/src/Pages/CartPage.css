@@ -1,7 +1,7 @@
 .cont-cart {
-    padding-top: 100px;
-    width: 90%;
-    margin: 0 auto;
+  padding-top: 100px;
+  width: 90%;
+  margin: 0 auto;
 }
 
 .gal-dim {
@@ -25,7 +25,7 @@
   transition: 0.5s ease;
 }
 .empty-cart-btn:disabled {
-  opacity: 0.50;
+  opacity: 0.5;
   cursor: not-allowed;
   background: #444;
 }
@@ -34,4 +34,57 @@
   transform: scale(1.05);
   transition: 0.5s ease;
   background: #710000;
+}
+.motionDivDelete {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.divDeleteContent {
+  padding: 20px 30px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  background: rgba(35, 20, 50, 0.95);
+  border-radius: 16px;
+  border: 2px solid #7ffcff;
+  box-shadow: 0 4px 14px #134f8c33, 0 0 6px #7ffcff22;
+  h2 {
+    margin-bottom: 20px;
+  }
+}
+.buttonsDelete {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  button {
+    font-size: 1.02rem;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+  }
+}
+.buttonsDelete button:hover {
+  transform: scale(1.05);
+  transition: 0.5s ease;
+  background: #710000;
+}
+.overlayDelete {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
 }
