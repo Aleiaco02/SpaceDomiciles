@@ -24,7 +24,7 @@ export default function NavBar() {
           >
             <span>
               Galassie
-              <i class="fa-solid fa-shuttle-space marg"></i>
+              <i className="fa-solid fa-shuttle-space marg"></i>
             </span>
           </NavLink>
           <NavLink
@@ -33,7 +33,7 @@ export default function NavBar() {
           >
             <span>
               Cerca
-              <i class="fa-solid fa-magnifying-glass marg"></i>
+              <i className="fa-solid fa-magnifying-glass marg"></i>
             </span>
           </NavLink>
 
@@ -43,7 +43,7 @@ export default function NavBar() {
           >
             <span>
               Chi Siamo
-            <i class="fa-regular fa-address-card marg"></i>
+              <i className="fa-regular fa-address-card marg"></i>
             </span>
           </NavLink>
 
@@ -53,8 +53,8 @@ export default function NavBar() {
           >
             <span>
               Contattaci!
-              <i class="fa-regular fa-message marg"></i>
-              </span>
+              <i className="fa-regular fa-message marg"></i>
+            </span>
           </NavLink>
         </div>
 

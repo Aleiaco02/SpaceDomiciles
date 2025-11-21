@@ -6,7 +6,7 @@ export default function NotFoundPage() {
     <div className="galaxy-page container-coming-soon">
       <h1>404</h1>
       <p>La pagina da che cerchi é persa nello spazio piú profondo</p>
-      <div class="gal-dim">
+      <div className="gal-dim">
         <Link to="/">
           <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon" />
         </Link>
