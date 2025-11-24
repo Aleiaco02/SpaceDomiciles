@@ -1,4 +1,3 @@
-// src/pages/CheckOutPage.jsx
 import { useState } from "react";
 import { useCart } from "../Contexts/CartContext";
 import { useNavigate } from "react-router-dom";
@@ -9,9 +8,6 @@ export default function CheckOutPage() {
     const { items } = useCart();
     const navigate = useNavigate();
 
-    // -------------------------
-    // STATE
-    // -------------------------
     const [errors, setErrors] = useState({});
     const [invoiceId, setInvoiceId] = useState(null);
     const [creatingInvoice, setCreatingInvoice] = useState(false);
@@ -52,23 +48,22 @@ export default function CheckOutPage() {
     const [sameAsShipping, setSameAsShipping] = useState(false);
     const [isCompany, setIsCompany] = useState(false);
 
-    // -------------------------
+    // -------------------------------------
     // HANDLERS
-    // -------------------------
+    // -------------------------------------
     const handleShipping = (e) =>
         setShipping({ ...shipping, [e.target.name]: e.target.value });
 
     const handleBilling = (e) =>
         setBilling({ ...billing, [e.target.name]: e.target.value });
 
-    // Copy shipping → billing
     const handleSameAsShipping = () => {
-        const val = !sameAsShipping;
-        setSameAsShipping(val);
+        const v = !sameAsShipping;
+        setSameAsShipping(v);
 
-        if (val) {
-            setBilling((prev) => ({
-                ...prev,
+        if (v) {
+            setBilling({
+                ...billing,
                 nome: shipping.nome,
                 cognome: shipping.cognome,
                 email: shipping.email,
@@ -79,92 +74,57 @@ export default function CheckOutPage() {
                 CAP: shipping.CAP,
                 provincia: shipping.provincia,
                 paese: shipping.paese,
-            }));
-        } else {
-            setBilling((prev) => ({
-                ...prev,
-                nome: "",
-                cognome: "",
-                email: "",
-                telefono: "",
-                indirizzo: "",
-                civico: "",
-                città: "",
-                CAP: "",
-                provincia: "",
-                paese: "",
-                azienda: "",
-                piva: "",
-                pec: "",
-                sdi: "",
-            }));
+            });
         }
     };
 
-    // -------------------------
-    // VALIDAZIONE FORM
-    // -------------------------
+    // -------------------------------------
+    // VALIDAZIONE
+    // -------------------------------------
     const validateForm = () => {
         let newErrors = {};
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const phoneRegex = /^[0-9+ ]{7,20}$/;
         const capRegex = /^[0-9]{5}$/;
-        const civicRegex = /^[0-9]{1,4}[A-Za-z0-9\/-]{0,4}$/;
 
-        const check = (field, value) => {
-            if (!value.trim()) newErrors[field] = "Campo obbligatorio";
+        const check = (key, value, message = "Campo obbligatorio") => {
+            if (!value.trim()) newErrors[key] = message;
         };
 
-        // SHIPPING
-        Object.entries(shipping).forEach(([key, value]) => {
-            if (["email", "telefono", "CAP", "civico"].includes(key)) return;
-            check(`shipping_${key}`, value);
-        });
+        // ✔ SHIPPING SEMPRE VALIDATO
+        check("shipping_nome", shipping.nome);
+        check("shipping_cognome", shipping.cognome);
+        if (!emailRegex.test(shipping.email)) newErrors.shipping_email = "Email non valida";
+        if (!phoneRegex.test(shipping.telefono)) newErrors.shipping_telefono = "Numero non valido";
+        check("shipping_indirizzo", shipping.indirizzo);
+        check("shipping_civico", shipping.civico);
+        check("shipping_città", shipping.città);
+        if (!capRegex.test(shipping.CAP)) newErrors.shipping_CAP = "CAP non valido";
+        check("shipping_provincia", shipping.provincia);
+        check("shipping_paese", shipping.paese);
 
-        if (!emailRegex.test(shipping.email))
-            newErrors.shipping_email = "Email non valida";
-
-        if (!phoneRegex.test(shipping.telefono))
-            newErrors.shipping_telefono = "Numero non valido";
-
-        if (!capRegex.test(shipping.CAP))
-            newErrors.shipping_CAP = "CAP non valido";
-
-        if (!civicRegex.test(shipping.civico))
-            newErrors.shipping_civico = "Civico non valido";
-
-        // BILLING (solo se vuole fattura)
+        // ❗ BILLING VALIDATO SOLO SE wantInvoice === true
         if (wantInvoice) {
-            Object.entries(billing).forEach(([key, value]) => {
-                if (["azienda", "piva", "pec", "sdi"].includes(key)) return;
-                check(`billing_${key}`, value);
-            });
+            check("billing_nome", billing.nome);
+            check("billing_cognome", billing.cognome);
+            if (!emailRegex.test(billing.email)) newErrors.billing_email = "Email non valida";
+            if (!phoneRegex.test(billing.telefono)) newErrors.billing_telefono = "Numero non valido";
+            check("billing_indirizzo", billing.indirizzo);
+            check("billing_civico", billing.civico);
+            check("billing_città", billing.città);
+            if (!capRegex.test(billing.CAP)) newErrors.billing_CAP = "CAP non valido";
+            check("billing_provincia", billing.provincia);
+            check("billing_paese", billing.paese);
 
-            if (!emailRegex.test(billing.email))
-                newErrors.billing_email = "Email non valida";
-
-            if (!phoneRegex.test(billing.telefono))
-                newErrors.billing_telefono = "Numero non valido";
-
-            if (!capRegex.test(billing.CAP))
-                newErrors.billing_CAP = "CAP non valido";
-
-            if (!civicRegex.test(billing.civico))
-                newErrors.billing_civico = "Civico non valido";
-
-            // DATI AZIENDA
+            // ✔ VALIDAZIONE AZIENDA SOLO SE isCompany === true
             if (isCompany) {
-                if (!billing.azienda.trim())
-                    newErrors.billing_azienda = "Obbligatorio";
-
+                check("billing_azienda", billing.azienda);
                 if (!/^[0-9]{11}$/.test(billing.piva))
                     newErrors.billing_piva = "Partita IVA non valida";
-
-                if (billing.pec.trim() && !emailRegex.test(billing.pec))
+                if (billing.pec && !emailRegex.test(billing.pec))
                     newErrors.billing_pec = "PEC non valida";
-
-                if (billing.sdi.trim() && !/^[A-Za-z0-9]{7}$/.test(billing.sdi))
+                if (billing.sdi && !/^[A-Za-z0-9]{7}$/.test(billing.sdi))
                     newErrors.billing_sdi = "SDI non valido";
             }
         }
@@ -173,22 +133,16 @@ export default function CheckOutPage() {
         return Object.keys(newErrors).length === 0;
     };
 
-    // -------------------------
+    // -------------------------------------
     // TOTALE
-    // -------------------------
-    const totale = Object.values(items).reduce(
-        (acc, item) => acc + item.price * item.quantity,
-        0
-    );
-
-    const SHIPPING_COST = 4.99;
-    const FREE_SHIPPING_THRESHOLD = 1500;
-    const shippingCost = totale >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
+    // -------------------------------------
+    const totale = Object.values(items).reduce((a, item) => a + item.price * item.quantity, 0);
+    const shippingCost = totale >= 1500 ? 0 : 4.99;
     const totaleFinale = totale + shippingCost;
 
-    // -------------------------
-    // CREA INVOICE DOPO FORM VALIDO
-    // -------------------------
+    // -------------------------------------
+    // CREA INVOICE
+    // -------------------------------------
     const handleCreateInvoice = async () => {
         if (!validateForm()) return;
 
@@ -204,7 +158,7 @@ export default function CheckOutPage() {
                     full_name: `${shipping.nome} ${shipping.cognome}`,
                     email: shipping.email,
                     shipping_address: shippingAddress,
-                    invoice_address: wantInvoice ? shippingAddress : null,
+                    invoice_address: shippingAddress,
                     total_amount: totaleFinale,
                 }),
             });
@@ -218,15 +172,15 @@ export default function CheckOutPage() {
 
             setInvoiceId(data.invoice_id);
         } catch {
-            alert("Errore di rete");
+            alert("Errore rete");
         } finally {
             setCreatingInvoice(false);
         }
     };
 
-    // -------------------------
+    // -------------------------------------
     // RENDER
-    // -------------------------
+    // -------------------------------------
     return (
         <div className="galaxy-page">
             <div className="checkout-page">
@@ -239,12 +193,12 @@ export default function CheckOutPage() {
                         <h3>Dati di spedizione</h3>
 
                         <form>
-                            {Object.entries(shipping).map(([key, value]) => (
+                            {Object.keys(shipping).map((key) => (
                                 <div key={key}>
                                     <input
                                         name={key}
                                         placeholder={key}
-                                        value={value}
+                                        value={shipping[key]}
                                         onChange={handleShipping}
                                     />
                                     {errors[`shipping_${key}`] && (
@@ -254,8 +208,9 @@ export default function CheckOutPage() {
                             ))}
                         </form>
 
-                        <label style={{ display: "flex", gap: "8px", marginTop: "12px" }}>
+                        <label>
                             <input
+                                style={{ marginTop: "15px" }}
                                 type="checkbox"
                                 checked={wantInvoice}
                                 onChange={() => {
@@ -263,82 +218,72 @@ export default function CheckOutPage() {
                                     setSameAsShipping(false);
                                     setIsCompany(false);
                                 }}
-                            />
+                            />{" "}
                             Voglio la fattura
                         </label>
-
-                        <label style={{ display: "flex", gap: "8px", marginTop: "8px" }}>
+                        <br />
+                        <label>
                             <input
+                                style={{ marginTop: "15px" }}
                                 type="checkbox"
                                 disabled={!wantInvoice}
                                 checked={sameAsShipping}
                                 onChange={handleSameAsShipping}
-                            />
+                            />{" "}
                             Usa stessi dati per fatturazione
                         </label>
                     </div>
 
                     {/* BILLING */}
-                    <div className="checkout-panel">
+                    <div
+                        className="checkout-panel"
+                        style={{
+                            opacity: wantInvoice ? 1 : 0.5,
+                            pointerEvents: wantInvoice ? "auto" : "none",
+                        }}
+                    >
                         <h3>Dati di fatturazione</h3>
 
                         <form>
-                            {Object.entries(billing)
-                                .filter(([key]) =>
-                                    // Mostra TUTTI i campi normali + i campi aziendali SOLO se isCompany = true
-                                    !["azienda", "piva", "pec", "sdi"].includes(key)
-                                )
-                                .map(([key, value]) => (
+                            {Object.keys(billing).map((key) => {
+                                const isCompanyField = ["azienda", "piva", "pec", "sdi"].includes(key);
+                                const mustShow = wantInvoice && (!isCompanyField || isCompany);
+
+                                if (!mustShow) return null;
+
+                                return (
                                     <div key={key}>
                                         <input
                                             name={key}
                                             placeholder={key}
-                                            value={value}
-                                            disabled={!wantInvoice || sameAsShipping}
+                                            value={billing[key]}
                                             onChange={handleBilling}
+                                            disabled={!wantInvoice || (sameAsShipping && !isCompanyField)}
                                         />
                                         {errors[`billing_${key}`] && (
                                             <p className="error">{errors[`billing_${key}`]}</p>
                                         )}
                                     </div>
-                                ))}
+                                );
+                            })}
+                        </form>
 
-                            {/* COMPANY CHECKBOX */}
-                            <label style={{ display: "flex", gap: "8px", marginTop: "12px" }}>
+                        {wantInvoice && (
+                            <label>
                                 <input
+                                    style={{ marginTop: "15px" }}
                                     type="checkbox"
                                     checked={isCompany}
-                                    disabled={!wantInvoice}
                                     onChange={() => setIsCompany(!isCompany)}
-                                />
+                                />{" "}
                                 Acquisto come azienda
                             </label>
-
-                            {/* COMPANY FIELDS visibili solo se isCompany */}
-                            {isCompany && (
-                                <>
-                                    {["azienda", "piva", "pec", "sdi"].map((key) => (
-                                        <div key={key}>
-                                            <input
-                                                name={key}
-                                                placeholder={key}
-                                                value={billing[key]}
-                                                onChange={handleBilling}
-                                            />
-                                            {errors[`billing_${key}`] && (
-                                                <p className="error">{errors[`billing_${key}`]}</p>
-                                            )}
-                                        </div>
-                                    ))}
-                                </>
-                            )}
-                        </form>
+                        )}
                     </div>
 
-                    {/* ORDER SUMMARY */}
+                    {/* RIEPILOGO */}
                     <div className="checkout-panel order-summary">
                         <h3>Riepilogo ordine</h3>
-
                         <ul>
                             {Object.values(items).map((item) => (
                                 <li key={item.id}>
@@ -349,8 +294,7 @@ export default function CheckOutPage() {
                         </ul>
 
                         <div className="checkout-total">
-                            <strong>Spedizione:</strong>{" "}
-                            {shippingCost === 0 ? "Gratis" : `€${shippingCost}`}
+                            <strong>Spedizione:</strong> {shippingCost === 0 ? "Gratis" : `€${shippingCost}`}
                         </div>
 
                         <div className="checkout-total">
@@ -359,17 +303,14 @@ export default function CheckOutPage() {
                     </div>
                 </div>
 
+                {/* BOTTONI */}
                 <div className="checkout-btn-row">
                     <button className="back-to-cart-btn" onClick={() => navigate("/cart")}>
                         ⬅ Torna al carrello
                     </button>
 
                     {!invoiceId ? (
-                        <button
-                            className="checkout-btn"
-                            onClick={handleCreateInvoice}
-                            disabled={creatingInvoice}
-                        >
+                        <button className="checkout-btn" onClick={handleCreateInvoice}>
                             {creatingInvoice ? "Creazione ordine..." : "Procedi al pagamento"}
                         </button>
                     ) : (
