@@ -22,7 +22,6 @@ import ComingSoon from "./Pages/ComingSoon";
 import CheckOutPage from "./Pages/CheckOutPage";
 import GalaxiesPage from "./Pages/GalaxiesPage";
 import NotFoundPage from "./Pages/NotFoundPage";
-import Success from "./Pages/Success";
 
 //components
 import CartDrawer from "./Components/MicroComponents/CartDrawer";
@@ -35,7 +34,7 @@ function App() {
         <DefaultProvider>
           <BrowserRouter>
             <Routes>
-              <Route element={<DefaultLayout setDrawerOpen={setDrawerOpen} />}>
+              <Route element={<DefaultLayout setDrawerOpen={setDrawerOpen}/>}>
                 <Route index element={<HomePage />} />
                 <Route path="galaxies">
                   <Route index element={<GalaxiesPage />} />
@@ -48,7 +47,6 @@ function App() {
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="/coming-soon" element={<ComingSoon />} />
                 <Route path="/checkout" element={<CheckOutPage />} />
-                <Route path="/success" element={<Success />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Route>
             </Routes>
