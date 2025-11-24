@@ -9,7 +9,7 @@ import {
   faRocket,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import milkyWay from "/img/milky-way.png";
 import andromeda from "/img/andromeda.png";
 import sombrero from "/img/sombrero.png";
@@ -19,6 +19,28 @@ export default function HomePage() {
   const handleAnimationComplete = () => {
     console.log("Animation completed!");
   };
+
+  const contentRef = useRef(null);
+  const [containerHeight, setContainerHeight] = useState('100vh');
+
+  useEffect(() => {
+    const updateHeight = () => {
+      if (contentRef.current) {
+        const contentHeight = contentRef.current.scrollHeight;
+        const windowHeight = window.innerHeight;
+        
+        // Usa il maggiore tra l'altezza del contenuto + padding e l'altezza della finestra
+        const calculatedHeight = Math.max(contentHeight + 1, windowHeight);
+        setContainerHeight(`${calculatedHeight}px`);
+      }
+    };
+
+    // Aspetta che tutto sia caricato
+    setTimeout(updateHeight, 500);
+    
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
+  }, []);
 
   const [planet1, setPlanet1] = useState(null);
   const [planet2, setPlanet2] = useState(null);
@@ -40,21 +62,25 @@ export default function HomePage() {
     }
   };
 
-  // 👇 FETCH ALL'AVVIO
   useEffect(() => {
     fetchPlanets();
   }, []);
 
-  // 👇 LOG DEI DATI QUANDO ARRIVANO
+  // Ricalcola l'altezza quando cambiano i pianeti
   useEffect(() => {
-    console.log("PLANET1:", planet1);
-    console.log("PLANET2:", planet2);
-    console.log("PLANET3:", planet3);
+    if (planet1 && planet2 && planet3) {
+      setTimeout(() => {
+        if (contentRef.current) {
+          const contentHeight = contentRef.current.scrollHeight;
+          setContainerHeight(`${contentHeight + 200}px`);
+        }
+      }, 100);
+    }
   }, [planet1, planet2, planet3]);
 
   return (
     <div
-      style={{ width: "100%", height: "280vh", position: "relative" }}
+      style={{ width: "100%", height: containerHeight, position: "relative", minHeight: "100vh" }}
       className="container-jumbotrone"
     >
       <Galaxy
@@ -66,6 +92,7 @@ export default function HomePage() {
       />
 
       <div
+        ref={contentRef}
         style={{
           position: "absolute",
           inset: 0,
@@ -90,7 +117,7 @@ export default function HomePage() {
           className="descrizione-jumbotrone"
           style={{ display: "inline-block", textAlign: "center" }}
         >
-          Il futuro dell’umanità non è più sulla Terra. Oggi puoi rivendicare il
+          Il futuro dell'umanità non è più sulla Terra. Oggi puoi rivendicare il
           tuo posto tra le stelle.
           <br />
           Non guardare lo spazio. Entraci dentro.
@@ -102,7 +129,7 @@ export default function HomePage() {
               <FontAwesomeIcon icon={faGlobe} />
             </div>
             <GradientText className="card-title">Pianeti Reali</GradientText>
-            <p>Terreni su pianeti realmente scoperti dalla NASA e dall’ESA</p>
+            <p>Terreni su pianeti realmente scoperti dalla NASA e dall'ESA</p>
           </div>
 
           <div className="glass-card">
@@ -142,7 +169,6 @@ export default function HomePage() {
           <div className="cards-container-2">
             <Link to="/galaxies/milky-way" className="glass-card-2">
               <img src={milkyWay} alt="Via Lattea" className="card-image" />
-
               <GradientText className="card-title">
                 <h2>Esplora la Via Lattea</h2>
               </GradientText>
@@ -153,7 +179,6 @@ export default function HomePage() {
           <div className="cards-container-2">
             <Link to="/galaxies/andromeda" className="glass-card-2">
               <img src={andromeda} alt="Andromeda" className="card-image" />
-
               <GradientText className="card-title">
                 <h2>Esplora Andromeda</h2>
               </GradientText>
@@ -168,7 +193,6 @@ export default function HomePage() {
                 alt="Sombrero"
                 className="card-image card-image-sombrero"
               />
-
               <GradientText className="card-title">
                 <h2>Esplora Sombrero</h2>
               </GradientText>
@@ -186,7 +210,7 @@ export default function HomePage() {
                 to={`/galaxies/${planet1.galaxy_slug}/${planet1.slug}`}
                 className="glass-card-2"
               >
-                <img src={planet1.image} className="card-image" />
+                <img src={planet1.image} alt={planet1.name} className="card-image" />
                 <GradientText className="card-title">
                   <h2>{planet1.name}</h2>
                 </GradientText>
@@ -203,6 +227,7 @@ export default function HomePage() {
               >
                 <img
                   src={planet2.image}
+                  alt={planet2.name}
                   className="card-image pianeta-piccolo"
                 />
                 <GradientText className="card-title">
@@ -221,6 +246,7 @@ export default function HomePage() {
               >
                 <img
                   src={planet3.image}
+                  alt={planet3.name}
                   className="card-image pianeta-piccolo"
                 />
                 <GradientText className="card-title">

@@ -21,7 +21,7 @@ export default function DeleteCartOverlay({ open, onConfirm, onCancel, text }) {
       >
         <div className="divDeleteContent">
           <h2>{text}</h2>
-          <div>
+          <div className="buttonsDelete">
             <button className="checkout-btn" onClick={onConfirm}>
               Conferma
             </button>

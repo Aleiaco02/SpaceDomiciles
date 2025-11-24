@@ -9,6 +9,12 @@
   letter-spacing: 2px;
 }
 
+@media (max-width: 650px) {
+  .contact h1 {
+    font-size: 45px;
+  }
+}
+
 .contact p {
   font-size: 25px;
   margin-bottom: 20px;

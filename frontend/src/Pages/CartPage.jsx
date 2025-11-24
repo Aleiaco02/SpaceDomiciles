@@ -1,5 +1,4 @@
 import "./CartPage.css";
-// libreria react
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useCart } from "../Contexts/CartContext";
@@ -7,7 +6,6 @@ import { AnimatePresence } from "framer-motion";
 
 import galaxyIcon from "/img/galaxy-icon.png";
 
-// componenti
 import CartItem from "../Components/MicroComponents/CartItem";
 import DeleteCartOverlay from "../Components/MicroComponents/deleteCartOverlay";
 
@@ -15,7 +13,6 @@ export default function CarrelloPage() {
   const { items, onQtyChange, loading, clearCart } = useCart();
   const navigate = useNavigate();
 
-  // variabili per l'uso dell'overlay di cancel cart
   const [open, setOpen] = useState(false);
   const emptyCart = () => {
     console.log("Carrello svuotato");
@@ -41,12 +38,14 @@ export default function CarrelloPage() {
             open={open}
             onConfirm={emptyCart}
             onCancel={() => setOpen(false)}
-            text={"Stai svuotando l'intero carrelo, vuoi procedere?"}
+            text={"Stai svuotando l'intero carrello, vuoi procedere?"}
           />
         )}
       </AnimatePresence>
+      
       <div className="cont-cart">
         <h1>Carrello</h1>
+        
         {itemsArray.length === 0 ? (
           <p>Il carrello è vuoto</p>
         ) : (
@@ -59,33 +58,34 @@ export default function CarrelloPage() {
 
         {itemsArray.length > 0 &&
           (total >= FREE_SHIPPING_THRESHOLD ? (
-            <p style={{ color: "white", marginTop: "10px" }}>
+            <p className="shipping-text free-shipping">
               Hai diritto alla spedizione gratuita! 🚀
             </p>
           ) : (
-            <p style={{ color: "#888", marginTop: "10px" }}>
+            <p className="shipping-text partial-shipping">
               Ti mancano{" "}
               <strong>€{(FREE_SHIPPING_THRESHOLD - total).toFixed(2)}</strong>{" "}
               per ottenere la spedizione gratuita 🚀
             </p>
           ))}
 
-        <button
-          className="checkout-btn"
-          onClick={() => navigate("/checkout")}
-          disabled={itemsArray.length === 0}
-          style={{ marginTop: "22px" }}
-        >
-          Vai al checkout
-        </button>
+        <div className="cart-buttons-container">
+          <button
+            className="checkout-btn"
+            onClick={() => navigate("/checkout")}
+            disabled={itemsArray.length === 0}
+          >
+            Vai al checkout
+          </button>
 
-        <button
-          className="empty-cart-btn"
-          onClick={() => setOpen(true)}
-          disabled={itemsArray.length === 0}
-        >
-          Svuota carrello
-        </button>
+          <button
+            className="empty-cart-btn"
+            onClick={() => setOpen(true)}
+            disabled={itemsArray.length === 0}
+          >
+            Svuota carrello
+          </button>
+        </div>
       </div>
 
       <div className="gal-dim">
