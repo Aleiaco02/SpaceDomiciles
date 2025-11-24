@@ -4,10 +4,42 @@ import { useState, useEffect } from "react";
 import "../styles/Search.css";
 export default function SearchPage() {
   const { filters, updateFilters, defaultFilter } = useDefaultContext();
-
+  const [searchParams, setSearchParams] = useSearchParams();
   const apiBaseUrl = "http://localhost:3000";
+
+  //valori dell'url
+  const search = searchParams.get("q") || "";
+  const tempMin = Number(searchParams.get("tmin") || -273);
+  const tempMax = Number(searchParams.get("tmax") || 500);
+  const sizeMin = Number(searchParams.get("smin") || 0);
+  const sizeMax = Number(searchParams.get("smax") || 70000000000);
+  const surfaceAvailable = Number(searchParams.get("surf") || 0);
+
+  // funzione per aggiornare l'url
+  function updateQuery(newValues) {
+    const updated = {
+      q: search,
+      tmin: tempMin,
+      tmax: tempMax,
+      smin: sizeMin,
+      smax: sizeMax,
+      surf: surfaceAvailable,
+      ...newValues,
+    };
+
+    // fixa i valora vuoti
+    Object.keys(updated).forEach((key) => {
+      if (updated[key] === "" || updated[key] === null) {
+        delete updated[key];
+      }
+    });
+
+    setSearchParams(updated);
+  }
+
   // caricamento lista pianeti
   const [planets, setPlanets] = useState([]);
+
   useEffect(() => {
     fetch(apiBaseUrl + "/api/planets")
       .then((res) => res.json())
@@ -17,30 +49,12 @@ export default function SearchPage() {
 
   // pianeti filtrati
   const filtered = planets
-    .filter((p) => p.name.toLowerCase().includes(filters.search.toLowerCase()))
-    .filter((p) => p.temperature_min >= filters.temperatureMin)
-    .filter((p) => p.temperature_max <= filters.temperatureMax)
-    .filter(
-      (p) =>
-        p.planet_size >= filters.sizeMin && p.planet_size <= filters.sizeMax
-    )
-    .filter((p) => p.surface_available >= filters.surfaceAvailable);
+    .filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
+    .filter((p) => p.temperature_min >= tempMin)
+    .filter((p) => p.temperature_max <= tempMax)
+    .filter((p) => p.planet_size >= sizeMin && p.planet_size <= sizeMax)
+    .filter((p) => p.surface_available >= surfaceAvailable);
 
-  // query url
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [input, setInput] = useState("");
-
-  useEffect(() => {
-    const query = searchParams.get("q") || "";
-    setInput(query);
-  }, [searchParams]);
-
-  function handleInput(e) {
-    setInput(e.target.value);
-
-    // aggiorna la query senza submit
-    setSearchParams({ q: e.target.value });
-  }
   return (
     <div className="galaxy-page pos">
       {/* Sezione filtri */}
@@ -53,10 +67,9 @@ export default function SearchPage() {
             name="title"
             type="search"
             placeholder="Cerca pianeta..."
-            value={input}
+            value={search}
             onChange={(e) => {
-              updateFilters({ search: e.target.value });
-              handleInput(e);
+              updateQuery({ q: e.target.value });
             }}
             className="search-input"
           />
@@ -70,10 +83,8 @@ export default function SearchPage() {
                 type="range"
                 min="-273"
                 max="500"
-                value={filters.temperatureMin}
-                onChange={(e) =>
-                  updateFilters({ temperatureMin: Number(e.target.value) })
-                }
+                value={tempMin}
+                onChange={(e) => updateQuery({ tmin: Number(e.target.value) })}
               />
             </div>
             {/* Filtro temperatura massima */}
@@ -83,15 +94,13 @@ export default function SearchPage() {
                 type="range"
                 min="-273"
                 max="500"
-                value={filters.temperatureMax}
-                onChange={(e) =>
-                  updateFilters({ temperatureMax: Number(e.target.value) })
-                }
+                value={tempMax}
+                onChange={(e) => updateQuery({ tmax: Number(e.target.value) })}
               />
             </div>
           </div>
           <p>
-            Da {filters.temperatureMin}° a {filters.temperatureMax}°
+            Da {tempMin}° a {tempMax}°
           </p>
         </div>
         {/* Size Range */}
@@ -103,10 +112,8 @@ export default function SearchPage() {
                 type="range"
                 min="0"
                 max="10000000000"
-                value={filters.sizeMin}
-                onChange={(e) =>
-                  updateFilters({ sizeMin: Number(e.target.value) })
-                }
+                value={sizeMin}
+                onChange={(e) => updateQuery({ smin: Number(e.target.value) })}
               />
             </div>
             <div className="slider-container">
@@ -116,19 +123,15 @@ export default function SearchPage() {
                 type="range"
                 min="0"
                 max="70000000000"
-                value={filters.sizeMax}
-                onChange={(e) =>
-                  updateFilters({ sizeMax: Number(e.target.value) })
-                }
+                value={sizeMax}
+                onChange={(e) => updateQuery({ smax: Number(e.target.value) })}
               />
             </div>
           </div>
           <p>
-            {filters.sizeMin} – {filters.sizeMax} KM2
+            {sizeMin} – {sizeMax} KM2
           </p>
-          <button onClick={() => updateFilters(defaultFilter)}>
-            Reset filtri
-          </button>
+          <button onClick={() => setSearchParams({})}>Reset filtri</button>
         </div>
       </section>
       <div className="mw-cards-grid">
