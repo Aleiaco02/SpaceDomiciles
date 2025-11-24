@@ -8,6 +8,12 @@
   transition: right 0.3s ease-in-out;
 }
 
+@media (max-width: 480px) {
+  .cart-drawer {
+    width: 100%;
+  }
+}
+
 .cart-drawer.open {
   right: 0;
 }
