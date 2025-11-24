@@ -14,7 +14,6 @@ export default function CheckOutPage() {
     const [invoiceId, setInvoiceId] = useState(null);
     const [creatingInvoice, setCreatingInvoice] = useState(false);
     const [orderConfirmed, setOrderConfirmed] = useState(false);
-    const navigate = useNavigate();
 
     // =============================
     // STATE
