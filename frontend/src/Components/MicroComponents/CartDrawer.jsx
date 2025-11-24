@@ -41,7 +41,7 @@ export default function CartDrawer({ open, onClose }) {
             {itemsArray.length === 0 ? (
               <li className="cart-drawer-empty">Carrello vuoto</li>
             ) : (
-              itemsArray.map(item => (
+              itemsArray.map((item) => (
                 <li className="cart-drawer-item" key={item.id}>
                   {/* Overlay di conferma eliminazione */}
                   {deleteConfirm === item.id && (
@@ -49,13 +49,13 @@ export default function CartDrawer({ open, onClose }) {
                       <div className="delete-confirm-content">
                         <p>Eliminare questo prodotto?</p>
                         <div className="delete-confirm-buttons">
-                          <button 
+                          <button
                             className="delete-confirm-yes"
                             onClick={() => confirmDelete(item.id)}
                           >
                             Sì
                           </button>
-                          <button 
+                          <button
                             className="delete-confirm-no"
                             onClick={cancelDelete}
                           >
@@ -78,7 +78,7 @@ export default function CartDrawer({ open, onClose }) {
                   </div>
                   <div className="planet-drawer">su {item.planet_name}</div>
                   <div className="price-drawer">€{item.price}</div>
-                  
+
                   <div className="cart-item-qty-controls">
                     <button
                       className="qty-btn qty-minus"
@@ -101,7 +101,7 @@ export default function CartDrawer({ open, onClose }) {
               ))
             )}
           </ul>
-          
+
           {itemsArray.length > 0 && (
             <div className="cart-drawer-total">
               Totale: <strong>€{total.toFixed(2)}</strong>
