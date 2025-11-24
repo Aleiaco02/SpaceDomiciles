@@ -275,20 +275,9 @@
   }
 }
 
-/* Bottoni dell'overlay */
+/* Bottoni dell'overlay - AFFIANCATI SU DESKTOP, UNO SOTTO L'ALTRO SU MOBILE */
 .buttonsDelete {
-  display: flex;
-  justify-content: center;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-
-@media (max-width: 480px) {
-  .buttonsDelete {
-    gap: 12px;
-    flex-direction: column;
-    align-items: center;
-  }
+  text-align: center;
 }
 
 /* Bottone Conferma */
@@ -303,6 +292,8 @@
   color: #000;
   font-weight: 600;
   transition: 0.3s ease;
+  display: inline-block;
+  margin-right: 14px;
 }
 
 .buttonsDelete button:first-child:hover {
@@ -323,6 +314,7 @@
   font-weight: 600;
   transition: 0.3s ease;
   box-shadow: 0 2px 8px #ff7c7c44;
+  display: inline-block;
 }
 
 .buttonsDelete button:last-child:hover {
@@ -338,12 +330,27 @@
   }
 }
 
+/* TABLET E MOBILE - UNO SOTTO L'ALTRO */
+@media (max-width: 768px) {
+  .buttonsDelete button:first-child {
+    display: block;
+    margin: 0 auto 12px auto;
+    width: 100%;
+    max-width: 240px;
+  }
+  
+  .buttonsDelete button:last-child {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 240px;
+  }
+}
+
 @media (max-width: 480px) {
   .buttonsDelete button {
     font-size: 1rem;
     padding: 12px 24px;
-    width: 100%;
-    max-width: 240px;
     min-width: unset;
   }
 }
