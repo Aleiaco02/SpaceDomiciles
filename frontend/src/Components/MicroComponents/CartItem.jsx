@@ -22,7 +22,6 @@ export default function CartItem({ item, onQtyChange }) {
           />
         )}
       </AnimatePresence>
-      ;
       <div className="cart-card">
         <div className="cart-card-img-wrap">
           {item.planet_image ? (
