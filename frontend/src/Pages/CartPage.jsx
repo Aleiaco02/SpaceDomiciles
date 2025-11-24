@@ -42,10 +42,10 @@ export default function CarrelloPage() {
           />
         )}
       </AnimatePresence>
-      
+
       <div className="cont-cart">
         <h1>Carrello</h1>
-        
+
         {itemsArray.length === 0 ? (
           <p>Il carrello è vuoto</p>
         ) : (
