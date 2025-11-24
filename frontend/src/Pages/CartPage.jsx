@@ -93,6 +93,9 @@ export default function CarrelloPage() {
           <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon" />
         </Link>
       </div>
+      <p className="go-back-text">
+        Non sei pronto all’atterraggio? Clicca la galassia e rientra alla Home
+      </p>
     </div>
   );
 }
