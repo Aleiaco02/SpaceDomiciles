@@ -238,3 +238,7 @@ input[type="range"]::-webkit-slider-runnable-track {
   box-shadow: 0 0 45px rgba(180, 120, 255, 0.7);
   cursor: pointer;
 }
+.buttonload {
+  display: flex;
+  justify-content: center;
+}
