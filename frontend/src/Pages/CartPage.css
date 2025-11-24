@@ -83,20 +83,16 @@
   }
 }
 
-/* Container bottoni */
+/* Container bottoni - SENZA FLEX */
 .cart-buttons-container {
-  display: flex;
-  gap: 20px;
-  justify-content: start;
   margin-top: 22px;
+  text-align: left;
 }
 
 @media (max-width: 480px) {
   .cart-buttons-container {
-    flex-direction: column;
-    gap: 14px;
     margin-top: 16px;
-    align-items: center;
+    text-align: center;
   }
 }
 
@@ -112,6 +108,8 @@
   cursor: pointer;
   transition: 0.3s ease;
   margin: 0;
+  margin-right: 16px;
+  display: inline-block;
 }
 
 .checkout-btn:disabled {
@@ -128,6 +126,7 @@
   .checkout-btn {
     padding: 11px 36px;
     font-size: 1.05rem;
+    margin-right: 12px;
   }
 }
 
@@ -137,6 +136,11 @@
     font-size: 1rem;
     width: 100%;
     max-width: 280px;
+    margin-right: 0;
+    margin-bottom: 12px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
@@ -153,6 +157,7 @@
   box-shadow: 0 2px 8px #ff7c7c44;
   transition: 0.5s ease;
   margin: 0;
+  display: inline-block;
 }
 
 @media (max-width: 768px) {
@@ -168,6 +173,9 @@
     font-size: 0.95rem;
     width: 100%;
     max-width: 280px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
@@ -267,7 +275,7 @@
   }
 }
 
-/* Bottoni dell'overlay - COLORI ORIGINALI */
+/* Bottoni dell'overlay */
 .buttonsDelete {
   display: flex;
   justify-content: center;
@@ -283,7 +291,7 @@
   }
 }
 
-/* Bottone Conferma (CIANO) */
+/* Bottone Conferma */
 .buttonsDelete button:first-child {
   font-size: 1.05rem;
   border: none;
@@ -302,7 +310,7 @@
   background: #5ee7e9;
 }
 
-/* Bottone Annulla (ROSSO) */
+/* Bottone Annulla */
 .buttonsDelete button:last-child {
   font-size: 1.05rem;
   border: none;
