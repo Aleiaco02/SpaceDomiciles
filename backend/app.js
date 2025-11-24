@@ -16,6 +16,8 @@ import invoicesRouter from "./routers/invoicesRouter.js";
 import planetsRouter from "./routers/planetsRouter.js";
 import paymentsRouter from "./routers/paymentsRouter.js";
 import createOrderRouter from "./routers/createOrderRouter.js";
+import braintreeRouter from "./routers/braintreeRouter.js";
+import invoiceCreateRouter from "./routers/invoiceCreateRouter.js";
 
 const app = express();
 
@@ -65,6 +67,13 @@ app.use("/api/payments", paymentsRouter);
 
 // router create order
 app.use("/api/create_order", createOrderRouter);
+
+// router braintree
+app.use("/api/payment", braintreeRouter);
+
+// router create-invoices
+app.use("/api/create-invoice", invoiceCreateRouter);
+
 
 // utilizzo middleware gestione errori
 app.use(errorsHandler);

@@ -1,7 +1,9 @@
-import {Router} from "express";
-import {index, showSingle, store, update, patch, destroy} from "../controllers/paymentsController.js";
+import { Router } from "express";
+import { index, showSingle, store, update, patch, destroy } from "../controllers/paymentsController.js";
 
 const router = Router();
+
+
 
 router.get("/", index);
 router.get("/:id", showSingle);
