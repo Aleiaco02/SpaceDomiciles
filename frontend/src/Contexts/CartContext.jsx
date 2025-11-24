@@ -48,10 +48,17 @@ export function CartProvider({ children }) {
   const onQtyChange = (id, newQty) => {
     setItems((current) => {
       const copy = { ...current };
+      const maxStock = copy[id].stock;
+      const safeQty = Math.min(newQty, maxStock);
+
       if (newQty <= 0) {
         delete copy[id];
+      }
+      if (newQty > maxStock) {
+        setToastMessage("Hai raggiunto la massima quantitá disponibile!");
+        setShowToast(true);
       } else {
-        copy[id] = { ...copy[id], quantity: newQty };
+        copy[id] = { ...copy[id], quantity: safeQty };
       }
       return copy;
     });
@@ -62,11 +69,12 @@ export function CartProvider({ children }) {
       value={{ items, addToCart, onQtyChange, loading, clearCart }}
     >
       {children}
-      <Toast 
-        show={showToast} 
-        message={toastMessage} 
-        onClose={() => setShowToast(false)} 
-      /> {/* <-- TOAST DENTRO IL PROVIDER */}
+      <Toast
+        show={showToast}
+        message={toastMessage}
+        onClose={() => setShowToast(false)}
+      />{" "}
+      {/* <-- TOAST DENTRO IL PROVIDER */}
     </CartContext.Provider>
   );
 }
