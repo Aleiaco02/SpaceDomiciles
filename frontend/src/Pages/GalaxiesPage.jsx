@@ -7,17 +7,10 @@ export default function GalaxiesPage() {
 
   const apiBaseUrl = "http://localhost:3000";
 
-  //   const galaxyRoutes = {
-  //     "Via Lattea": "milky-way",
-  //     Andromeda: "coming-soon",
-  //     Sombrero: "sombrero",
-  //   };
-
   useEffect(() => {
     fetch(apiBaseUrl + "/api/galaxies")
       .then((res) => res.json())
-      .then((data) => setGalaxies(data), console.log(galaxies))
-
+      .then((data) => setGalaxies(data))
       .catch((err) => console.error("Errore nel caricamento galassie:", err));
   }, []);
 
@@ -30,8 +23,12 @@ export default function GalaxiesPage() {
         </p>
         <div className="galaxies-cards-container">
           {galaxies.map((galaxy) => (
-            <Link to={`/galaxies/${galaxy.slug}`} key={galaxy.id}>
-              <div className="galaxy-card" key={galaxy.id}>
+            <Link 
+              to={`/galaxies/${galaxy.slug}`} 
+              key={galaxy.id}
+              className="galaxy-card-link" // <-- AGGIUNGI CLASSE
+            >
+              <div className="galaxy-card">
                 <img
                   src={`/img/${galaxy.image}`}
                   alt={galaxy.name}
