@@ -75,21 +75,24 @@
 .team-grid {
   margin-top: 30px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, 260px);
   gap: 32px;
+  justify-content: center;
 }
 
 /* CARD CON SFONDO FOTO */
 .team-card {
   position: relative;
+  width: 260px;
   height: 340px;
   border-radius: 18px;
   overflow: hidden;
-  background-size: cover;
+  background-size: 260px auto;
   background-repeat: no-repeat;
   box-shadow: 0 0 12px rgba(80, 152, 255, 0.22);
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
+
 
 .team-card:hover {
   transform: translateY(-8px);
