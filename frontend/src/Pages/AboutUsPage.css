@@ -15,12 +15,24 @@
   letter-spacing: 2px;
 }
 
+@media (max-width: 650px) {
+  .about-container h1 {
+    font-size: 45px;
+  }
+}
+
 .about-container h2 {
   font-size: 50px;
   margin-top: 40px;
   margin-bottom: 16px;
   color: #75eaff;
   text-align: center;
+}
+
+@media (max-width: 650px) {
+  .about-container h2  {
+    font-size: 30px;
+  }
 }
 
 .about-container p {
