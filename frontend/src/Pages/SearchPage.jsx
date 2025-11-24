@@ -179,7 +179,7 @@ export default function SearchPage() {
       {visibleCount < filteredPlanets.length && (
         <button
           className="buttonload"
-          onClick={() => setVisibleCount((v) => v + 10)}
+          onClick={() => setVisibleCount((v) => v + 8)}
         >
           Carica altri
         </button>
