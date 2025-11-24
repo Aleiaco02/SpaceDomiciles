@@ -38,6 +38,7 @@ export function DefaultProvider({ children }) {
         updateFilters,
         planets,
         defaultFilter,
+        apiBaseUrl,
       }}
     >
       {children}

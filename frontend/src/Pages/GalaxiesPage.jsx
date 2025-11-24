@@ -1,59 +1,51 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import "./GalaxiesPage.css";
 
 export default function GalaxiesPage() {
-    const [galaxies, setGalaxies] = useState([]);
+  const [galaxies, setGalaxies] = useState([]);
 
-    const apiBaseUrl = "http://localhost:3000";
+  const apiBaseUrl = "http://localhost:3000";
 
-    const galaxyRoutes = {
-        "Via Lattea": "milky-way",
-        "Andromeda": "coming-soon",
-        "Sombrero": "coming-soon"
-    };
+  //   const galaxyRoutes = {
+  //     "Via Lattea": "milky-way",
+  //     Andromeda: "coming-soon",
+  //     Sombrero: "sombrero",
+  //   };
 
-    useEffect(() => {
-        fetch(apiBaseUrl + "/api/galaxies")
-            .then((res) => res.json())
-            .then((data) => setGalaxies(data))
-            .catch((err) => console.error("Errore nel caricamento galassie:", err));
-    }, []);;
+  useEffect(() => {
+    fetch(apiBaseUrl + "/api/galaxies")
+      .then((res) => res.json())
+      .then((data) => setGalaxies(data), console.log(galaxies))
 
-    return (
-        <div className="galaxy-page pos-gal">
-            <div className="galaxies-section">
-                <h2 className="galaxies-section-title">Galassie disponibili</h2>
-                <p className="galaxies-section-desc">
-                    Scopri stelle, pianeti e sistemi abitabili
-                </p>
-                <div className="galaxies-cards-container">
-                    {galaxies.map((galaxy) => (
-                        <Link
-                            to={`/${galaxyRoutes[galaxy.name]}`}
-                            key={galaxy.id}
-                        >
-                            <div className="galaxy-card" key={galaxy.id}>
-                                <img
-                                    src={`/img/${galaxy.image}`}
-                                    alt={galaxy.name}
-                                    className="galaxy-card-image"
-                                />
-                                <div className="galaxy-card-title">
-                                    {galaxy.name}
-                                </div>
-                                <div className="galaxy-card-description">
-                                    {galaxy.description}
-                                </div>
-                            </div>
-                        </Link>
-                    ))}
+      .catch((err) => console.error("Errore nel caricamento galassie:", err));
+  }, []);
+
+  return (
+    <div className="galaxy-page pos-gal">
+      <div className="galaxies-section">
+        <h2 className="galaxies-section-title">Galassie disponibili</h2>
+        <p className="galaxies-section-desc">
+          Scopri stelle, pianeti e sistemi abitabili
+        </p>
+        <div className="galaxies-cards-container">
+          {galaxies.map((galaxy) => (
+            <Link to={`/galaxies/${galaxy.slug}`} key={galaxy.id}>
+              <div className="galaxy-card" key={galaxy.id}>
+                <img
+                  src={`/img/${galaxy.image}`}
+                  alt={galaxy.name}
+                  className="galaxy-card-image"
+                />
+                <div className="galaxy-card-title">{galaxy.name}</div>
+                <div className="galaxy-card-description">
+                  {galaxy.description}
                 </div>
-            </div>
+              </div>
+            </Link>
+          ))}
         </div>
-    );
-
-
-
+      </div>
+    </div>
+  );
 }

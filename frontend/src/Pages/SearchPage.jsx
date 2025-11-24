@@ -123,7 +123,7 @@ export default function SearchPage() {
         {filtered.length > 0 ? (
           filtered.map((planet) => (
             <Link
-              to={`/milky-way/${planet.slug}`}
+              to={`/galaxies/${planet.galaxy_slug}/${planet.slug}`}
               key={planet.id}
               className="mw-card-search"
             >

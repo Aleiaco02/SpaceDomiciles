@@ -35,7 +35,6 @@ export default function HomePage() {
       setPlanet1(p1.data);
       setPlanet2(p2.data);
       setPlanet3(p3.data);
-
     } catch (error) {
       console.log(error);
     }
@@ -141,7 +140,7 @@ export default function HomePage() {
 
         <div className="container-galassie">
           <div className="cards-container-2">
-            <Link to="/milky-way" className="glass-card-2">
+            <Link to="/galaxies/milky-way" className="glass-card-2">
               <img src={milkyWay} alt="Via Lattea" className="card-image" />
 
               <GradientText className="card-title">
@@ -152,7 +151,7 @@ export default function HomePage() {
           </div>
 
           <div className="cards-container-2">
-            <Link to="/coming-soon" className="glass-card-2">
+            <Link to="/galaxies/andromeda" className="glass-card-2">
               <img src={andromeda} alt="Andromeda" className="card-image" />
 
               <GradientText className="card-title">
@@ -163,8 +162,12 @@ export default function HomePage() {
           </div>
 
           <div className="cards-container-2">
-            <Link to="/coming-soon" className="glass-card-2">
-              <img src={sombrero} alt="Sombrero" className="card-image card-image-sombrero" />
+            <Link to="/galaxies/sombrero" className="glass-card-2">
+              <img
+                src={sombrero}
+                alt="Sombrero"
+                className="card-image card-image-sombrero"
+              />
 
               <GradientText className="card-title">
                 <h2>Esplora Sombrero</h2>
@@ -177,10 +180,12 @@ export default function HomePage() {
         <h2 className="classe">I PIANETI PIU' POPOLARI</h2>
 
         <div className="container-galassie">
-
           {planet1 && (
             <div className="cards-container-2">
-              <Link to={`milky-way/${planet1.slug}`} className="glass-card-2">
+              <Link
+                to={`/galaxies/${planet1.galaxy_slug}/${planet1.slug}`}
+                className="glass-card-2"
+              >
                 <img src={planet1.image} className="card-image" />
                 <GradientText className="card-title">
                   <h2>{planet1.name}</h2>
@@ -192,7 +197,10 @@ export default function HomePage() {
 
           {planet2 && (
             <div className="cards-container-2">
-              <Link to={`milky-way/${planet2.slug}`} className="glass-card-2">
+              <Link
+                to={`/galaxies/${planet2.galaxy_slug}/${planet2.slug}`}
+                className="glass-card-2"
+              >
                 <img
                   src={planet2.image}
                   className="card-image pianeta-piccolo"
@@ -207,7 +215,10 @@ export default function HomePage() {
 
           {planet3 && (
             <div className="cards-container-2">
-              <Link to={`milky-way/${planet3.slug}`} className="glass-card-2">
+              <Link
+                to={`/galaxies/${planet3.galaxy_slug}/${planet3.slug}`}
+                className="glass-card-2"
+              >
                 <img
                   src={planet3.image}
                   className="card-image pianeta-piccolo"
@@ -219,7 +230,6 @@ export default function HomePage() {
               </Link>
             </div>
           )}
-
         </div>
       </div>
     </div>

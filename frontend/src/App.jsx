@@ -31,15 +31,17 @@ function App() {
             <Routes>
               <Route element={<DefaultLayout />}>
                 <Route index element={<HomePage />} />
-                <Route path="/milky-way" element={<MilkyWayPage />} />
-                <Route path="/milky-way/:slug" element={<Planet />} />
+                <Route path="galaxies">
+                  <Route index element={<GalaxiesPage />} />
+                  <Route path=":galaxySlug" element={<MilkyWayPage />} />
+                  <Route path=":galaxySlug/:planetSlug" element={<Planet />} />
+                </Route>
                 <Route path="/about-us" element={<AboutUsPage />} />
                 <Route path="/contact-us" element={<ContactUs />} />
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="/coming-soon" element={<ComingSoon />} />
                 <Route path="/checkout" element={<CheckOutPage />} />
-                <Route path="/galaxies" element={<GalaxiesPage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Route>
             </Routes>
