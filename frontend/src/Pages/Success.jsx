@@ -1,21 +1,20 @@
 import galaxyIcon from "/img/galaxy-icon.png";
 import { Link } from "react-router-dom";
+import "./Success.css";
 
 const Success = () => {
   return (
-    <div className="galaxy-page">
+    <div className="galaxy-page thanks">
       <h1
         style={{
           marginTop: "125px",
-          textAlign: "center",
-          fontSize: "2.6rem",
           lineHeight: "1.3",
           marginBottom: "70px",
         }}
       >
         🌌 Ordine Confermato 🌌
         <br />
-        🚀 Benvenuto nell’Universo di SpaceDomiciles 🚀
+        Benvenuto nell’Universo di SpaceDomiciles
       </h1>
 
       <p
