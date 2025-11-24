@@ -106,13 +106,6 @@ const Planet = () => {
     findClosePlanets();
   }, [planets, nextId, prevId]);
 
-  // Funzione da passare alle card: aggiunge al carrello + mostra il modal
-  const handleAddToCartAndModal = (packageProps) => {
-    addToCart(packageProps);
-    setModalPackageName(packageProps.name);
-    setShowModal(true);
-  };
-
   const handleGoToCart = () => {
     setShowModal(false);
     redirect("/cart");
@@ -193,7 +186,7 @@ const Planet = () => {
                     {...stack}
                     planet_name={planet.name}
                     planet_image={planet.image}
-                    onAddToCart={handleAddToCartAndModal}
+                    onAddToCart={handleAddToCart}
                   />
                 ))
               ) : (
