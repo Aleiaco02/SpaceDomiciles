@@ -1,12 +1,8 @@
 import { useDefaultContext } from "../Contexts/DefaultContext";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/Search.css";
 export default function SearchPage() {
-  // dati e funzioni dal context
-  // const { handleSubmit, UserTitle, setUserTitle } =
-  //   useDefaultContext();
-
   const { filters, updateFilters, defaultFilter } = useDefaultContext();
 
   const apiBaseUrl = "http://localhost:3000";
@@ -29,6 +25,22 @@ export default function SearchPage() {
         p.planet_size >= filters.sizeMin && p.planet_size <= filters.sizeMax
     )
     .filter((p) => p.surface_available >= filters.surfaceAvailable);
+
+  // query url
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [input, setInput] = useState("");
+
+  useEffect(() => {
+    const query = searchParams.get("q") || "";
+    setInput(query);
+  }, [searchParams]);
+
+  function handleInput(e) {
+    setInput(e.target.value);
+
+    // aggiorna la query senza submit
+    setSearchParams({ q: e.target.value });
+  }
   return (
     <div className="galaxy-page pos">
       {/* Sezione filtri */}
@@ -41,9 +53,10 @@ export default function SearchPage() {
             name="title"
             type="search"
             placeholder="Cerca pianeta..."
-            value={filters.search}
+            value={input}
             onChange={(e) => {
               updateFilters({ search: e.target.value });
+              handleInput(e);
             }}
             className="search-input"
           />
