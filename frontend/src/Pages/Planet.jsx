@@ -117,6 +117,10 @@ const Planet = () => {
     setShowModal(false);
     redirect("/cart");
   };
+  // Funzione da passare alle card: aggiunge al carrello
+  const handleAddToCart = (packageProps) => {
+    addToCart(packageProps);
+  };
 
   const handleContinueShopping = () => setShowModal(false);
 
