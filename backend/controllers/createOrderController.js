@@ -5,12 +5,12 @@
 // 1) crea la invoice
 // 2) crea le righe in invoices_stack
 // 3) genera i certificati
-// 4) invia UNA sola email al cliente
+// 4) invia UNA sola email al cliente (layout galattico)
 // 5) invia email al venditore
 // ==========================================================
 
 import connection from "../data/db.js";
-import {sendAllCertificatesEmail, sendVendorEmail} from "../utils/emailService.js";
+import { sendAllCertificatesEmail, sendVendorEmail } from "../utils/emailService.js";
 
 // ----------------------------------------------------------
 // Utility: genera codice univoco per i certificati
@@ -169,18 +169,50 @@ export async function createOrder(req, res) {
     }
 
     // ------------------------------------------------------
-    // INVIA UNA SOLA EMAIL CON TUTTI I CERTIFICATI
+    // PRENDI I DETTAGLI (STACK + PIANETI) PER L'EMAIL
     // ------------------------------------------------------
-    await sendAllCertificatesEmail(invoice_email, certificates);
+    const sqlItemsDetail = `
+      SELECT 
+        invoices_stack.quantity,
+        invoices_stack.price,
+        stacks.name AS stack_name,
+        planets.name AS planet_name
+      FROM invoices_stack
+      JOIN stacks ON stacks.id = invoices_stack.stack_id
+      JOIN planets ON planets.id = stacks.id_planet
+      WHERE invoices_stack.invoice_id = ?
+    `;
+
+    const itemsDetail = await query(sqlItemsDetail, [invoice_id]);
+
+    // ------------------------------------------------------
+    // PREPARA orderData PER L'EMAIL
+    // ------------------------------------------------------
+    const orderData = {
+      order_id: invoice_id,
+      customer_name: "Cliente",    // puoi cambiarlo quando hai il nome reale
+      customer_email: invoice_email,
+      date: new Date().toLocaleString("it-IT"),
+      total_price: total_amount,
+      payment_method: "N/A",
+      shipping_address,
+      billing_address: invoice_address
+    };
+
+    // ------------------------------------------------------
+    // INVIA EMAIL GALATTICA AL CLIENTE
+    // ------------------------------------------------------
+    await sendAllCertificatesEmail(
+      invoice_email,
+      certificates,
+      orderData,
+      itemsDetail
+    );
 
     // ------------------------------------------------------
     // INVIA EMAIL AL VENDITORE
     // ------------------------------------------------------
-    await sendVendorEmail({
-      order_id: invoice_id,
-      customer_email: invoice_email,
-      total_price: total_amount
-    });
+    await sendVendorEmail(orderData, itemsDetail);
 
     // ------------------------------------------------------
     // RISPOSTA FINALE
