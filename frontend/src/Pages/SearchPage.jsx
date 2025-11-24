@@ -1,10 +1,11 @@
-import { useDefaultContext } from "../Contexts/DefaultContext";
 import { Link, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/Search.css";
+import useFilteredList from "../Components/MicroComponents/useFilteredList";
 export default function SearchPage() {
-  const { filters, updateFilters, defaultFilter } = useDefaultContext();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [searchList, setSearchList] = useState("");
+
   const apiBaseUrl = "http://localhost:3000";
 
   //valori dell'url
@@ -54,6 +55,14 @@ export default function SearchPage() {
     .filter((p) => p.temperature_max <= tempMax)
     .filter((p) => p.planet_size >= sizeMin && p.planet_size <= sizeMax)
     .filter((p) => p.surface_available >= surfaceAvailable);
+
+  // display di x numero di pianeti
+  const {
+    displayed: displayedPlanets,
+    filtered: filteredPlanets,
+    visibleCount,
+    setVisibleCount,
+  } = useFilteredList(filtered, search, 8);
 
   return (
     <div className="galaxy-page pos">
@@ -136,35 +145,45 @@ export default function SearchPage() {
       </section>
       <div className="mw-cards-grid">
         {/* display di tutti i pianeti a meno che non venga submitato qualcosa */}
-        {filtered.length > 0 ? (
-          filtered.map((planet) => (
-            <Link
-              to={`/galaxies/${planet.galaxy_slug}/${planet.slug}`}
-              key={planet.id}
-              className="mw-card-search"
-            >
-              <div key={planet.id}>
-                <div className="mw-explore">
-                  <h3>{planet.name}</h3>
+        {filteredPlanets.length > 0 ? (
+          displayedPlanets.map((planet) => (
+            <>
+              <Link
+                to={`/galaxies/${planet.galaxy_slug}/${planet.slug}`}
+                key={planet.id}
+                className="mw-card-search"
+              >
+                <div key={planet.id}>
+                  <div className="mw-explore">
+                    <h3>{planet.name}</h3>
+                  </div>
+                  <div
+                    className={`mw-planet-img mw-img-${planet.name
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")}`}
+                    style={{ backgroundImage: `url(${planet.image})` }}
+                  ></div>
+                  <div className="mw-bottom">
+                    <p className="mw-desc">{planet.description}</p>
+                    <div className="mw-divider"></div>
+                    <div className="mw-explore">Esplora il pianeta →</div>
+                  </div>
                 </div>
-                <div
-                  className={`mw-planet-img mw-img-${planet.name
-                    .toLowerCase()
-                    .replace(/\s+/g, "-")}`}
-                  style={{ backgroundImage: `url(${planet.image})` }}
-                ></div>
-                <div className="mw-bottom">
-                  <p className="mw-desc">{planet.description}</p>
-                  <div className="mw-divider"></div>
-                  <div className="mw-explore">Esplora il pianeta →</div>
-                </div>
-              </div>
-            </Link>
+              </Link>
+            </>
           ))
         ) : (
           <p>Pianeta non trovato, inserisci il nome di un pianeta</p>
         )}
       </div>
+      {visibleCount < filteredPlanets.length && (
+        <button
+          className="buttonload"
+          onClick={() => setVisibleCount((v) => v + 8)}
+        >
+          Carica altri
+        </button>
+      )}
     </div>
   );
 }
