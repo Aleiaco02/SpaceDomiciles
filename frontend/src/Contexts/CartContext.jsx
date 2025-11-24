@@ -53,6 +53,7 @@ export function CartProvider({ children }) {
 
       if (newQty <= 0) {
         delete copy[id];
+        return copy;
       }
       if (newQty > maxStock) {
         setToastMessage("Hai raggiunto la massima quantitá disponibile!");
