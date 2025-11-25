@@ -73,6 +73,7 @@ function validatePlanet(data) {
 
 // INDEX – lista pianeti
 export function index(req, res) {
+
   const sql = `SELECT 
     planets.*, galaxies.slug as galaxy_slug
 FROM
@@ -83,6 +84,62 @@ FROM
   connection.query(sql, (err, results) => {
     if (err) return res.status(500).json({ error: "Database error" });
 
+    results.map((x) => {
+      if (x.image && x.image.search("http") === -1) {
+        x.image = x.image === "" ? null : req.imagePath + x.image;
+      }
+    });
+
+    res.json(results);
+  });
+}
+
+// INDEX – lista pianeti filtrati
+export function indexFilter(req, res) {
+
+  // Leggo i filtri dalla query (arrivano come stringhe)
+  const {
+    search = "",
+    temperatureMin = -Infinity,
+    temperatureMax = Infinity,
+    sizeMin = -Infinity,
+    sizeMax = Infinity,
+    price = Infinity
+  } = req.query;
+
+  const sql = `SELECT DISTINCT p.*
+    FROM planets p
+    JOIN stacks s ON s.id_planet = p.id
+    WHERE p.name LIKE CONCAT('%', ?, '%')
+      AND p.temperature_min >= ? 
+      AND p.temperature_max <= ?
+      AND p.planet_size BETWEEN ? AND ?
+      AND s.price <= ?`;
+
+  // ripulisco la stringa search
+  function convertSearch(str) {
+    str = str.trimStart();
+    if (str.length === 0) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
+
+  // Converto i parametri numerici (req.query li porta come stringhe)
+  const params = [
+    convertSearch(search),
+    Number(temperatureMin),
+    Number(temperatureMax),
+    Number(sizeMin),
+    Number(sizeMax),
+    Number(price)
+  ];
+
+  console.log(params);
+
+  connection.query(sql, params, (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: "Database error" });
+    }
     results.map((x) => {
       if (x.image && x.image.search("http") === -1) {
         x.image = x.image === "" ? null : req.imagePath + x.image;
