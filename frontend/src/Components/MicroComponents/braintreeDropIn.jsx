@@ -1,116 +1,114 @@
-// src/Components/MicroComponents/braintreeDropIn.jsx
-
 import { useEffect, useRef, useState } from "react";
 import dropin from "braintree-web-drop-in";
 
 export default function BraintreeDropIn({ amount, invoiceId, onSuccess, onError }) {
-    const instanceRef = useRef(null);
-    const containerRef = useRef(null);
-    const [loading, setLoading] = useState(true);
+  const instanceRef = useRef(null);
+  const containerRef = useRef(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        let isCancelled = false;
+  useEffect(() => {
+    let isCancelled = false;
 
-        async function init() {
-            try {
-                setLoading(true);
+    async function init() {
+      try {
+        setLoading(true);
 
-                if (!containerRef.current) return;
-                containerRef.current.innerHTML = "";
+        if (!containerRef.current) return;
+        containerRef.current.innerHTML = "";
 
-                const res = await fetch("http://localhost:3000/api/payment/token");
-                const data = await res.json();
+        const res = await fetch("http://localhost:3000/api/payment/token");
+        const data = await res.json();
 
-                if (!res.ok) {
-                    throw new Error(data.error || "Errore ottenendo il token di pagamento");
-                }
-
-                if (isCancelled) return;
-
-                const instance = await dropin.create({
-                    authorization: data.clientToken,
-                    container: containerRef.current,
-                    paypal: {
-                        flow: "checkout",
-                        amount,
-                        currency: "EUR",
-                    },
-                });
-
-                instanceRef.current = instance;
-            } catch (err) {
-                console.error("Errore creazione Drop-In:", err);
-                onError?.(err);
-            } finally {
-                if (!isCancelled) setLoading(false);
-            }
+        if (!res.ok) {
+          throw new Error(data.error || "Errore ottenendo il token di pagamento");
         }
 
-        init();
+        if (isCancelled) return;
 
-        return () => {
-            isCancelled = true;
-            if (instanceRef.current) {
-                instanceRef.current.teardown().catch(() => { });
-            }
-        };
-    }, [amount]);
+        const instance = await dropin.create({
+          authorization: data.clientToken,
+          container: containerRef.current,
+          paypal: {
+            flow: "checkout",
+            amount,
+            currency: "EUR",
+          },
+          card: { cardholderName: true },
+        });
 
-    const handlePayment = async () => {
-        if (!instanceRef.current) return;
+        instanceRef.current = instance;
+      } catch (err) {
+        console.error("Errore creazione Drop-In:", err);
+        onError?.(err);
+      } finally {
+        if (!isCancelled) setLoading(false);
+      }
+    }
 
-        if (!invoiceId) {
-            onError?.(new Error("Invoice mancante: conferma prima l'ordine."));
-            return;
-        }
+    init();
 
-        try {
-            const payload = await instanceRef.current.requestPaymentMethod();
-            const nonce = payload.nonce;
-
-            // rilevo il metodo di pagamento
-            const method =
-                payload.type === "PayPalAccount" ? "paypal" : "credit_card";
-
-            const res = await fetch("http://localhost:3000/api/payment/checkout", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    amount,
-                    nonce,
-                    invoice_id: invoiceId, // <-- NOME UGUALE AL BACKEND
-                    method,                // <-- 'credit_card' o 'paypal'
-                }),
-            });
-
-            const data = await res.json();
-
-            if (!res.ok || data.success === false) {
-                const error = new Error(data.error || "Errore nel pagamento");
-                error.details = data;
-                onError?.(error);
-                return;
-            }
-
-            onSuccess?.(data);
-        } catch (err) {
-            console.error(err);
-            onError?.(err);
-        }
+    return () => {
+      isCancelled = true;
+      if (instanceRef.current) {
+        instanceRef.current.teardown().catch(() => {});
+      }
     };
+  }, [amount, onError]);
 
-    return (
-        <div style={{ width: "100%" }}>
-            <div ref={containerRef} id="bt-container" />
+  const handlePayment = async () => {
+    if (!instanceRef.current) return;
 
-            <button
-                className="checkout-btn"
-                disabled={loading}
-                onClick={handlePayment}
-                style={{ marginTop: "15px" }}
-            >
-                {loading ? "Caricamento pagamento..." : `Paga €${amount}`}
-            </button>
-        </div>
-    );
+    if (!invoiceId) {
+      onError?.(new Error("Invoice mancante: conferma prima l'ordine."));
+      return;
+    }
+
+    try {
+      const payload = await instanceRef.current.requestPaymentMethod();
+      const nonce = payload.nonce;
+
+      const method = payload.type === "PayPalAccount" ? "paypal" : "credit_card";
+
+      const res = await fetch("http://localhost:3000/api/payment/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount,
+          nonce,
+          invoice_id: invoiceId,
+          method,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || data.success === false) {
+        const error = new Error(data.error || "Errore nel pagamento");
+        error.details = data;
+        console.error("Errore pagamento:", data);
+        onError?.(error);
+        return;
+      }
+
+      onSuccess?.(data);
+    } catch (err) {
+      console.error("Errore richiesta metodo di pagamento:", err);
+      onError?.(err);
+    }
+  };
+
+  return (
+    <div style={{ width: "100%" }}>
+      <div ref={containerRef} id="bt-container" />
+
+      <button
+        className="checkout-btn"
+        disabled={loading}
+        onClick={handlePayment}
+        style={{ marginTop: "15px" }}
+      >
+        {loading ? "Caricamento pagamento..." : `Paga €${amount}`}
+      </button>
+    </div>
+  );
 }

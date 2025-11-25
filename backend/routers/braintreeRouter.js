@@ -4,66 +4,106 @@ import connection from "../data/db.js";
 
 const router = express.Router();
 
-// GET TOKEN
+// --------------------------------------------------
+// GET /api/payment/token
+// --------------------------------------------------
 router.get("/token", async (req, res) => {
-    try {
-        const { clientToken } = await gateway.clientToken.generate({});
-        res.json({ clientToken });
-    } catch (error) {
-        res.status(500).json({ error: "Errore generazione token" });
-    }
+  try {
+    const { clientToken } = await gateway.clientToken.generate({});
+    return res.json({ clientToken });
+  } catch (error) {
+    console.error("Errore generazione token Braintree:", error);
+    return res.status(500).json({ success: false, error: "Errore generazione token" });
+  }
 });
 
-// CHECKOUT
+// --------------------------------------------------
+// POST /api/payment/checkout
+// Body: { amount, nonce, invoice_id, method? }
+// --------------------------------------------------
 router.post("/checkout", async (req, res) => {
-    const { amount, nonce, invoice_id, method } = req.body;
+  const { amount, nonce, invoice_id, method } = req.body;
 
-    if (!amount || !nonce || !invoice_id) {
-        return res.status(400).json({ error: "Dati mancanti" });
+  if (!amount || !nonce || !invoice_id) {
+    return res.status(400).json({
+      success: false,
+      error: "Dati mancanti: amount, nonce e invoice_id sono obbligatori",
+    });
+  }
+
+  try {
+    // ------------------------------------------------
+    // 1) Chiamata a Braintree
+    // ------------------------------------------------
+    const sale = await gateway.transaction.sale({
+      amount: amount.toString(),  
+      paymentMethodNonce: nonce,
+      options: {
+        submitForSettlement: true,
+      },
+    });
+
+    console.log("Risposta Braintree sale:", JSON.stringify(sale, null, 2));
+
+    if (!sale.success) {
+      return res.status(400).json({
+        success: false,
+        error: sale.message || "Transazione rifiutata",
+        details: sale.errors ? sale.errors.deepErrors() : [],
+      });
     }
 
-    try {
-        const sale = await gateway.transaction.sale({
-            amount,
-            paymentMethodNonce: nonce,
-            options: { submitForSettlement: true },
-        });
+    // ------------------------------------------------
+    // 2) Transazione OK → salvo pagamento nel DB
+    // ------------------------------------------------
+    const transactionId = sale.transaction.id;
 
-        if (!sale.success) {
-            return res
-                .status(400)
-                .json({ success: false, error: sale.message });
-        }
+    // Metodo di pagamento:
+    let paymentMethod = method || "credit_card";
 
-        const transactionId = sale.transaction.id;
+    const instrument = sale.transaction.paymentInstrumentType;
+    if (!method && instrument) {
+      if (instrument.toLowerCase().includes("paypal")) {
+        paymentMethod = "paypal";
+      } else if (instrument.toLowerCase().includes("card")) {
+        paymentMethod = "credit_card";
+      }
+    }
 
-        // se non arriva method, di default usiamo "credit_card"
-        const paymentMethod = method || "credit_card";
-
-        const sql = `
+    const sql = `
       INSERT INTO payments (invoice_id, amount, method, status, transaction_id, paid_at)
       VALUES (?, ?, ?, ?, ?, NOW())
     `;
 
-        connection.query(
-            sql,
-            [invoice_id, amount, paymentMethod, "completed", transactionId],
-            (err, result) => {
-                if (err) {
-                    console.log(err);
-                    return res.status(500).json({ error: "Errore DB", details: err });
-                }
+    connection.query(
+      sql,
+      [invoice_id, amount, paymentMethod, "completed", transactionId],
+      (err, result) => {
+        if (err) {
+          console.error("Errore DB payments:", err);
+          return res.status(500).json({
+            success: false,
+            error: "Errore salvataggio pagamento",
+            details: err,
+          });
+        }
 
-                res.json({
-                    success: true,
-                    transactionId,
-                    payment_id: result.insertId,
-                });
-            }
-        );
-    } catch (err) {
-        res.status(500).json({ error: "Errore transazione", details: err });
-    }
+        return res.json({
+          success: true,
+          transactionId,
+          payment_id: result.insertId,
+          method: paymentMethod,
+        });
+      }
+    );
+  } catch (err) {
+    console.error("Errore transazione Braintree:", err);
+    return res.status(500).json({
+      success: false,
+      error: "Errore transazione",
+      details: err,
+    });
+  }
 });
 
 export default router;
