@@ -185,7 +185,7 @@
 .checkout-btn {
   margin-top: 22px;
   padding: 11px 40px;
-  background: linear-gradient(135deg, #40e6f9, #7ffcff);
+  /* background: linear-gradient(135deg, #40e6f9, #7ffcff); */
   color: #191831;
   font-weight: 600;
   border: none;
@@ -252,13 +252,13 @@
 .checkout-btn:hover {
   transform: scale(1.05);
   transition: 0.5s ease;
-  background: linear-gradient(135deg, #4ed5e3, #41d4d7);
+  background: linear-gradient(135deg, #36e9fd, #41d4d7);
 }
 
 .back-to-cart-btn:hover {
   transform: scale(1.05);
   transition: 0.5s ease;
-  background: linear-gradient(135deg, #4ed5e3, #41d4d7);
+  /* background: linear-gradient(135deg, #4ed5e3, #41d4d7); */
 }
 
 .error {

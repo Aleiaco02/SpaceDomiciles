@@ -3,9 +3,8 @@ import axios from "axios";
 
 // import di router-dom per link
 import { Link, useParams, useNavigate } from "react-router-dom";
-// useParams mi permette di leggere il parametro dinamico per capire quale pianeta devo caricare
 
-// import state e effetc
+// import state e effect
 import { useState, useEffect } from "react";
 
 // importo funzionalità carrello
@@ -33,10 +32,6 @@ const Planet = () => {
 
   // Funzionalità carrello
   const { addToCart } = useCart();
-
-  // Stato popup overlay
-  const [showModal, setShowModal] = useState(false);
-  const [modalPackageName, setModalPackageName] = useState("");
 
   // Funzioni per chiamate API
   const fecthPlanet = () => {
@@ -91,8 +86,35 @@ const Planet = () => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth", // oppure "auto"
+      behavior: "smooth",
     });
+  };
+
+  // ✨ MODIFICATO: Solo aggiunge al carrello, NON decrementa lo stock ✨
+  const handleAddToCart = (packageProps) => {
+    if (packageProps.stock <= 0) return;
+
+    // Solo aggiungi al carrello
+    addToCart(packageProps);
+  };
+
+  // ✨ NUOVA FUNZIONE: Da chiamare dopo il checkout per confermare l'acquisto ✨
+  const completePurchase = async (cartItems) => {
+    try {
+      // Per ogni item nel carrello, decrementa lo stock sul backend
+      for (const item of cartItems) {
+        await axios.post(`http://localhost:3000/api/stacks/${item.id}/purchase`, {
+          quantity: 1
+        });
+      }
+      
+      // Ricarica gli stacks aggiornati dal database
+      fetchStack();
+      
+      console.log("Acquisto completato con successo!");
+    } catch (error) {
+      console.error("Errore durante l'acquisto:", error);
+    }
   };
 
   // Effetti dati
@@ -105,17 +127,6 @@ const Planet = () => {
   useEffect(() => {
     findClosePlanets();
   }, [planets, nextId, prevId]);
-
-  const handleGoToCart = () => {
-    setShowModal(false);
-    redirect("/cart");
-  };
-  // Funzione da passare alle card: aggiunge al carrello
-  const handleAddToCart = (packageProps) => {
-    addToCart(packageProps);
-  };
-
-  const handleContinueShopping = () => setShowModal(false);
 
   // Render completo
   return (
@@ -174,7 +185,7 @@ const Planet = () => {
           </div>
         </section>
 
-        {/* Packages Section */}
+        {/* ✨ Packages Section - USA stacks dal database ✨ */}
         <section className="packages-section">
           <div className="cosmic-container">
             <h2 className="section-title">Scegli il Tuo Pacchetto</h2>

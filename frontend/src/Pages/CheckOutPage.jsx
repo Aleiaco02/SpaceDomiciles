@@ -3,14 +3,18 @@ import { useCart } from "../Contexts/CartContext";
 import { useNavigate } from "react-router-dom";
 import "./Checkout.css";
 import BraintreeDropIn from "../Components/MicroComponents/braintreeDropIn";
+import axios from "axios"; 
+
 
 export default function CheckOutPage() {
   const { items, clearCart } = useCart();
   const navigate = useNavigate();
 
+
   const [errors, setErrors] = useState({});
   const [invoiceId, setInvoiceId] = useState(null);
   const [creatingInvoice, setCreatingInvoice] = useState(false);
+
 
   // SHIPPING
   const [shipping, setShipping] = useState({
@@ -25,6 +29,7 @@ export default function CheckOutPage() {
     provincia: "",
     paese: "",
   });
+
 
   // BILLING
   const [billing, setBilling] = useState({
@@ -44,9 +49,11 @@ export default function CheckOutPage() {
     sdi: "",
   });
 
+
   const [wantInvoice, setWantInvoice] = useState(false);
   const [sameAsShipping, setSameAsShipping] = useState(false);
   const [isCompany, setIsCompany] = useState(false);
+
 
   // -------------------------------------
   // HANDLERS
@@ -54,12 +61,15 @@ export default function CheckOutPage() {
   const handleShipping = (e) =>
     setShipping({ ...shipping, [e.target.name]: e.target.value });
 
+
   const handleBilling = (e) =>
     setBilling({ ...billing, [e.target.name]: e.target.value });
+
 
   const handleSameAsShipping = () => {
     const v = !sameAsShipping;
     setSameAsShipping(v);
+
 
     if (v) {
       setBilling({
@@ -78,19 +88,23 @@ export default function CheckOutPage() {
     }
   };
 
+
   // -------------------------------------
   // VALIDAZIONE
   // -------------------------------------
   const validateForm = () => {
     let newErrors = {};
 
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[0-9+ ]{7,20}$/;
     const capRegex = /^[0-9]{5}$/;
 
+
     const check = (key, value, message = "Campo obbligatorio") => {
       if (!value.trim()) newErrors[key] = message;
     };
+
 
     // ✔ SHIPPING SEMPRE VALIDATO
     check("shipping_nome", shipping.nome);
@@ -105,6 +119,7 @@ export default function CheckOutPage() {
     if (!capRegex.test(shipping.CAP)) newErrors.shipping_CAP = "CAP non valido";
     check("shipping_provincia", shipping.provincia);
     check("shipping_paese", shipping.paese);
+
 
     // ❗ BILLING VALIDATO SOLO SE wantInvoice === true
     if (wantInvoice) {
@@ -121,6 +136,7 @@ export default function CheckOutPage() {
       check("billing_provincia", billing.provincia);
       check("billing_paese", billing.paese);
 
+
       // ✔ VALIDAZIONE AZIENDA SOLO SE isCompany === true
       if (isCompany) {
         check("billing_azienda", billing.azienda);
@@ -133,9 +149,11 @@ export default function CheckOutPage() {
       }
     }
 
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
 
   // -------------------------------------
   // TOTALE
@@ -147,28 +165,53 @@ export default function CheckOutPage() {
   const shippingCost = totale >= 1500 ? 0 : 4.99;
   const totaleFinale = totale + shippingCost;
 
+
+ 
+  // Decrementa lo stock sul database 
+  
+  const updateStockAfterPurchase = async () => {
+    try {
+      // Per ogni item nel carrello, decrementa lo stock
+      for (const item of Object.values(items)) {
+        await axios.post(`http://localhost:3000/api/stacks/${item.id}/purchase`, {
+          quantity: item.quantity
+        });
+      }
+      console.log("Stock aggiornato con successo!");
+    } catch (error) {
+      console.error("Errore aggiornamento stock:", error);
+      // Non blocchiamo l'ordine se fallisce lo stock update
+    }
+  };
+
+
   // -------------------------------------
   // CREA INVOICE
   // -------------------------------------
   const handleCreateOrder = async () => {
     if (!validateForm()) return;
 
+
     try {
       setCreatingInvoice(true);
 
+
       // 🚚 SHIPPING ADDRESS STRING
       const shippingAddress = `${shipping.indirizzo} ${shipping.civico}, ${shipping.città} ${shipping.CAP}, ${shipping.provincia}, ${shipping.paese}`;
+
 
       // 🧾 BILLING ADDRESS STRING
       const billingAddress = wantInvoice
         ? `${billing.indirizzo} ${billing.civico}, ${billing.città} ${billing.CAP}, ${billing.provincia}, ${billing.paese}`
         : shippingAddress;
 
+
       // 🪐 PREPARO GLI ITEMS PER IL BACKEND
       const itemsArray = Object.values(items).map((item) => ({
         stack_id: item.id,
         quantity: item.quantity,
       }));
+
 
       // 📡 CHIAMATA AL BACKEND
       const res = await fetch("http://localhost:3000/api/create_order", {
@@ -182,13 +225,16 @@ export default function CheckOutPage() {
         }),
       });
 
+
       const data = await res.json();
+
 
       if (!res.ok) {
         console.error("Errore create_order:", data);
         alert("Errore creazione ordine");
         return;
       }
+
 
       // 🔑 SALVO invoice_id per il pagamento
       setInvoiceId(data.invoice.id);
@@ -200,6 +246,22 @@ export default function CheckOutPage() {
     }
   };
 
+
+  
+ //Callback successo pagamento
+ 
+  const handlePaymentSuccess = async () => {
+    // 1️⃣ Aggiorna lo stock sul database
+    await updateStockAfterPurchase();
+    
+    // 2️⃣ Svuota il carrello
+    clearCart();
+    
+    // 3️⃣ Vai alla pagina di successo
+    navigate("/success");
+  };
+
+
   // -------------------------------------
   // RENDER
   // -------------------------------------
@@ -208,10 +270,12 @@ export default function CheckOutPage() {
       <div className="checkout-page">
         <h2>Checkout ordine</h2>
 
+
         <div className="checkout-row">
           {/* SHIPPING */}
           <div className="checkout-panel">
             <h3>Dati di spedizione</h3>
+
 
             <form>
               {Object.keys(shipping).map((key) => (
@@ -228,6 +292,7 @@ export default function CheckOutPage() {
                 </div>
               ))}
             </form>
+
 
             <label>
               <input
@@ -255,6 +320,7 @@ export default function CheckOutPage() {
             </label>
           </div>
 
+
           {/* BILLING */}
           <div
             className="checkout-panel"
@@ -264,6 +330,7 @@ export default function CheckOutPage() {
             }}
           >
             <h3>Dati di fatturazione</h3>
+
 
             <form>
               {Object.keys(billing).map((key) => {
@@ -275,7 +342,9 @@ export default function CheckOutPage() {
                 ].includes(key);
                 const mustShow = wantInvoice && (!isCompanyField || isCompany);
 
+
                 if (!mustShow) return null;
+
 
                 return (
                   <div key={key}>
@@ -296,6 +365,7 @@ export default function CheckOutPage() {
               })}
             </form>
 
+
             {wantInvoice && (
               <label>
                 <input
@@ -309,6 +379,7 @@ export default function CheckOutPage() {
             )}
           </div>
 
+
           {/* RIEPILOGO */}
           <div className="checkout-panel order-summary">
             <h3>Riepilogo ordine</h3>
@@ -321,16 +392,19 @@ export default function CheckOutPage() {
               ))}
             </ul>
 
+
             <div className="checkout-total">
               <strong>Spedizione:</strong>{" "}
               {shippingCost === 0 ? "Gratis" : `€${shippingCost}`}
             </div>
+
 
             <div className="checkout-total">
               <strong>Totale:</strong> €{totaleFinale.toFixed(2)}
             </div>
           </div>
         </div>
+
 
         {/* BOTTONI */}
         <div className="checkout-btn-row">
@@ -341,6 +415,7 @@ export default function CheckOutPage() {
             ⬅ Torna al carrello
           </button>
 
+
           {!invoiceId ? (
             <button className="checkout-btn" onClick={handleCreateOrder}>
               {creatingInvoice ? "Creazione ordine..." : "Procedi al pagamento"}
@@ -349,10 +424,7 @@ export default function CheckOutPage() {
             <BraintreeDropIn
               amount={totaleFinale.toFixed(2)}
               invoiceId={invoiceId}
-              onSuccess={() => {
-                navigate("/success");
-                clearCart();
-              }}
+              onSuccess={handlePaymentSuccess} 
               onError={() => alert("Errore pagamento")}
             />
           )}

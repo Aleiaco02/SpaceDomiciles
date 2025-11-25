@@ -99,7 +99,7 @@
 /* Bottone Checkout */
 .checkout-btn {
   padding: 12px 40px;
-  background: #7ffcff;
+  background: #47fcff;
   color: #000;
   font-weight: 600;
   border: none;
@@ -188,7 +188,7 @@
 .empty-cart-btn:hover:not(:disabled) {
   transform: scale(1.05);
   transition: 0.5s ease;
-  background: #710000;
+  background: #f22d2d;
 }
 
 /* Icona galassia */

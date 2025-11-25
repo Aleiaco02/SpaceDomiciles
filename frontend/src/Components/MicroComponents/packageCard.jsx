@@ -1,6 +1,6 @@
-import { useState } from "react";
-
 export default function packageCard(props) {
+  const isOutOfStock = props.stock <= 0;
+
   return (
     <div className="package-card" key={props.id}>
       <div className="package-header">
@@ -42,13 +42,24 @@ export default function packageCard(props) {
           </>
         )}
       </ul>
-      {/* Pulsante aggiunto*/}
+      
+      {/* Pulsante con gestione stock */}
       <button
-        className="add-to-cart-button"
+        className={`add-to-cart-button ${isOutOfStock ? 'disabled' : ''}`}
         onClick={() => props.onAddToCart(props)}
+        disabled={isOutOfStock}
       >
-        Aggiungi al carrello
+        {isOutOfStock ? 'Non disponibile' : 'Aggiungi al carrello'}
       </button>
+      
+      {/* Visualizzazione stock */}
+      <div className="stock-info">
+        {isOutOfStock ? (
+          <span className="out-of-stock">Terminato</span>
+        ) : (
+          <span className="in-stock">Ancora {props.stock} disponibili</span>
+        )}
+      </div>
     </div>
   );
 }
