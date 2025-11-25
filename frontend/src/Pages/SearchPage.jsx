@@ -2,7 +2,6 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/Search.css";
 import { useDefaultContext } from "../Contexts/DefaultContext";
-import useFilteredList from "../Components/MicroComponents/useFilteredList";
 export default function SearchPage() {
   const { filters, setFilters, updateFilters, defaultFilter } =
     useDefaultContext();
@@ -111,21 +110,16 @@ export default function SearchPage() {
     updateFilters("sizeMax", maxS);
   }, [maxS]);
 
-  // // pianeti filtrati
-  // const filtered = planets
-  //   .filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
-  //   .filter((p) => p.temperature_min >= tempMin)
-  //   .filter((p) => p.temperature_max <= tempMax)
-  //   .filter((p) => p.planet_size >= sizeMin && p.planet_size <= sizeMax)
-  //   .filter((p) => p.surface_available >= surfaceAvailable);
+  // numero di card visibili a inizio pagina
+  const [visibleCount, setVisibleCount] = useState(12);
 
-  // // display di x numero di pianeti
-  // const {
-  //   displayed: displayedPlanets,
-  //   filtered: filteredPlanets,
-  //   visibleCount,
-  //   setVisibleCount,
-  // } = useFilteredList(filtered, search, 8);
+  // reset quando cambiano i filtri
+  useEffect(() => {
+    setVisibleCount(8);
+  }, [filters]);
+
+  // crea la lista visibile
+  const displayedPlanets = planets.slice(0, visibleCount);
 
   return (
     <div className="galaxy-page pos">
@@ -212,10 +206,6 @@ export default function SearchPage() {
                 max="5000"
                 value={filters.price}
                 onChange={(e) => updateFilters("price", Number(e.target.value))}
-
-                // max="70000000000"
-                // value={sizeMax}
-                // onChange={(e) => updateQuery({ smax: Number(e.target.value) })}
               />
               <p>{filters.price} &euro; </p>
             </div>
@@ -233,8 +223,8 @@ export default function SearchPage() {
       </div>
       <div className="mw-cards-grid">
         {/* display di tutti i pianeti a meno che non venga submitato qualcosa */}
-        {planets.length > 0 ? (
-          planets.map((planet) => (
+        {displayedPlanets.length > 0 ? (
+          displayedPlanets.map((planet) => (
             <Link
               to={`/galaxies/${planet.galaxy_slug}/${planet.slug}`}
               key={planet.id}
@@ -262,14 +252,14 @@ export default function SearchPage() {
           <p>Nessun pianeta rispetta i parametri inseriti</p>
         )}
       </div>
-      {/* {visibleCount < filteredPlanets.length && (
+      {visibleCount < planets.length && (
         <button
           className="buttonload"
           onClick={() => setVisibleCount((v) => v + 8)}
         >
           Carica altri
         </button>
-      )} */}
+      )}
     </div>
   );
 }
