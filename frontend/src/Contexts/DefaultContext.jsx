@@ -1,6 +1,5 @@
 import { createContext, useContext } from "react";
 import { useState, useEffect } from "react";
-import axios from "axios";
 
 export const DefaultContext = createContext();
 
@@ -21,7 +20,7 @@ export function DefaultProvider({ children }) {
     temperatureMin: -273,
     temperatureMax: 500,
     sizeMin: 0,
-    sizeMax: 7e+10, // 70 miliardi
+    sizeMax: 7e10, // 70 miliardi
     price: 5000,
   };
 
@@ -41,12 +40,16 @@ export function DefaultProvider({ children }) {
   const updateFilters = (key, value) =>
     setFilters((prev) => ({ ...prev, [key]: value }));
 
+  const updateFiltersBatch = (obj) =>
+    setFilters((prev) => ({ ...prev, ...obj }));
+
   return (
     <DefaultContext.Provider
       value={{
         filters,
         setFilters,
         updateFilters,
+        updateFiltersBatch,
         planets,
         defaultFilter,
         apiBaseUrl,
