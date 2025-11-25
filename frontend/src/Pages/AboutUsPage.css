@@ -123,6 +123,13 @@
   margin-top: 8px;
   color: #b56bff;
   font-size: 18px;
+  padding-bottom: 55px;
+}
+
+@media (max-width: 480px) {
+  .go-back-text {
+    padding-bottom: 0;
+  }
 }
 
 .team-title-gradient {

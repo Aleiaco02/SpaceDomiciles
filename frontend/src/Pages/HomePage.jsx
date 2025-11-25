@@ -15,23 +15,32 @@ import andromeda from "/img/andromeda.png";
 import sombrero from "/img/sombrero.png";
 import axios from "axios";
 
+
 export default function HomePage() {
   const handleAnimationComplete = () => {
     console.log("Animation completed!");
   };
 
+
   const contentRef = useRef(null);
   const [containerHeight, setContainerHeight] = useState('100vh');
+
 
   useEffect(() => {
     const updateHeight = () => {
       if (contentRef.current) {
-        const contentHeight = contentRef.current.scrollHeight;
-        const windowHeight = window.innerHeight;
+        // Resetta temporaneamente per ricalcolare correttamente
+        setContainerHeight('auto');
         
-        // Usa il maggiore tra l'altezza del contenuto + padding e l'altezza della finestra
-        const calculatedHeight = Math.max(contentHeight + 1, windowHeight);
-        setContainerHeight(`${calculatedHeight}px`);
+        setTimeout(() => {
+          if (contentRef.current) {
+            const contentHeight = contentRef.current.scrollHeight;
+            const windowHeight = window.innerHeight;
+            
+            const calculatedHeight = Math.max(contentHeight + 42, windowHeight);
+            setContainerHeight(`${calculatedHeight}px`);
+          }
+        }, 0);
       }
     };
 
@@ -42,9 +51,11 @@ export default function HomePage() {
     return () => window.removeEventListener('resize', updateHeight);
   }, []);
 
+
   const [planet1, setPlanet1] = useState(null);
   const [planet2, setPlanet2] = useState(null);
   const [planet3, setPlanet3] = useState(null);
+
 
   const fetchPlanets = async () => {
     try {
@@ -54,6 +65,7 @@ export default function HomePage() {
         axios.get("http://localhost:3000/api/planets/saturn"),
       ]);
 
+
       setPlanet1(p1.data);
       setPlanet2(p2.data);
       setPlanet3(p3.data);
@@ -62,9 +74,11 @@ export default function HomePage() {
     }
   };
 
+
   useEffect(() => {
     fetchPlanets();
   }, []);
+
 
   // Ricalcola l'altezza quando cambiano i pianeti
   useEffect(() => {
@@ -72,11 +86,14 @@ export default function HomePage() {
       setTimeout(() => {
         if (contentRef.current) {
           const contentHeight = contentRef.current.scrollHeight;
-          setContainerHeight(`${contentHeight + 200}px`);
+          const windowHeight = window.innerHeight;
+          const calculatedHeight = Math.max(contentHeight + 42, windowHeight);
+          setContainerHeight(`${calculatedHeight}px`);
         }
       }, 100);
     }
   }, [planet1, planet2, planet3]);
+
 
   return (
     <div
@@ -90,6 +107,7 @@ export default function HomePage() {
         starSpeed={1.3}
         mouseRepulsion={false}
       />
+
 
       <div
         ref={contentRef}
@@ -113,6 +131,7 @@ export default function HomePage() {
           className="titolo-jumbotrone"
         />
 
+
         <GradientText
           className="descrizione-jumbotrone"
           style={{ display: "inline-block", textAlign: "center" }}
@@ -123,6 +142,7 @@ export default function HomePage() {
           Non guardare lo spazio. Entraci dentro.
         </GradientText>
 
+
         <div className="cards-wrapper">
           <div className="glass-card">
             <div className="icon">
@@ -131,6 +151,7 @@ export default function HomePage() {
             <GradientText className="card-title">Pianeti Reali</GradientText>
             <p>Terreni su pianeti realmente scoperti dalla NASA e dall'ESA</p>
           </div>
+
 
           <div className="glass-card">
             <div className="icon">
@@ -142,6 +163,7 @@ export default function HomePage() {
             <p>Ricevi un certificato di proprietà galattica registrato</p>
           </div>
 
+
           <div className="glass-card">
             <div className="icon">
               <FontAwesomeIcon icon={faStar} />
@@ -151,6 +173,7 @@ export default function HomePage() {
             </GradientText>
             <p>Possiedi un pezzo di universo per sempre</p>
           </div>
+
 
           <div className="glass-card">
             <div className="icon">
@@ -163,7 +186,9 @@ export default function HomePage() {
           </div>
         </div>
 
+
         <h2 className="classe">SCEGLI LA TUA GALASSIA PREFERITA</h2>
+
 
         <div className="container-galassie">
           <div className="cards-container-2">
@@ -176,6 +201,7 @@ export default function HomePage() {
             </Link>
           </div>
 
+
           <div className="cards-container-2">
             <Link to="/galaxies/andromeda" className="glass-card-2">
               <img src={andromeda} alt="Andromeda" className="card-image" />
@@ -185,6 +211,7 @@ export default function HomePage() {
               <p>Scopri stelle, pianeti e sistemi abitabili.</p>
             </Link>
           </div>
+
 
           <div className="cards-container-2">
             <Link to="/galaxies/sombrero" className="glass-card-2">
@@ -201,7 +228,9 @@ export default function HomePage() {
           </div>
         </div>
 
+
         <h2 className="classe">I PIANETI PIU' POPOLARI</h2>
+
 
         <div className="container-galassie">
           {planet1 && (
@@ -218,6 +247,7 @@ export default function HomePage() {
               </Link>
             </div>
           )}
+
 
           {planet2 && (
             <div className="cards-container-2">
@@ -237,6 +267,7 @@ export default function HomePage() {
               </Link>
             </div>
           )}
+
 
           {planet3 && (
             <div className="cards-container-2">
