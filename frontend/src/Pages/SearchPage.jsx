@@ -7,121 +7,199 @@ export default function SearchPage() {
   // const { handleSubmit, UserTitle, setUserTitle } =
   //   useDefaultContext();
 
-  const { filters, updateFilters, defaultFilter } = useDefaultContext();
+  const { filters, setFilters, updateFilters, defaultFilter } = useDefaultContext();
+
+  // variabile di stato gestione range a doppia manopola della temperatura
+  const [minT, setMinT] = useState(filters.temperatureMin);
+  const [maxT, setMaxT] = useState(filters.temperatureMax);
+
+  // variabile di stato gestione range a doppia manopola della dimensione del pianeta
+  const [minS, setMinS] = useState(filters.sizeMin);
+  const [maxS, setMaxS] = useState(filters.sizeMax);
+
+  // funzione che gestisce il valore massimo temperatura
+  const handleMinTChange = (e) => {
+    const value = Number(e.target.value);
+    if (value < maxT) setMinT(value);
+  };
+
+  // funzione che gestisce il valore minimo temperatura
+  const handleMaxTChange = (e) => {
+    const value = Number(e.target.value);
+    if (value > minT) setMaxT(value);
+  };
+
+  // funzione che gestisce il valore massimo dimensione
+  const handleMinSChange = (e) => {
+    const val = Number(e.target.value);
+    if (val < maxS) setMinS(val);
+  };
+
+  // funzione che gestisce il valore minimo dimensione
+  const handleMaxSChange = (e) => {
+    const val = Number(e.target.value);
+    if (val > minS) setMaxS(val);
+  };
+
+  // Converto l’oggetto filter in query string
+  const queryString = new URLSearchParams(filters).toString();
 
   const apiBaseUrl = "http://localhost:3000";
-  // caricamento lista pianeti
+  // caricamento lista pianeti filtrati
   const [planets, setPlanets] = useState([]);
   useEffect(() => {
-    fetch(apiBaseUrl + "/api/planets")
+    fetch(`${apiBaseUrl}/api/planets/filter?${queryString}`)
       .then((res) => res.json())
       .then((data) => setPlanets(data))
       .catch((err) => console.error("Errore nel caricamento pianeti:", err));
-  }, []);
+  }, [filters]);
 
-  // pianeti filtrati
-  const filtered = planets
-    .filter((p) => p.name.toLowerCase().includes(filters.search.toLowerCase()))
-    .filter((p) => p.temperature_min >= filters.temperatureMin)
-    .filter((p) => p.temperature_max <= filters.temperatureMax)
-    .filter(
-      (p) =>
-        p.planet_size >= filters.sizeMin && p.planet_size <= filters.sizeMax
-    )
-    .filter((p) => p.surface_available >= filters.surfaceAvailable);
+  // scrivo il numero in notazione scientifica
+  const formatToScientificNotation = (num, decimalPlaces = 2) => {
+    if (num === 0) {
+      return num;
+    }
+
+    // Uso toExponential() per ottenere la notazione
+    const exponentialString = num.toExponential(decimalPlaces);
+
+    // Sostituisco la 'e' con la parte "x 10 alla n-esima" per un output più leggibile
+    const [coefficient, exponent] = exponentialString.split('e');
+
+    // Formatto l'esponente per includere il simbolo ^
+    const formattedExponent = exponent.replace('+', '').replace('-', '⁻');
+
+    return `${coefficient} \u00D7 10${formattedExponent.split('').map(char => {
+      // Mappa i numeri normali ai loro equivalenti in apice (superscript)
+      const superscriptMap = {
+        '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴',
+        '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹'
+      };
+      return superscriptMap[char] || char; // Usa l'apice o il carattere stesso
+    }).join('')}`;
+  };
+
+  //gestione menù a tendina
+  const [isOpen, setIsOpen] = useState(false); // stato apertura/chiusura
+
+  const toggleMenu = () => setIsOpen(!isOpen);
+
+  // aggiorno il context ogni volta che min o max cambiano
+  useEffect(() => {
+    updateFilters("temperatureMin", minT);
+  }, [minT]);
+
+  useEffect(() => {
+    updateFilters("temperatureMax", maxT);
+  }, [maxT]);
+
+  useEffect(() => {
+    updateFilters("sizeMin", minS);
+  }, [minS]);
+
+  useEffect(() => {
+    updateFilters("sizeMax", maxS);
+  }, [maxS]);
+
   return (
     <div className="galaxy-page pos">
       {/* Sezione filtri */}
       <h1 className="mw-subtitle">Cerca il tuo pianeta nell'universo</h1>
-      <section className="searchbar">
-        {/* Filtro ricerca */}
-        <div className="filter-element">
-          <h4>Nome pianeta</h4>
-          <input
-            name="title"
-            type="search"
-            placeholder="Cerca pianeta..."
-            value={filters.search}
-            onChange={(e) => {
-              updateFilters({ search: e.target.value });
-            }}
-            className="search-input"
-          />
-        </div>
-        {/* Filtro temperatura minima */}
-        <div className="filter-element">
-          <div className="range">
-            <div>
-              <h4>Temperatura Minima</h4>
+      <div className="filter-dropdown">
+        {/* Bottone apertura/chiusura */}
+        <button onClick={toggleMenu} className="filter-button">
+          Filtri {isOpen ? "▲" : "▼"}
+        </button>
+        {/* Contenuto del menu */}
+        {isOpen && (
+          <section className="searchbar">
+            {/* Filtro ricerca */}
+            <div className="filter-element">
+              <h4>Nome pianeta</h4>
+              <input
+                name="title"
+                type="search"
+                placeholder="Cerca pianeta..."
+                value={filters.search}
+                onChange={(e) => {
+                  updateFilters("search", e.target.value);
+                }}
+                className="search-input"
+              />
+            </div>
+            {/* Filtro temperatura */}
+            <div className="filter-element range-container">
+              <h4 className="range-title">Temperatura </h4>
               <input
                 type="range"
                 min="-273"
                 max="500"
                 value={filters.temperatureMin}
-                onChange={(e) =>
-                  updateFilters({ temperatureMin: Number(e.target.value) })
-                }
+                onChange={handleMinTChange}
+                className="thumb thumb-left"
               />
-            </div>
-            {/* Filtro temperatura massima */}
-            <div>
-              <h4>Temperatura Massima</h4>
               <input
                 type="range"
                 min="-273"
                 max="500"
                 value={filters.temperatureMax}
-                onChange={(e) =>
-                  updateFilters({ temperatureMax: Number(e.target.value) })
-                }
+                onChange={handleMaxTChange}
+                className="thumb thumb-right"
               />
+              <p>
+                Da {filters.temperatureMin}° a {filters.temperatureMax}°
+              </p>
             </div>
-          </div>
-          <p>
-            Da {filters.temperatureMin}° a {filters.temperatureMax}°
-          </p>
-        </div>
-        {/* Size Range */}
-        <div className="filter-element">
-          <div className="range">
-            <div>
-              <h4>Dimensione Minima</h4>
+
+            {/* Size Range */}
+
+            <div className="filter-element range-container big">
+              <h4 className="range-title">Dimensione</h4>
               <input
                 type="range"
                 min="0"
-                max="10000000000"
+                max="7e+10"
                 value={filters.sizeMin}
-                onChange={(e) =>
-                  updateFilters({ sizeMin: Number(e.target.value) })
-                }
+                onChange={handleMinSChange}
+                className="thumb thumb-left"
               />
-            </div>
-            <div className="slider-container">
-              <h4>Dimensione Massima</h4>
               <input
-                className="big-bar"
                 type="range"
                 min="0"
-                max="70000000000"
+                max="7e+10"
                 value={filters.sizeMax}
+                onChange={handleMaxSChange}
+                className="thumb thumb-right"
+              />
+              <p>
+                {formatToScientificNotation(filters.sizeMin)} – {formatToScientificNotation(filters.sizeMax)} KM2
+              </p>
+            </div>
+            <div className="filter-element slider-container">
+              <h4>Prezzo</h4>
+              <input
+                type="range"
+                min="0"
+                max="5000"
+                value={filters.price}
                 onChange={(e) =>
-                  updateFilters({ sizeMax: Number(e.target.value) })
+                  updateFilters("price", Number(e.target.value))
                 }
               />
+              <p>{filters.price} &euro; </p>
             </div>
-          </div>
-          <p>
-            {filters.sizeMin} – {filters.sizeMax} KM2
-          </p>
-          <button onClick={() => updateFilters(defaultFilter)}>
-            Reset filtri
-          </button>
-        </div>
-      </section>
+            <div className="filter-element">
+              <button className="reset" onClick={() => setFilters(defaultFilter)}>
+                Reset filtri
+              </button>
+            </div>
+          </section>
+        )}
+      </div>
       <div className="mw-cards-grid">
         {/* display di tutti i pianeti a meno che non venga submitato qualcosa */}
-        {filtered.length > 0 ? (
-          filtered.map((planet) => (
+        {planets.length > 0 ? (
+          planets.map((planet) => (
             <Link
               to={`/galaxies/${planet.galaxy_slug}/${planet.slug}`}
               key={planet.id}
@@ -146,7 +224,7 @@ export default function SearchPage() {
             </Link>
           ))
         ) : (
-          <p>Pianeta non trovato, inserisci il nome di un pianeta</p>
+          <p>Nessun pianeta rispetta i parametri inseriti</p>
         )}
       </div>
     </div>
