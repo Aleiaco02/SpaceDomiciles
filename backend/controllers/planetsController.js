@@ -73,7 +73,6 @@ function validatePlanet(data) {
 
 // INDEX – lista pianeti
 export function index(req, res) {
-
   const sql = `SELECT 
     planets.*, galaxies.slug as galaxy_slug
 FROM
@@ -96,7 +95,6 @@ FROM
 
 // INDEX – lista pianeti filtrati
 export function indexFilter(req, res) {
-
   // Leggo i filtri dalla query (arrivano come stringhe)
   const {
     search = "",
@@ -104,12 +102,13 @@ export function indexFilter(req, res) {
     temperatureMax = Infinity,
     sizeMin = -Infinity,
     sizeMax = Infinity,
-    price = Infinity
+    price = Infinity,
   } = req.query;
 
-  const sql = `SELECT DISTINCT p.*
+  const sql = `SELECT DISTINCT p.*, galaxies.slug as galaxy_slug, galaxies.name as galaxy_name
     FROM planets p
     JOIN stacks s ON s.id_planet = p.id
+    JOIN galaxies ON p.id_galaxy = galaxies.id
     WHERE p.name LIKE CONCAT('%', ?, '%')
       AND p.temperature_min >= ? 
       AND p.temperature_max <= ?
@@ -130,7 +129,7 @@ export function indexFilter(req, res) {
     Number(temperatureMax),
     Number(sizeMin),
     Number(sizeMax),
-    Number(price)
+    Number(price),
   ];
 
   console.log(params);
