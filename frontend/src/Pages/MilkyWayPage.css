@@ -54,16 +54,18 @@
   color: #8f7cff;
 }
 
-/* GRID */
+/* GRID - Modificato per usare flexbox */
 .mw-cards-grid {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 35px;
+  padding: 0 20px;
 }
 
-/* CARD */
+/* CARD - Dimensione fissa 273.75px */
 .mw-card {
   position: relative;
   padding: 35px 25px;
@@ -74,6 +76,9 @@
   box-shadow: 0 0 25px rgba(120, 70, 255, 0.3);
   transition: 0.35s ease;
   overflow: hidden;
+  width: 273.75px;
+  min-width: 273.75px;
+  max-width: 273.75px;
 }
 
 /* IMMAGINE DEL PIANETA */
@@ -273,4 +278,80 @@
       rgba(8, 0, 20, 0.75) 55%,
       rgba(2, 0, 5, 1) 100%
     );
+}
+
+/* ========== RESPONSIVE ========== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .mw-header h1 {
+    font-size: 40px;
+  }
+
+  .mw-subtitle {
+    font-size: 32px;
+  }
+
+  .galaxy-header-icon {
+    width: 170px;
+  }
+}
+
+/* Mobile Large */
+@media (max-width: 768px) {
+  .mw-wrapper {
+    padding: 70px;
+  }
+
+  .mw-header h1 {
+    font-size: 36px;
+    padding-top: 60px;
+  }
+
+  .mw-header p {
+    font-size: 16px;
+    padding: 0 20px;
+  }
+
+  .mw-subtitle {
+    font-size: 28px;
+    padding: 0 20px;
+  }
+
+  .galaxy-header-icon {
+    width: 150px;
+  }
+
+  .mw-cards-grid {
+    gap: 25px;
+    padding: 0 15px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .galaxy-page {
+    padding: 30px 15px;
+  }
+
+  .mw-header h1 {
+    padding-top: 80px;
+  }
+
+  .mw-header p {
+    font-size: 15px;
+  }
+
+  .mw-subtitle {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+  .galaxy-header-icon {
+    width: 130px;
+  }
+
+  .mw-cards-grid {
+    gap: 20px;
+  }
 }

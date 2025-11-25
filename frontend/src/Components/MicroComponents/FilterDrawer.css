@@ -19,19 +19,23 @@
   left: 0;
 }
 
+/* --- OVERLAY --- */
 .Fcart-drawer-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.52);
+  background: rgba(0, 0, 0, 0.65);
   z-index: 1099;
-  display: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.Fcart-drawer.open .cart-drawer-overlay {
-  display: block;
+.Fcart-drawer-overlay.open {
+  opacity: 1;
+  visibility: visible;
 }
 
 .Fcart-drawer-panel {
@@ -44,6 +48,7 @@
   z-index: 1100;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 
 /* --- CLOSE BUTTON --- */
@@ -62,6 +67,7 @@
   width: 36px;
   height: 36px;
   transition: transform 0.15s, color 0.15s;
+  z-index: 10;
 }
 
 .Fcart-drawer-close:hover {
@@ -87,6 +93,8 @@
   flex-direction: column;
   gap: 20px;
   margin-top: 25px;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .Ffilter-block label {
@@ -115,10 +123,20 @@
   background: rgba(255, 255, 255, 0.12);
 }
 
+/* --- CONTAINER AZIONI (BOTTONI) --- */
+.Ffilter-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(125, 92, 255, 0.2);
+  flex-shrink: 0;
+}
+
 /* --- APPLY BUTTON --- */
 
 .Fcart-drawer-btn {
-  margin-top: auto;
   background: #7d5cff;
   color: #fff;
   font-size: 1.16rem;
@@ -126,9 +144,7 @@
   border-radius: 10px;
   padding: 15px 20px;
   cursor: pointer;
-  width: 85%;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
   box-shadow: 0 3px 14px rgba(125, 92, 255, 0.26);
   transition: background 0.18s, transform 0.14s;
   font-weight: 600;
@@ -138,4 +154,81 @@
   background: #a392fc;
   transform: scale(1.05);
   box-shadow: 0 5px 18px rgba(125, 92, 255, 0.38);
+}
+
+/* --- BOTTONE RESET --- */
+.reset-btn {
+  background: rgba(255, 71, 87, 0.15);
+  color: #ff8a99;
+  border: 1px solid rgba(255, 71, 87, 0.3);
+}
+
+.reset-btn:hover {
+  background: rgba(255, 71, 87, 0.25);
+  color: #ffa3ad;
+  border-color: rgba(255, 71, 87, 0.5);
+}
+
+/* ========== SCROLLBAR PERSONALIZZATA SOLO MOBILE ========== */
+
+@media (max-width: 768px) {
+  /* Firefox */
+  .Fcart-drawer-panel {
+    scrollbar-width: thin;
+    scrollbar-color: #7d5cff #2a2540;
+  }
+
+  /* Chrome, Edge, Safari */
+  .Fcart-drawer-panel::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .Fcart-drawer-panel::-webkit-scrollbar-track {
+    background: #2a2540;
+    border-radius: 10px;
+  }
+
+  .Fcart-drawer-panel::-webkit-scrollbar-thumb {
+    background: #7d5cff;
+    border-radius: 10px;
+    transition: background 0.2s;
+  }
+
+  .Fcart-drawer-panel::-webkit-scrollbar-thumb:hover {
+    background: #a392fc;
+  }
+
+  /* Scrollbar per il contenitore filtri */
+  .Ffilters-container::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .Ffilters-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .Ffilters-container::-webkit-scrollbar-thumb {
+    background: rgba(125, 92, 255, 0.5);
+    border-radius: 10px;
+  }
+
+  .Ffilters-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(125, 92, 255, 0.8);
+  }
+}
+
+/* --- RESPONSIVE MOBILE --- */
+@media (max-width: 480px) {
+  .Fcart-drawer-panel {
+    padding: 20px 15px 25px 15px;
+  }
+
+  .Ffilters-container {
+    gap: 18px;
+  }
+
+  .Fcart-drawer-btn {
+    font-size: 1.1rem;
+    padding: 14px 18px;
+  }
 }

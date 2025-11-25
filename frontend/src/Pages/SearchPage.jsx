@@ -3,12 +3,14 @@ import { useState, useEffect } from "react";
 import "../styles/Search.css";
 import { useDefaultContext } from "../Contexts/DefaultContext";
 import FilterDrawer from "../Components/MicroComponents/FilterDrawer";
+
 export default function SearchPage() {
   const { filters, setFilters, updateFilters, defaultFilter } =
     useDefaultContext();
 
   // gestione url condivisibile
   const [searchParams, setSearchParams] = useSearchParams();
+  
   // attiva i filtri dall'url
   useEffect(() => {
     const urlFilters = Object.fromEntries([...searchParams]);
@@ -23,12 +25,12 @@ export default function SearchPage() {
     setFilters((prev) => ({ ...prev, ...parsedFilters }));
   }, []);
 
-  // 2️⃣ Ogni volta che i filtri cambiano → aggiorna l’URL
+  // Ogni volta che i filtri cambiano → aggiorna l'URL
   useEffect(() => {
     const cleanFilters = {};
 
     for (const key in filters) {
-      // evita di sporcare l’URL con valori identici ai default
+      // evita di sporcare l'URL con valori identici ai default
       if (filters[key] !== defaultFilter[key]) {
         cleanFilters[key] = filters[key];
       }
@@ -36,14 +38,6 @@ export default function SearchPage() {
 
     setSearchParams(cleanFilters);
   }, [filters]);
-
-  // // variabile di stato gestione range a doppia manopola della temperatura
-  // const [minT, setMinT] = useState(filters.temperatureMin);
-  // const [maxT, setMaxT] = useState(filters.temperatureMax);
-
-  // // variabile di stato gestione range a doppia manopola della dimensione del pianeta
-  // const [minS, setMinS] = useState(filters.sizeMin);
-  // const [maxS, setMaxS] = useState(filters.sizeMax);
 
   // funzione che gestisce il valore massimo temperatura
   const handleMinTChange = (e) => {
@@ -77,7 +71,7 @@ export default function SearchPage() {
     }
   };
 
-  // Converto l’oggetto filter in query string
+  // Converto l'oggetto filter in query string
   const queryString = new URLSearchParams(filters).toString();
 
   const apiBaseUrl = "http://localhost:3000";
@@ -127,8 +121,8 @@ export default function SearchPage() {
       .join("")}`;
   };
 
-  //gestione menù a tendina
-  const [isOpen, setIsOpen] = useState(false); // stato apertura/chiusura
+  // gestione menù a tendina
+  const [isOpen, setIsOpen] = useState(false);
 
   // numero di card visibili a inizio pagina
   const [visibleCount, setVisibleCount] = useState(8);
@@ -143,12 +137,12 @@ export default function SearchPage() {
 
   return (
     <div className="galaxy-page pos">
-      <h1 className="mw-subtitle">Cerca il tuo pianeta nell'universo</h1>
+      <h1 className="mw-subtitle-s">Cerca il tuo pianeta nell'universo</h1>
 
       {/* Sezione filtri */}
-      <div className="filter-dropdown">
-        <div className="search-container">
-          <button className="filter-btn" onClick={() => setIsOpen(true)}>
+      <div className="filter-dropdown-s">
+        <div className="search-container-s">
+          <button className="filter-btn-s" onClick={() => setIsOpen(true)}>
             Filtri
           </button>
 
@@ -158,44 +152,43 @@ export default function SearchPage() {
             filters={filters}
             updateFilters={updateFilters}
           />
-
-          {/* resto della pagina... */}
         </div>
       </div>
-      <div className="mw-cards-grid">
-        {/* display di tutti i pianeti a meno che non venga submitato qualcosa */}
+
+      <div className="mw-cards-grid-s">
         {displayedPlanets.length > 0 ? (
           displayedPlanets.map((planet) => (
             <Link
               to={`/galaxies/${planet.galaxy_slug}/${planet.slug}`}
               key={planet.id}
-              className="mw-card-search"
+              className="mw-card-search-s"
             >
-              <div key={planet.id}>
-                <div className="mw-explore">
+              <div>
+                <div className="mw-explore-s">
                   <h3>{planet.name}</h3>
                 </div>
                 <div
-                  className={`mw-planet-img mw-img-${planet.name
+                  className={`mw-planet-img-s mw-img-${planet.name
                     .toLowerCase()
                     .replace(/\s+/g, "-")}`}
                   style={{ backgroundImage: `url(${planet.image})` }}
                 ></div>
-                <div className="mw-bottom">
-                  <p className="mw-desc">{planet.description}</p>
-                  <div className="mw-divider"></div>
-                  <div className="mw-explore">Esplora il pianeta →</div>
+                <div className="mw-bottom-s">
+                  <p className="mw-desc-s">{planet.description}</p>
+                  <div className="mw-divider-s"></div>
+                  <div className="mw-explore-s">Esplora il pianeta →</div>
                 </div>
               </div>
             </Link>
           ))
         ) : (
-          <p>Nessun pianeta rispetta i parametri inseriti</p>
+          <p className="no-results-s">Nessun pianeta rispetta i parametri inseriti</p>
         )}
       </div>
+
       {visibleCount < planets.length && (
         <button
-          className="buttonload"
+          className="buttonload-s"
           onClick={() => setVisibleCount((v) => v + 8)}
         >
           Carica altri
