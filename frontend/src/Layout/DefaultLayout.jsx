@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import MyHeader from "../Components/MacroComponents/MyHeader";
+import MyFooter from "../Components/MacroComponents/MyFooter";
 export default function DefaultLayout({setDrawerOpen}) {
   return (
     <>
@@ -7,6 +8,7 @@ export default function DefaultLayout({setDrawerOpen}) {
       <main>
         <Outlet />
       </main>
+    <MyFooter />
     </>
   );
 }

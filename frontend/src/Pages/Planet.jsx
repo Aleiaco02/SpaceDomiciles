@@ -241,29 +241,6 @@ const Planet = () => {
           </div>
         </section>
       </div>
-
-      {/* MODAL OVERLAY */}
-      {showModal && (
-        <div className="addtocart-modal-overlay">
-          <div className="addtocart-modal">
-            <span className="addtocart-check">&#10003;</span>
-            <div className="addtocart-msg">
-              {modalPackageName} aggiunto al carrello con successo!
-            </div>
-            <div className="addtocart-btn-group">
-              <button className="alert-cart-btn" onClick={handleGoToCart}>
-                Vai al carrello
-              </button>
-              <button
-                className="alert-continue-btn"
-                onClick={handleContinueShopping}
-              >
-                Continua ad acquistare
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 };
