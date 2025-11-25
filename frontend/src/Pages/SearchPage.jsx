@@ -6,6 +6,18 @@ export default function SearchPage() {
   const { filters, setFilters, updateFilters, defaultFilter } =
     useDefaultContext();
 
+  // gestione url condivisibile
+  const [searchParams, setSearchParams] = useSearchParams();
+  // attiva i filtri dall'url
+  useEffect(() => {
+    const urlFilters = Object.fromEntries([...searchParams]);
+    setFilters((prev) => ({ ...prev, ...urlFilters }));
+  }, []);
+  // aggiorna url al cambio di filtri
+  useEffect(() => {
+    setSearchParams(filters);
+  }, [filters]);
+
   // variabile di stato gestione range a doppia manopola della temperatura
   const [minT, setMinT] = useState(filters.temperatureMin);
   const [maxT, setMaxT] = useState(filters.temperatureMax);
