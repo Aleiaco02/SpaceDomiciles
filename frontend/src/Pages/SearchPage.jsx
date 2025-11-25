@@ -2,6 +2,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/Search.css";
 import { useDefaultContext } from "../Contexts/DefaultContext";
+import FilterDrawer from "../Components/MicroComponents/FilterDrawer";
 export default function SearchPage() {
   const { filters, setFilters, updateFilters, defaultFilter } =
     useDefaultContext();
@@ -11,43 +12,69 @@ export default function SearchPage() {
   // attiva i filtri dall'url
   useEffect(() => {
     const urlFilters = Object.fromEntries([...searchParams]);
-    setFilters((prev) => ({ ...prev, ...urlFilters }));
+
+    // Converti numeri (URL li mette come stringhe)
+    const parsedFilters = {};
+    for (const key in urlFilters) {
+      const val = urlFilters[key];
+      parsedFilters[key] = isNaN(val) ? val : Number(val);
+    }
+
+    setFilters((prev) => ({ ...prev, ...parsedFilters }));
   }, []);
-  // aggiorna url al cambio di filtri
+
+  // 2️⃣ Ogni volta che i filtri cambiano → aggiorna l’URL
   useEffect(() => {
-    setSearchParams(filters);
+    const cleanFilters = {};
+
+    for (const key in filters) {
+      // evita di sporcare l’URL con valori identici ai default
+      if (filters[key] !== defaultFilter[key]) {
+        cleanFilters[key] = filters[key];
+      }
+    }
+
+    setSearchParams(cleanFilters);
   }, [filters]);
 
-  // variabile di stato gestione range a doppia manopola della temperatura
-  const [minT, setMinT] = useState(filters.temperatureMin);
-  const [maxT, setMaxT] = useState(filters.temperatureMax);
+  // // variabile di stato gestione range a doppia manopola della temperatura
+  // const [minT, setMinT] = useState(filters.temperatureMin);
+  // const [maxT, setMaxT] = useState(filters.temperatureMax);
 
-  // variabile di stato gestione range a doppia manopola della dimensione del pianeta
-  const [minS, setMinS] = useState(filters.sizeMin);
-  const [maxS, setMaxS] = useState(filters.sizeMax);
+  // // variabile di stato gestione range a doppia manopola della dimensione del pianeta
+  // const [minS, setMinS] = useState(filters.sizeMin);
+  // const [maxS, setMaxS] = useState(filters.sizeMax);
 
   // funzione che gestisce il valore massimo temperatura
   const handleMinTChange = (e) => {
     const value = Number(e.target.value);
-    if (value < maxT) setMinT(value);
+    if (value < filters.temperatureMax) {
+      updateFilters("temperatureMin", value);
+    }
   };
 
   // funzione che gestisce il valore minimo temperatura
   const handleMaxTChange = (e) => {
     const value = Number(e.target.value);
-    if (value > minT) setMaxT(value);
+    if (value > filters.temperatureMin) {
+      updateFilters("temperatureMax", value);
+    }
   };
 
   // funzione che gestisce il valore massimo dimensione
   const handleMinSChange = (e) => {
-    const val = Number(e.target.value);
-    if (val < maxS) setMinS(val);
+    const value = Number(e.target.value);
+    if (value < filters.sizeMax) {
+      updateFilters("sizeMin", value);
+    }
   };
 
   // funzione che gestisce il valore minimo dimensione
   const handleMaxSChange = (e) => {
-    const val = Number(e.target.value);
-    if (val > minS) setMaxS(val);
+    const value = Number(e.target.value);
+    if (value > filters.sizeMin) {
+      updateFilters("sizeMax", value);
+    }
   };
 
   // Converto l’oggetto filter in query string
@@ -103,27 +130,8 @@ export default function SearchPage() {
   //gestione menù a tendina
   const [isOpen, setIsOpen] = useState(false); // stato apertura/chiusura
 
-  const toggleMenu = () => setIsOpen(!isOpen);
-
-  // aggiorno il context ogni volta che min o max cambiano
-  useEffect(() => {
-    updateFilters("temperatureMin", minT);
-  }, [minT]);
-
-  useEffect(() => {
-    updateFilters("temperatureMax", maxT);
-  }, [maxT]);
-
-  useEffect(() => {
-    updateFilters("sizeMin", minS);
-  }, [minS]);
-
-  useEffect(() => {
-    updateFilters("sizeMax", maxS);
-  }, [maxS]);
-
   // numero di card visibili a inizio pagina
-  const [visibleCount, setVisibleCount] = useState(12);
+  const [visibleCount, setVisibleCount] = useState(8);
 
   // reset quando cambiano i filtri
   useEffect(() => {
@@ -135,103 +143,24 @@ export default function SearchPage() {
 
   return (
     <div className="galaxy-page pos">
-      {/* Sezione filtri */}
       <h1 className="mw-subtitle">Cerca il tuo pianeta nell'universo</h1>
 
+      {/* Sezione filtri */}
       <div className="filter-dropdown">
-        {/* Bottone apertura/chiusura */}
-        <button onClick={toggleMenu} className="filter-button">
-          Filtri {isOpen ? "▲" : "▼"}
-        </button>
-        {/* Contenuto del menu */}
-        {isOpen && (
-          <section className="searchbar">
-            {/* Filtro ricerca */}
-            <div className="filter-element">
-              <h4>Nome pianeta</h4>
-              <input
-                name="title"
-                type="search"
-                placeholder="Cerca pianeta..."
-                value={filters.search}
-                onChange={(e) => {
-                  updateFilters("search", e.target.value);
-                }}
-                className="search-input"
-              />
-            </div>
-            {/* Filtro temperatura */}
-            <div className="filter-element range-container">
-              <h4 className="range-title">Temperatura </h4>
+        <div className="search-container">
+          <button className="filter-btn" onClick={() => setIsOpen(true)}>
+            Filtri
+          </button>
 
-              <input
-                type="range"
-                min="-273"
-                max="500"
-                value={filters.temperatureMin}
-                onChange={handleMinTChange}
-                className="thumb thumb-left"
-              />
-              <input
-                type="range"
-                min="-273"
-                max="500"
-                value={filters.temperatureMax}
-                onChange={handleMaxTChange}
-                className="thumb thumb-right"
-              />
-              <p>
-                Da {filters.temperatureMin}° a {filters.temperatureMax}°
-              </p>
-            </div>
+          <FilterDrawer
+            open={isOpen}
+            onClose={() => setIsOpen(false)}
+            filters={filters}
+            updateFilters={updateFilters}
+          />
 
-            {/* Size Range */}
-
-            <div className="filter-element range-container big">
-              <h4 className="range-title">Dimensione</h4>
-              <input
-                type="range"
-                min="0"
-                max="7e+10"
-                value={filters.sizeMin}
-                onChange={handleMinSChange}
-                className="thumb thumb-left"
-              />
-              <input
-                type="range"
-                min="0"
-                max="7e+10"
-                value={filters.sizeMax}
-                onChange={handleMaxSChange}
-                className="thumb thumb-right"
-              />
-              <p>
-                {formatToScientificNotation(filters.sizeMin)} –{" "}
-                {formatToScientificNotation(filters.sizeMax)} KM2
-              </p>
-            </div>
-            <div className="filter-element slider-container">
-              <h4>Prezzo</h4>
-              <input
-                type="range"
-                min="0"
-                max="5000"
-                value={filters.price}
-                onChange={(e) => updateFilters("price", Number(e.target.value))}
-              />
-              <p>{filters.price} &euro; </p>
-            </div>
-
-            <div className="filter-element">
-              <button
-                className="reset"
-                onClick={() => setFilters(defaultFilter)}
-              >
-                Reset filtri
-              </button>
-            </div>
-          </section>
-        )}
+          {/* resto della pagina... */}
+        </div>
       </div>
       <div className="mw-cards-grid">
         {/* display di tutti i pianeti a meno che non venga submitato qualcosa */}
