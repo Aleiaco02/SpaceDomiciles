@@ -2,7 +2,7 @@
 // ==========================================================
 // Questa API gestisce la creazione completa di un ordine.
 // In UN SOLO colpo:
-// 1) crea la invoice
+// 1) crea la invoice (senza customer_id, perché non usiamo login)
 // 2) crea le righe in invoices_stack
 // 3) genera i certificati
 // 4) invia UNA sola email al cliente (layout galattico)
@@ -37,7 +37,6 @@ function query(sql, params = []) {
 export async function createOrder(req, res) {
   try {
     const {
-      customer_id,
       shipping_address,
       invoice_address,
       invoice_email,
@@ -45,9 +44,9 @@ export async function createOrder(req, res) {
     } = req.body;
 
     // ------------------------------------------------------
-    // VALIDAZIONI INPUT
+    // VALIDAZIONI INPUT (SENZA CUSTOMER_ID)
     // ------------------------------------------------------
-    if (!customer_id || !shipping_address || !invoice_address || !invoice_email) {
+    if (!shipping_address || !invoice_address || !invoice_email) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
@@ -93,16 +92,15 @@ export async function createOrder(req, res) {
     });
 
     // ------------------------------------------------------
-    // CREARE LA INVOICE
+    // CREARE LA INVOICE (customer_id = NULL)
     // ------------------------------------------------------
     const sqlInvoice = `
       INSERT INTO invoices
       (customer_id, shipping_address, invoice_address, invoice_email, total_amount, invoice_date, invoice_status)
-      VALUES (?, ?, ?, ?, ?, NOW(), 'pending')
+      VALUES (NULL, ?, ?, ?, ?, NOW(), 'pending')
     `;
 
     const invoiceResult = await query(sqlInvoice, [
-      customer_id,
       shipping_address,
       invoice_address,
       invoice_email,
@@ -190,7 +188,7 @@ export async function createOrder(req, res) {
     // ------------------------------------------------------
     const orderData = {
       order_id: invoice_id,
-      customer_name: "Cliente",    // puoi cambiarlo quando hai il nome reale
+      customer_name: "Cliente",
       customer_email: invoice_email,
       date: new Date().toLocaleString("it-IT"),
       total_price: total_amount,
@@ -221,7 +219,7 @@ export async function createOrder(req, res) {
       message: "Order created successfully",
       invoice: {
         id: invoice_id,
-        customer_id,
+        customer_id: null,
         shipping_address,
         invoice_address,
         invoice_email,

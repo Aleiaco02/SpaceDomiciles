@@ -8,7 +8,6 @@ export default function AboutUsPage() {
     <>
       <div className="galaxy-page pos">
         <div className="about-container">
-
           <GradientText
             className="team-title-gradient"
             style={{ display: "block", textAlign: "center" }}
@@ -16,93 +15,100 @@ export default function AboutUsPage() {
             Reclute full-stack del Programma Spaziale Dev
           </GradientText>
 
-
           <div className="team-grid">
-
             {/* ALESSANDRO */}
-            <div
-              className="team-card"
-              style={{
-                backgroundImage: "url(/img/Alessandro.png)",
-                backgroundPosition: "center 15%"
-              }}
-            >
-              <div className="team-overlay">
-                <h3>Alessandro</h3>
+            <Link to={"https://github.com/Aleiaco02"} target="_blank">
+              <div
+                className="team-card"
+                style={{
+                  backgroundImage: "url(/img/Alessandro.png)",
+                  backgroundPosition: "center 15%",
+                }}
+              >
+                <div className="team-overlay">
+                  <h3>Alessandro</h3>
+                </div>
               </div>
-            </div>
+            </Link>
 
             {/* CHRISTIAN */}
-            <div
-              className="team-card"
-              style={{
-                backgroundImage: "url(/img/Christian.png)",
-                backgroundPosition: "center 20%"
-              }}
-            >
-              <div className="team-overlay">
-                <h3>Christian</h3>
+            <Link to={"https://github.com/christianzaboli"} target="_blank">
+              <div
+                className="team-card"
+                style={{
+                  backgroundImage: "url(/img/Christian.png)",
+                  backgroundPosition: "center 20%",
+                }}
+              >
+                <div className="team-overlay">
+                  <h3>Christian</h3>
+                </div>
               </div>
-            </div>
+            </Link>
 
             {/* CLAUDIA */}
-            <div
-              className="team-card"
-              style={{
-                backgroundImage: "url(/img/Claudia.png)",
-                backgroundPosition: "center 15%"
-              }}
-            >
-              <div className="team-overlay">
-                <h3>Claudia</h3>
+            <Link to={"https://github.com/ClaudiaSgalippa"} target="_blank">
+              <div
+                className="team-card"
+                style={{
+                  backgroundImage: "url(/img/Claudia.png)",
+                  backgroundPosition: "center 15%",
+                }}
+              >
+                <div className="team-overlay">
+                  <h3>Claudia</h3>
+                </div>
               </div>
-            </div>
+            </Link>
 
             {/* DANIEL */}
-            <div
-              className="team-card"
-              style={{
-                backgroundImage: "url(/img/Daniel.png)",
-                backgroundPosition: "center 15%"
-              }}
-            >
-              <div className="team-overlay">
-                <h3>Daniel</h3>
+            <Link to={"https://github.com/Daniel-Di-Fraia"} target="_blank">
+              <div
+                className="team-card"
+                style={{
+                  backgroundImage: "url(/img/Daniel.png)",
+                  backgroundPosition: "center 15%",
+                }}
+              >
+                <div className="team-overlay">
+                  <h3>Daniel</h3>
+                </div>
               </div>
-            </div>
+            </Link>
 
             {/* STEFANO */}
-            <div
-              className="team-card"
-              style={{
-                backgroundImage: "url(/img/Stefano.png)",
-                backgroundPosition: "center 20%"
-              }}
-            >
-              <div className="team-overlay">
-                <h3>Stefano</h3>
+            <Link to={"https://github.com/StefanoSalaa98"} target="_blank">
+              <div
+                className="team-card"
+                style={{
+                  backgroundImage: "url(/img/Stefano.png)",
+                  backgroundPosition: "center 20%",
+                }}
+              >
+                <div className="team-overlay">
+                  <h3>Stefano</h3>
+                </div>
               </div>
-            </div>
-
+            </Link>
           </div>
 
           <h1>Chi Siamo</h1>
 
           <p>
             Siamo un team di giovani sviluppatori full-stack in formazione,
-            impegnati in un programma intensivo che ci sta portando
-            a esplorare tutte le galassie del web.
+            impegnati in un programma intensivo che ci sta portando a esplorare
+            tutte le galassie del web.
           </p>
 
           <p>
-            Crediamo nell'innovazione, nella fantasia, nella tecnologia
-            e nella collaborazione. Ogni giorno superiamo un nuovo pianeta,
-            una nuova sfida, un nuovo bug.
+            Crediamo nell'innovazione, nella fantasia, nella tecnologia e nella
+            collaborazione. Ogni giorno superiamo un nuovo pianeta, una nuova
+            sfida, un nuovo bug.
           </p>
 
           <p>
-            Questa è la nostra missione: crescere, imparare e creare
-            esperienze digitali degne di uno spazio tutto da esplorare.
+            Questa è la nostra missione: crescere, imparare e creare esperienze
+            digitali degne di uno spazio tutto da esplorare.
           </p>
 
           <h2>Perché scegliere Space Domicile?</h2>
@@ -115,14 +121,17 @@ export default function AboutUsPage() {
 
           <div className="gal-dim">
             <Link to="/">
-              <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon" />
+              <img
+                src={galaxyIcon}
+                alt="Galassia"
+                className="galaxy-header-icon"
+              />
             </Link>
           </div>
 
           <p className="go-back-text">
             Premi la galassia e fai un salto nell’iperspazio fino alla Home
           </p>
-
         </div>
       </div>
     </>

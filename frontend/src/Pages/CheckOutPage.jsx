@@ -143,40 +143,57 @@ export default function CheckOutPage() {
     // -------------------------------------
     // CREA INVOICE
     // -------------------------------------
-    const handleCreateInvoice = async () => {
-        if (!validateForm()) return;
+    const handleCreateOrder = async () => {
+    if (!validateForm()) return;
 
-        try {
-            setCreatingInvoice(true);
+    try {
+        setCreatingInvoice(true);
 
-            const shippingAddress = `${shipping.indirizzo} ${shipping.civico}, ${shipping.città}`;
+            // 🚚 SHIPPING ADDRESS STRING
+            const shippingAddress = `${shipping.indirizzo} ${shipping.civico}, ${shipping.città} ${shipping.CAP}, ${shipping.provincia}, ${shipping.paese}`;
 
-            const res = await fetch("http://localhost:3000/api/create-invoice", {
+            // 🧾 BILLING ADDRESS STRING
+            const billingAddress = wantInvoice
+                ? `${billing.indirizzo} ${billing.civico}, ${billing.città} ${billing.CAP}, ${billing.provincia}, ${billing.paese}`
+                : shippingAddress;
+
+            // 🪐 PREPARO GLI ITEMS PER IL BACKEND
+            const itemsArray = Object.values(items).map(item => ({
+                stack_id: item.id,
+                quantity: item.quantity
+            }));
+
+            // 📡 CHIAMATA AL BACKEND
+            const res = await fetch("http://localhost:3000/api/create_order", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    full_name: `${shipping.nome} ${shipping.cognome}`,
-                    email: shipping.email,
+                    invoice_email: shipping.email,
                     shipping_address: shippingAddress,
-                    invoice_address: shippingAddress,
-                    total_amount: totaleFinale,
-                }),
+                    invoice_address: billingAddress,
+                    items: itemsArray
+                })
             });
 
             const data = await res.json();
 
-            if (!data.success) {
-                alert("Errore creazione invoice");
+            if (!res.ok) {
+                console.error("Errore create_order:", data);
+                alert("Errore creazione ordine");
                 return;
             }
 
-            setInvoiceId(data.invoice_id);
-        } catch {
+            // 🔑 SALVO invoice_id per il pagamento
+            setInvoiceId(data.invoice.id);
+
+        } catch (err) {
+            console.error("Errore rete:", err);
             alert("Errore rete");
         } finally {
             setCreatingInvoice(false);
         }
     };
+
 
     // -------------------------------------
     // RENDER
@@ -310,7 +327,7 @@ export default function CheckOutPage() {
                     </button>
 
                     {!invoiceId ? (
-                        <button className="checkout-btn" onClick={handleCreateInvoice}>
+                        <button className="checkout-btn" onClick={handleCreateOrder}>
                             {creatingInvoice ? "Creazione ordine..." : "Procedi al pagamento"}
                         </button>
                     ) : (
