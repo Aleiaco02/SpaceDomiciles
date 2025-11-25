@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   index,
+  indexFilter,
   show,
   store,
   update,
@@ -12,6 +13,7 @@ import {
 const router = Router();
 
 router.get("/", index);
+router.get("/filter", indexFilter);
 router.get("/:slug", show);
 router.get("/from/:galaxySlug", showGalaxyPlanet);
 router.post("/", store);
