@@ -31,19 +31,19 @@ export default function FilterDrawer({ open, onClose }) {
   };
 
   return (
-    <div className={`cart-drawer ${open ? "open" : ""}`}>
-      <div className="cart-drawer-overlay" onClick={onClose} />
+    <div className={`Fcart-drawer ${open ? "open" : ""}`}>
+      <div className="Fcart-drawer-overlay" onClick={onClose} />
 
-      <div className="cart-drawer-panel">
-        <button className="cart-drawer-close" onClick={onClose}>
+      <div className="Fcart-drawer-panel">
+        <button className="Fcart-drawer-close" onClick={onClose}>
           &times;
         </button>
 
-        <h3 className="cart-drawer-title">Filtri</h3>
+        <h3 className="Fcart-drawer-title">Filtri</h3>
 
-        <div className="filters-container">
+        <div className="Ffilters-container">
           {/* Ricerca */}
-          <div className="filter-block">
+          <div className="Ffilter-block">
             <label>Ricerca</label>
             <input
               type="text"
@@ -54,7 +54,7 @@ export default function FilterDrawer({ open, onClose }) {
           </div>
 
           {/* Prezzo max */}
-          <div className="filter-block">
+          <div className="Ffilter-block">
             <label>Prezzo massimo</label>
             <input
               type="number"
@@ -66,7 +66,7 @@ export default function FilterDrawer({ open, onClose }) {
           </div>
 
           {/* Temperatura */}
-          <div className="filter-block">
+          <div className="Ffilter-block">
             <label>Temperatura min</label>
             <input
               type="number"
@@ -87,7 +87,7 @@ export default function FilterDrawer({ open, onClose }) {
           </div>
 
           {/* Dimensione */}
-          <div className="filter-block">
+          <div className="Ffilter-block">
             <label>Dimensione min</label>
             <input
               type="number"
@@ -104,7 +104,7 @@ export default function FilterDrawer({ open, onClose }) {
           </div>
 
           {/* Galassia */}
-          <div className="filter-block">
+          <div className="Ffilter-block">
             <label>Galassia</label>
             <select
               value={localFilters.galaxy_slug || ""}
@@ -119,7 +119,7 @@ export default function FilterDrawer({ open, onClose }) {
 
           {/* 🔄 Reset */}
           <button
-            className="cart-drawer-btn"
+            className="Fcart-drawer-btn"
             onClick={() => {
               setLocalFilters(defaultFilter);
             }}
@@ -128,7 +128,7 @@ export default function FilterDrawer({ open, onClose }) {
           </button>
 
           {/* ✔️ Applica */}
-          <button className="cart-drawer-btn" onClick={handleApply}>
+          <button className="Fcart-drawer-btn" onClick={handleApply}>
             Applica
           </button>
         </div>
