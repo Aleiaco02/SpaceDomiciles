@@ -1,26 +1,38 @@
 .pos {
-    padding-top: 150px;
+  padding-top: 150px;
 }
 
 .about-container {
-    width:85%;
-    margin: 0 auto;
+  width: 85%;
+  margin: 0 auto;
 }
 
+/* TITOLI */
 .about-container h1 {
   font-size: 60px;
-  margin-bottom: 20px;
+  margin-block: 40px;
   color: #b56bff;
   text-align: center;
   letter-spacing: 2px;
 }
 
+@media (max-width: 650px) {
+  .about-container h1 {
+    font-size: 45px;
+  }
+}
+
 .about-container h2 {
   font-size: 50px;
-  margin-top: 40px;
-  margin-bottom: 16px;
+  margin-block: 40px;
   color: #75eaff;
   text-align: center;
+}
+
+@media (max-width: 650px) {
+  .about-container h2 {
+    font-size: 30px;
+  }
 }
 
 .about-container p {
@@ -57,4 +69,71 @@
 .gal-dim {
   width: 200px;
   margin: 0 auto;
+}
+
+/* TEAM GRID */
+.team-grid {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 260px);
+  gap: 32px;
+  justify-content: center;
+}
+
+/* CARD CON SFONDO FOTO */
+.team-card {
+  position: relative;
+  width: 260px;
+  height: 340px;
+  border-radius: 18px;
+  overflow: hidden;
+  background-size: 260px auto;
+  background-repeat: no-repeat;
+  box-shadow: 0 0 12px rgba(80, 152, 255, 0.22);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+
+.team-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 26px rgba(117, 234, 255, 0.45);
+}
+
+/* OVERLAY */
+.team-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 22px;
+  color: #fff;
+}
+
+/* TESTI */
+.team-card h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #a0d9ff;
+}
+
+.go-back-text {
+  text-align: center;
+  margin-top: 8px;
+  color: #b56bff;
+  font-size: 18px;
+}
+
+.team-title-gradient {
+  font-size: 50px;
+  font-weight: 700;
+  margin-block: 40px;
+  text-align: center;
+}
+
+@media (max-width: 650px) {
+  .team-title-gradient {
+    font-size: 32px;
+  }
 }

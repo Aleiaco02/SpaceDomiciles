@@ -92,7 +92,7 @@
   position: absolute;
   width: 100%;
   pointer-events: none;
-  -webkit-appearance: none;
+  /* -webkit-appearance: none; */
   background: none;
   height: 0;
   z-index: 2;
@@ -142,7 +142,7 @@ input[type="text"] {
 /* gestisco i colori della barra e della manopola per i vari browser */
 input[type="range"] {
   width: 50%;
-  -webkit-appearance: none;
+  /* -webkit-appearance: none; */
   /* Chrome/Safari */
   border-radius: 4px;
   background: #4b156b;
@@ -328,4 +328,24 @@ input[type="range"]::-webkit-slider-runnable-track {
   transform: scale(1.06);
   box-shadow: 0 0 45px rgba(180, 120, 255, 0.7);
   cursor: pointer;
+}
+
+.buttonload {
+  display: block;
+  margin: 50px auto;
+  background: linear-gradient(135deg, #764ba2, #764ba2);
+  color: #fff;
+  font-size: 1.2rem;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.buttonload:hover {
+  background: linear-gradient(135deg, #bc6bff, #bc6bff);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
