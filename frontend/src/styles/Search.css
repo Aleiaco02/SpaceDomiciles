@@ -1,9 +1,20 @@
+.filter-button {
+  background-color: #8738b4;
+  padding: 5px;
+}
+
 .searchbar {
   text-align: center;
-  margin-left: -50px;
+  margin-right: 50px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
   padding-bottom: 100px;
+
+  h4 {
+    font-size: 18px;
+    font-weight: 600;
+  }
 
   .range {
     display: flex;
@@ -23,16 +34,95 @@
   }
 
   .filter-element {
-    width: 30%;
+    width: 25%;
+  }
+
+  .reset {
+    margin-top: 10px;
+    padding: 5px;
   }
 
   .search-input {
     min-width: 20%;
     padding: 5px;
-    box-shadow: 0 0 25px rgba(120, 70, 255, 0.3);
     font-family: arial;
+    background-color: rgba(120, 70, 255, 0.3);
+    border-radius: 15px;
+    border: 1px solid #007bff;
+    color: white;
     /* maggiore visibilita' */
   }
+}
+
+/* gestione input range con doppia manopola */
+
+.range-container {
+  position: relative;
+  width: 50%;
+  margin: 20px auto;
+  height: 30px;
+  text-align: center;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .range-title {
+    margin-bottom: 10px;
+  }
+
+  p {
+    padding-top: 10px;
+  }
+}
+
+.big {
+  width: 250px;
+}
+
+.slider-range {
+  position: absolute;
+  top: 15px;
+  height: 6px;
+  background: #007bff;
+  border-radius: 3px;
+}
+
+.thumb {
+  position: absolute;
+  width: 100%;
+  pointer-events: none;
+  /* -webkit-appearance: none; */
+  background: none;
+  height: 0;
+  z-index: 2;
+}
+
+.thumb::-webkit-slider-thumb {
+  pointer-events: all;
+  width: 18px;
+  height: 18px;
+  background: #007bff;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+.thumb::-moz-range-thumb {
+  pointer-events: all;
+  width: 18px;
+  height: 18px;
+  background: #007bff;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.thumb-left {
+  z-index: 3;
+}
+
+.thumb-right {
+  z-index: 4;
 }
 
 /* gestisco l'input di testo ricerca pianeta */
@@ -51,7 +141,8 @@ input[type="text"] {
 
 /* gestisco i colori della barra e della manopola per i vari browser */
 input[type="range"] {
-  -webkit-appearance: none;
+  width: 50%;
+  /* -webkit-appearance: none; */
   /* Chrome/Safari */
   border-radius: 4px;
   background: #4b156b;
@@ -65,7 +156,7 @@ input[type="range"]::-webkit-slider-thumb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #cf33ff;
+  background: #4b156b;
   /* colore manopola */
   cursor: pointer;
   margin-top: -6px;
@@ -77,7 +168,7 @@ input[type="range"]::-moz-range-thumb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #cf33ff;
+  background: #4b156b;
   cursor: pointer;
 }
 
@@ -95,7 +186,7 @@ input[type="range"]::-webkit-slider-runnable-track {
   background: #4b156b;
 }
 
->>>>>>>d5df80dd0277e4a2a954bd910061f08e77753151 .mw-card-search {
+.mw-card-search {
   position: relative;
   padding: 35px 25px;
   padding-top: 60px;
@@ -238,6 +329,7 @@ input[type="range"]::-webkit-slider-runnable-track {
   box-shadow: 0 0 45px rgba(180, 120, 255, 0.7);
   cursor: pointer;
 }
+
 .buttonload {
   display: block;
   margin: 50px auto;
@@ -251,6 +343,7 @@ input[type="range"]::-webkit-slider-runnable-track {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
 }
+
 .buttonload:hover {
   background: linear-gradient(135deg, #bc6bff, #bc6bff);
   transform: translateY(-2px);

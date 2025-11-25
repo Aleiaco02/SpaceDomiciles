@@ -7,7 +7,7 @@ const Success = () => {
     <div className="galaxy-page thanks">
       <h1
         style={{
-          marginTop: "125px",
+          marginTop: "90px",
           lineHeight: "1.3",
           marginBottom: "70px",
         }}
@@ -69,6 +69,7 @@ const Success = () => {
           marginTop: "10px",
           fontSize: "1.05rem",
           opacity: 0.8,
+          paddingBottom: "42px"
         }}
       >
         Premi la galassia e fai un salto nell’iperspazio verso la Home

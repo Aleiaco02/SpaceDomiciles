@@ -3,9 +3,10 @@ import { useCart } from "../Contexts/CartContext";
 import { useNavigate } from "react-router-dom";
 import "./Checkout.css";
 import BraintreeDropIn from "../Components/MicroComponents/braintreeDropIn";
+import axios from "axios";
 
 export default function CheckOutPage() {
-  const { items } = useCart();
+  const { items, clearCart } = useCart();
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState({});
@@ -98,24 +99,24 @@ export default function CheckOutPage() {
     check("shipping_indirizzo", shipping.indirizzo);
     check("shipping_civico", shipping.civico);
     check("shipping_città", shipping.città);
-    if (!capRegex.test(shipping.CAP))
-      newErrors.shipping_CAP = "CAP non valido";
+    if (!capRegex.test(shipping.CAP)) newErrors.shipping_CAP = "CAP non valido";
     check("shipping_provincia", shipping.provincia);
     check("shipping_paese", shipping.paese);
 
-    // BILLING solo se wantInvoice
+    // BILLING SOLO SE wantInvoice
     if (wantInvoice) {
       check("billing_nome", billing.nome);
       check("billing_cognome", billing.cognome);
+
       if (!emailRegex.test(billing.email))
         newErrors.billing_email = "Email non valida";
       if (!phoneRegex.test(billing.telefono))
         newErrors.billing_telefono = "Numero non valido";
+
       check("billing_indirizzo", billing.indirizzo);
       check("billing_civico", billing.civico);
       check("billing_città", billing.città);
-      if (!capRegex.test(billing.CAP))
-        newErrors.billing_CAP = "CAP non valido";
+      if (!capRegex.test(billing.CAP)) newErrors.billing_CAP = "CAP non valido";
       check("billing_provincia", billing.provincia);
       check("billing_paese", billing.paese);
 
@@ -142,7 +143,21 @@ export default function CheckOutPage() {
   const shippingCost = totale >= 1500 ? 0 : 4.99;
   const totaleFinale = totale + shippingCost;
 
-  // CREA ORDINE
+  // STOCK UPDATE
+  const updateStockAfterPurchase = async () => {
+    try {
+      for (const item of Object.values(items)) {
+        await axios.post(`http://localhost:3000/api/stacks/${item.id}/purchase`, {
+          quantity: item.quantity,
+        });
+      }
+      console.log("Stock aggiornato");
+    } catch (error) {
+      console.error("Errore aggiornamento stock:", error);
+    }
+  };
+
+  // CREA ORDER + INVOICE
   const handleCreateOrder = async () => {
     if (!validateForm()) return;
 
@@ -190,6 +205,13 @@ export default function CheckOutPage() {
     }
   };
 
+  // PAGAMENTO OK
+  const handlePaymentSuccess = async () => {
+    await updateStockAfterPurchase();
+    clearCart();
+    navigate("/success");
+  };
+
   return (
     <div className="galaxy-page">
       <div className="checkout-page">
@@ -231,7 +253,7 @@ export default function CheckOutPage() {
               />{" "}
               Voglio la fattura
             </label>
-            <br />
+
             <label>
               <input
                 style={{ marginTop: "15px" }}
@@ -253,11 +275,13 @@ export default function CheckOutPage() {
             }}
           >
             <h3>Dati di fatturazione</h3>
+
             <form>
               {Object.keys(billing).map((key) => {
                 const isCompanyField = ["azienda", "piva", "pec", "sdi"].includes(
                   key
                 );
+
                 const mustShow = wantInvoice && (!isCompanyField || isCompany);
                 if (!mustShow) return null;
 
@@ -328,7 +352,7 @@ export default function CheckOutPage() {
             <BraintreeDropIn
               amount={totaleFinale.toFixed(2)}
               invoiceId={invoiceId}
-              onSuccess={() => navigate("/success")}
+              onSuccess={handlePaymentSuccess}
               onError={() => alert("Errore pagamento")}
             />
           )}
