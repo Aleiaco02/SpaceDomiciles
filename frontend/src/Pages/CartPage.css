@@ -37,6 +37,9 @@
     font-size: 2.5rem;
     margin-bottom: 20px;
   }
+  .cont-cart > p {
+    text-align: center;
+  }
 }
 
 /* Totale carrello */
@@ -338,7 +341,7 @@
     width: 100%;
     max-width: 240px;
   }
-  
+
   .buttonsDelete button:last-child {
     display: block;
     margin: 0 auto;
