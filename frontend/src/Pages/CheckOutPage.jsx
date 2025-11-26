@@ -254,6 +254,7 @@ export default function CheckOutPage() {
               Voglio la fattura
             </label>
 
+            <br />
             <label>
               <input
                 style={{ marginTop: "15px" }}
