@@ -98,6 +98,8 @@
   margin-top: 25px;
   flex: 1;
   overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .Ffilter-block label {

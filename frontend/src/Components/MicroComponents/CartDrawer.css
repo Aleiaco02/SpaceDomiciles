@@ -81,6 +81,8 @@
   margin: 0 0 auto 0;
   overflow-y: auto;
   flex: 1;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .cart-drawer-item {
@@ -332,4 +334,3 @@
   background: #a392fc;
   transform: scale(1.05);
 }
-

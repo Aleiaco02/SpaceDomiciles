@@ -16,6 +16,7 @@ export default function SearchPage() {
     const urlFilters = Object.fromEntries([...searchParams]);
 
     // Converti numeri (URL li mette come stringhe)
+
     const parsedFilters = {};
     for (const key in urlFilters) {
       const val = urlFilters[key];
@@ -55,7 +56,13 @@ export default function SearchPage() {
 
   // gestione menù a tendina
   const [isOpen, setIsOpen] = useState(false);
-
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+  }, [isOpen]);
   // numero di card visibili a inizio pagina
   const [visibleCount, setVisibleCount] = useState(8);
 

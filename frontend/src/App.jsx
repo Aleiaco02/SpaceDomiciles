@@ -1,7 +1,7 @@
 import "./App.css";
 // DIPENDENZE REACT
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // LAYOUT
 import DefaultLayout from "./Layout/DefaultLayout";
@@ -29,6 +29,13 @@ import CartDrawer from "./Components/MicroComponents/CartDrawer";
 
 function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  useEffect(() => {
+    if (drawerOpen) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+  }, [drawerOpen]);
   return (
     <>
       <CartProvider>
