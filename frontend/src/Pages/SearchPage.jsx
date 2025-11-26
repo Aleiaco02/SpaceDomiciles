@@ -10,7 +10,7 @@ export default function SearchPage() {
 
   // gestione url condivisibile
   const [searchParams, setSearchParams] = useSearchParams();
-  
+
   // attiva i filtri dall'url
   useEffect(() => {
     const urlFilters = Object.fromEntries([...searchParams]);
@@ -39,38 +39,6 @@ export default function SearchPage() {
     setSearchParams(cleanFilters);
   }, [filters]);
 
-  // funzione che gestisce il valore massimo temperatura
-  const handleMinTChange = (e) => {
-    const value = Number(e.target.value);
-    if (value < filters.temperatureMax) {
-      updateFilters("temperatureMin", value);
-    }
-  };
-
-  // funzione che gestisce il valore minimo temperatura
-  const handleMaxTChange = (e) => {
-    const value = Number(e.target.value);
-    if (value > filters.temperatureMin) {
-      updateFilters("temperatureMax", value);
-    }
-  };
-
-  // funzione che gestisce il valore massimo dimensione
-  const handleMinSChange = (e) => {
-    const value = Number(e.target.value);
-    if (value < filters.sizeMax) {
-      updateFilters("sizeMin", value);
-    }
-  };
-
-  // funzione che gestisce il valore minimo dimensione
-  const handleMaxSChange = (e) => {
-    const value = Number(e.target.value);
-    if (value > filters.sizeMin) {
-      updateFilters("sizeMax", value);
-    }
-  };
-
   // Converto l'oggetto filter in query string
   const queryString = new URLSearchParams(filters).toString();
 
@@ -84,42 +52,6 @@ export default function SearchPage() {
       .then((data) => setPlanets(data))
       .catch((err) => console.error("Errore nel caricamento pianeti:", err));
   }, [filters]);
-
-  // scrivo il numero in notazione scientifica
-  const formatToScientificNotation = (num, decimalPlaces = 2) => {
-    if (num === 0) {
-      return num;
-    }
-
-    // Uso toExponential() per ottenere la notazione
-    const exponentialString = num.toExponential(decimalPlaces);
-
-    // Sostituisco la 'e' con la parte "x 10 alla n-esima" per un output più leggibile
-    const [coefficient, exponent] = exponentialString.split("e");
-
-    // Formatto l'esponente per includere il simbolo ^
-    const formattedExponent = exponent.replace("+", "").replace("-", "⁻");
-
-    return `${coefficient} \u00D7 10${formattedExponent
-      .split("")
-      .map((char) => {
-        // Mappa i numeri normali ai loro equivalenti in apice (superscript)
-        const superscriptMap = {
-          0: "⁰",
-          1: "¹",
-          2: "²",
-          3: "³",
-          4: "⁴",
-          5: "⁵",
-          6: "⁶",
-          7: "⁷",
-          8: "⁸",
-          9: "⁹",
-        };
-        return superscriptMap[char] || char; // Usa l'apice o il carattere stesso
-      })
-      .join("")}`;
-  };
 
   // gestione menù a tendina
   const [isOpen, setIsOpen] = useState(false);
@@ -182,7 +114,9 @@ export default function SearchPage() {
             </Link>
           ))
         ) : (
-          <p className="no-results-s">Nessun pianeta rispetta i parametri inseriti</p>
+          <p className="no-results-s">
+            Nessun pianeta rispetta i parametri inseriti
+          </p>
         )}
       </div>
 

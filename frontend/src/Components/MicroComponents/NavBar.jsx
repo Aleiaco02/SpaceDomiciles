@@ -3,7 +3,7 @@ import "./NavBar.css";
 import galaxyIcon from "/img/galaxy-icon.png";
 import CartBadge from "./CartBadge";
 
-export default function NavBar({setDrawerOpen}) {
+export default function NavBar({ setDrawerOpen }) {
   return (
     <nav>
       <div className="nav-cont">

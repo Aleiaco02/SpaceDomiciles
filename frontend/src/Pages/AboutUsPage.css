@@ -1,5 +1,5 @@
 .pos {
-  padding-top: 150px;
+  padding: 150px 0 80px;
 }
 
 .about-container {
@@ -92,7 +92,6 @@
   box-shadow: 0 0 12px rgba(80, 152, 255, 0.22);
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
-
 
 .team-card:hover {
   transform: translateY(-8px);
