@@ -29,6 +29,7 @@
   min-width: 280px;
   max-width: 400px;
   position: relative;
+  cursor: pointer;
 }
 
 .toast-icon {

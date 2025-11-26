@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import "./Toast.css";
 
-export default function Toast({ message, show, onClose }) {
+export default function Toast({ message, show, onClose, setDrawerOpen }) {
   useEffect(() => {
     if (show) {
       const timer = setTimeout(() => {
@@ -11,11 +11,15 @@ export default function Toast({ message, show, onClose }) {
     }
   }, [show, onClose]);
 
+  const openandclose = () => {
+    setDrawerOpen(true);
+    onClose();
+  };
   if (!show) return null;
 
   return (
     <div className="toast-container">
-      <div className="toast">
+      <div className="toast" onClick={() => openandclose()}>
         <i className="fa-solid fa-circle-check toast-icon"></i>
         <span className="toast-message">{message}</span>
         <button className="toast-close" onClick={onClose}>

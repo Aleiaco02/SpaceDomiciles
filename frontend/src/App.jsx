@@ -38,7 +38,7 @@ function App() {
   }, [drawerOpen]);
   return (
     <>
-      <CartProvider>
+      <CartProvider setDrawerOpen={setDrawerOpen}>
         <DefaultProvider>
           <BrowserRouter>
             <Routes>
