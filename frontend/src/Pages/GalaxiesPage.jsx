@@ -51,7 +51,7 @@ export default function GalaxiesPage() {
             </Link>
           ))}
         </div>
-        <div className="gal-dim">
+        <div className="gal-dim" onClick={scrollToTop}>
           <Link to="/">
             <img
               src={galaxyIcon}
