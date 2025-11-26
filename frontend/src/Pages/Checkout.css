@@ -4,7 +4,9 @@
   padding-top: 100px;
   color: #fff;
 }
-
+.payerror {
+  color: red;
+}
 .checkout-page h2 {
   font-size: 40px;
 }
@@ -101,11 +103,11 @@
 .checkout-panel input:-webkit-autofill:hover,
 .checkout-panel input:-webkit-autofill:focus,
 .checkout-panel input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0px 1000px #222040 inset !important;
-    -webkit-text-fill-color: #fafafa !important;
-    caret-color: #fafafa !important;
-    border: none !important;
-    transition: background-color 9999s ease-in-out 0s !important;
+  -webkit-box-shadow: 0 0 0px 1000px #222040 inset !important;
+  -webkit-text-fill-color: #fafafa !important;
+  caret-color: #fafafa !important;
+  border: none !important;
+  transition: background-color 9999s ease-in-out 0s !important;
 }
 
 /* 🎯 RESET di tutti gli altri stati (mantiene sempre il colore) */

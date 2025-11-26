@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCart } from "../Contexts/CartContext";
 import { useNavigate } from "react-router-dom";
 import "./Checkout.css";
@@ -147,9 +147,12 @@ export default function CheckOutPage() {
   const updateStockAfterPurchase = async () => {
     try {
       for (const item of Object.values(items)) {
-        await axios.post(`http://localhost:3000/api/stacks/${item.id}/purchase`, {
-          quantity: item.quantity,
-        });
+        await axios.post(
+          `http://localhost:3000/api/stacks/${item.id}/purchase`,
+          {
+            quantity: item.quantity,
+          }
+        );
       }
       console.log("Stock aggiornato");
     } catch (error) {
@@ -192,14 +195,14 @@ export default function CheckOutPage() {
 
       if (!res.ok) {
         console.error("Errore create_order:", data);
-        alert("Errore creazione ordine");
+        console.log("Errore creazione ordine");
         return;
       }
 
       setInvoiceId(data.invoice.id);
     } catch (err) {
       console.error("Errore rete:", err);
-      alert("Errore rete");
+      console.log("Errore rete");
     } finally {
       setCreatingInvoice(false);
     }
@@ -211,6 +214,10 @@ export default function CheckOutPage() {
     clearCart();
     navigate("/success");
   };
+
+  // PAGAMENTO NON COMPLETATO
+  const [isError, setIsError] = useState(true);
+  useEffect(() => setIsError(false), []);
 
   return (
     <div className="galaxy-page">
@@ -279,9 +286,12 @@ export default function CheckOutPage() {
 
             <form>
               {Object.keys(billing).map((key) => {
-                const isCompanyField = ["azienda", "piva", "pec", "sdi"].includes(
-                  key
-                );
+                const isCompanyField = [
+                  "azienda",
+                  "piva",
+                  "pec",
+                  "sdi",
+                ].includes(key);
 
                 const mustShow = wantInvoice && (!isCompanyField || isCompany);
                 if (!mustShow) return null;
@@ -293,7 +303,9 @@ export default function CheckOutPage() {
                       placeholder={key}
                       value={billing[key]}
                       onChange={handleBilling}
-                      disabled={!wantInvoice || (sameAsShipping && !isCompanyField)}
+                      disabled={
+                        !wantInvoice || (sameAsShipping && !isCompanyField)
+                      }
                     />
                     {errors[`billing_${key}`] && (
                       <p className="error">{errors[`billing_${key}`]}</p>
@@ -341,7 +353,10 @@ export default function CheckOutPage() {
 
         {/* BOTTONI */}
         <div className="checkout-btn-row">
-          <button className="back-to-cart-btn" onClick={() => navigate("/cart")}>
+          <button
+            className="back-to-cart-btn"
+            onClick={() => navigate("/cart")}
+          >
             ⬅ Torna al carrello
           </button>
 
@@ -354,10 +369,11 @@ export default function CheckOutPage() {
               amount={totaleFinale.toFixed(2)}
               invoiceId={invoiceId}
               onSuccess={handlePaymentSuccess}
-              onError={() => alert("Errore pagamento")}
+              onError={() => setIsError(!isError)}
             />
           )}
         </div>
+        {isError && <p className="payerror">Errore nel pagamento</p>}
       </div>
     </div>
   );
