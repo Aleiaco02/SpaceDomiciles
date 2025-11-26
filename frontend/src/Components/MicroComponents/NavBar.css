@@ -14,7 +14,14 @@ nav {
   align-items: center;
   justify-content: space-between;
 }
-
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+  color: white;
+}
 .links {
   padding-right: 190px;
   display: flex;
@@ -128,7 +135,11 @@ nav a span:hover::after {
   width: 60px !important;
   margin: 0 !important;
 }
-
+.nav-cont-right {
+  display: flex;
+  flex-flow: nowrap row;
+  align-items: center;
+}
 /* ============================================ */
 /* MEDIA QUERIES - TABLET */
 /* ============================================ */
@@ -164,24 +175,24 @@ nav a span:hover::after {
 }
 
 @media (max-width: 900px) {
-  nav {
-    padding: 16px 20px;
+  .hamburger {
+    display: block;
   }
-
-  .nav-cont {
-    flex-wrap: nowrap;
-    gap: 10px;
-    justify-content: space-between;
-  }
-
   .links {
-    padding-right: 0;
-    gap: 22px;
-    width: auto;
-    flex-wrap: nowrap;
-    justify-content: center;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: #0d0d0d; /* O il colore della tua nav */
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    padding: 20px 0;
+    display: none;
   }
-
+  .links.open {
+    display: flex;
+  }
   nav a span {
     font-size: 0.88rem;
     padding: 7px 10px;
@@ -202,10 +213,24 @@ nav a span:hover::after {
 }
 
 @media (max-width: 750px) {
-  .links {
-    gap: 16px;
+  .hamburger {
+    display: block;
   }
-
+  .links {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: #0d0d0d; /* O il colore della tua nav */
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    padding: 20px 0;
+    display: none;
+  }
+  .links.open {
+    display: flex;
+  }
   nav a span {
     font-size: 0.82rem;
     padding: 6px 8px;
@@ -235,19 +260,33 @@ nav a span:hover::after {
   }
 
   .nav-cont {
-    flex-direction: column;
-    align-items: start;
+    flex-direction: row;
+    align-items: center;
     gap: 16px;
   }
-
-  .links {
-    gap: 18px;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding-right: 0;
-    width: 100%;
+  .hamburger {
+    display: block;
   }
-
+  .nav-cont-right {
+    display: flex;
+    flex-flow: nowrap row;
+    align-items: center;
+  }
+  .links {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: #0d0d0d; /* O il colore della tua nav */
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    padding: 20px 0;
+    display: none;
+  }
+  .links.open {
+    display: flex;
+  }
   nav a span {
     font-size: 0.9rem;
     padding: 7px 10px;
@@ -264,7 +303,7 @@ nav a span:hover::after {
   }
 
   .cart {
-    position: absolute;
+    /* position: absolute; */
     top: 18px;
     right: 18px;
   }
@@ -282,11 +321,24 @@ nav a span:hover::after {
   nav {
     padding: 12px 14px;
   }
-
-  .links {
-    gap: 14px;
+  .hamburger {
+    display: block;
   }
-
+  .links {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: #0d0d0d; /* O il colore della tua nav */
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    padding: 20px 0;
+    display: none;
+  }
+  .links.open {
+    display: flex;
+  }
   nav a span {
     font-size: 0.84rem;
     padding: 6px 8px;
