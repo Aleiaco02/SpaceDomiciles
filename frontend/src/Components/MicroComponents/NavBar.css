@@ -19,6 +19,8 @@ nav {
   background: none;
   border: none;
   font-size: 26px;
+  z-index: 8888;
+  position: relative;
   cursor: pointer;
   color: white;
 }
@@ -117,6 +119,7 @@ nav a span:hover::after {
   border: none;
   background: none;
   cursor: pointer;
+  z-index: 80;
 }
 
 .cart i {
@@ -150,6 +153,22 @@ nav a span:hover::after {
   min-width: 71%;
   justify-content: space-between;
 }
+.menu-drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.52);
+  z-index: 10;
+  opacity: 0;
+  transition: all 0.35s ease;
+  pointer-events: none;
+}
+.menu-drawer-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
 @media (max-width: 1277px) {
   .links {
     gap: 0px;
@@ -180,26 +199,38 @@ nav a span:hover::after {
   }
   .links {
     position: absolute;
-    top: 70px;
+    top: 0px;
     left: 0;
     width: 100%;
-    background: rgb(9, 5, 15); /* O il colore della tua nav */
+    height: calc(100% + 195px);
     flex-direction: column;
     align-items: center;
+    justify-content: end;
     gap: 25px;
     padding: 20px 0;
-    display: none;
+    transform: translateY(-100%);
+    opacity: 0;
+    transition: all 0.35s ease;
+    pointer-events: none;
+    background: rgb(9, 5, 15);
+    z-index: 80;
+  }
+  .links.open {
+    transform: translateY(0px);
+    opacity: 1;
+    pointer-events: auto;
+    padding-bottom: 30px;
   }
   nav a span {
     font-size: 1.02rem;
     padding: 8px 12px;
   }
-  .links.open {
-    display: flex;
-  }
+
   .rocket {
     font-size: 1.3rem;
     gap: 10px;
+    z-index: 8888;
+    position: relative;
   }
 
   .logo-dim {
@@ -213,23 +244,6 @@ nav a span:hover::after {
 }
 
 @media (max-width: 900px) {
-  .hamburger {
-    display: block;
-  }
-  .links {
-    position: absolute;
-    top: 70px;
-    left: 0;
-    width: 100%; /* O il colore della tua nav */
-    flex-direction: column;
-    align-items: center;
-    gap: 25px;
-    padding: 20px 0;
-    display: none;
-  }
-  .links.open {
-    display: flex;
-  }
   nav a span {
     font-size: 0.88rem;
     padding: 7px 10px;
@@ -252,23 +266,6 @@ nav a span:hover::after {
 }
 
 @media (max-width: 750px) {
-  .hamburger {
-    display: block;
-  }
-  .links {
-    position: absolute;
-    top: 70px;
-    left: 0;
-    width: 100%; /* O il colore della tua nav */
-    flex-direction: column;
-    align-items: center;
-    gap: 25px;
-    padding: 20px 0;
-    display: none;
-  }
-  .links.open {
-    display: flex;
-  }
   nav a span {
     font-size: 0.82rem;
     padding: 6px 8px;
@@ -302,28 +299,12 @@ nav a span:hover::after {
     align-items: center;
     gap: 16px;
   }
-  .hamburger {
-    display: block;
-  }
+
   .nav-cont-right {
     display: flex;
     flex-flow: nowrap row;
     align-items: center;
     min-width: auto;
-  }
-  .links {
-    position: absolute;
-    top: 70px;
-    left: 0;
-    width: 100%; /* O il colore della tua nav */
-    flex-direction: column;
-    align-items: center;
-    gap: 25px;
-    padding: 20px 0;
-    display: none;
-  }
-  .links.open {
-    display: flex;
   }
   nav a span {
     font-size: 0.9rem;
@@ -359,23 +340,7 @@ nav a span:hover::after {
   nav {
     padding: 12px 14px;
   }
-  .hamburger {
-    display: block;
-  }
-  .links {
-    position: absolute;
-    top: 70px;
-    left: 0;
-    width: 100%; /* O il colore della tua nav */
-    flex-direction: column;
-    align-items: center;
-    gap: 25px;
-    padding: 20px 0;
-    display: none;
-  }
-  .links.open {
-    display: flex;
-  }
+
   nav a span {
     font-size: 0.84rem;
     padding: 6px 8px;
