@@ -91,7 +91,11 @@ export async function sendAllCertificatesEmail(to, certificates, orderData, item
           📄 <strong>Order ID:</strong> ${orderData.order_id}<br>
           📅 <strong>Date:</strong> ${orderData.date}<br>
           💰 <strong>Total:</strong> €${orderData.total_price}<br>
-          💳 <strong>Payment:</strong> ${orderData.payment_method}
+          ${
+            orderData.shipping_cost === 0
+              ? `📦 <strong>Shipping:</strong> <span style="color:#9bb5ff">Gratis 🚀</span><br>`
+              : `📦 <strong>Shipping:</strong> €${orderData.shipping_cost}<br>`
+          }
         </p>
 
         <h3 style="color:#9bb5ff;">📦 Items Acquistati</h3>

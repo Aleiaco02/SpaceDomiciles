@@ -188,6 +188,7 @@ export default function CheckOutPage() {
           items: itemsArray,
           wantInvoice: wantInvoice,
           billing: wantInvoice ? billing : null,
+          shipping_cost: shippingCost,
         }),
       });
 

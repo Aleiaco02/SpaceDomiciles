@@ -176,6 +176,7 @@ export async function createOrder(req, res) {
       invoice_pdf_url: invoicePdfUrl,
       wantInvoice,
       billing_data: billing,
+      shipping_cost: req.body.shipping_cost,
     };
 
     await sendAllCertificatesEmail(
