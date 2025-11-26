@@ -89,26 +89,64 @@
   overflow: hidden;
   background-size: 260px auto;
   background-repeat: no-repeat;
+  background-position: center 15%;
   box-shadow: 0 0 12px rgba(80, 152, 255, 0.22);
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  transition: all 0.35s ease;
 }
-
+.daniel {
+  background-image: url(/img/Daniel.png);
+}
+.daniel:hover {
+  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.521)),
+    url(/img/Daniel.png);
+}
+.claudia {
+  background-image: url(/img/Claudia.png);
+}
+.claudia:hover {
+  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.521)),
+    url(/img/Claudia.png);
+}
+.christian {
+  background-image: url(/img/Christian.png);
+}
+.christian:hover {
+  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.521)),
+    url(/img/Christian.png);
+}
+.alessandro {
+  background-image: url(/img/Alessandro.png);
+}
+.alessandro:hover {
+  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.521)),
+    url(/img/Alessandro.png);
+}
+.stefano {
+  background-image: url(/img/Stefano.png);
+}
+.stefano:hover {
+  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.521)),
+    url(/img/Stefano.png);
+}
 .team-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 0 26px rgba(117, 234, 255, 0.45);
+  background-position: center 15%;
+  background-size: 260px auto;
 }
 
-/* OVERLAY */
-.team-overlay {
-  position: absolute;
-  inset: 0;
+.team-personal-links {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 22px;
-  color: #fff;
+  width: 80%;
+  margin: 0 auto;
+  height: 95%;
+  align-items: end;
+  justify-content: space-between;
 }
 
+.socials-container {
+  opacity: 0;
+}
 /* TESTI */
 .team-card h3 {
   margin: 0;

@@ -18,75 +18,125 @@ export default function AboutUsPage() {
           <div className="team-grid">
             {/* ALESSANDRO */}
             <Link to={"https://github.com/Aleiaco02"} target="_blank">
-              <div
-                className="team-card"
-                style={{
-                  backgroundImage: "url(/img/Alessandro.png)",
-                  backgroundPosition: "center 15%",
-                }}
-              >
-                <div className="team-overlay">
-                  <h3>Alessandro</h3>
+              <div className="team-card alessandro">
+                <div className="team-personal-links">
+                  <div className="team-overlay">
+                    <h3>Alessandro</h3>
+                  </div>
+                  <div className="socials-container">
+                    <Link
+                      to={"https://github.com/ClaudiaSgalippa"}
+                      target="_blank"
+                    >
+                      <i className="fa-brands fa-github"></i>
+                    </Link>
+                    <Link to={"https://www.linkdn.com"} target="_blank">
+                      <i class="fa-brands fa-linkedin"></i>
+                    </Link>
+                    <Link to={"https://www.facebook.com"} target="_blank">
+                      <i class="fa-brands fa-facebook"></i>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </Link>
 
             {/* CHRISTIAN */}
             <Link to={"https://github.com/christianzaboli"} target="_blank">
-              <div
-                className="team-card"
-                style={{
-                  backgroundImage: "url(/img/Christian.png)",
-                  backgroundPosition: "center 20%",
-                }}
-              >
-                <div className="team-overlay">
-                  <h3>Christian</h3>
+              <div className="team-card christian">
+                <div className="team-personal-links">
+                  <div className="team-overlay">
+                    <h3>Christian</h3>
+                  </div>
+                  <div className="socials-container">
+                    <Link
+                      to={"https://github.com/ClaudiaSgalippa"}
+                      target="_blank"
+                    >
+                      <i className="fa-brands fa-github"></i>
+                    </Link>
+                    <Link to={"https://www.linkdn.com"} target="_blank">
+                      <i class="fa-brands fa-linkedin"></i>
+                    </Link>
+                    <Link to={"https://www.facebook.com"} target="_blank">
+                      <i class="fa-brands fa-facebook"></i>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </Link>
 
             {/* CLAUDIA */}
             <Link to={"https://github.com/ClaudiaSgalippa"} target="_blank">
-              <div
-                className="team-card"
-                style={{
-                  backgroundImage: "url(/img/Claudia.png)",
-                  backgroundPosition: "center 15%",
-                }}
-              >
-                <div className="team-overlay">
-                  <h3>Claudia</h3>
+              <div className="team-card claudia">
+                <div className="team-personal-links">
+                  <div className="team-overlay">
+                    <h3>Claudia</h3>
+                  </div>
+                  <div className="socials-container">
+                    <Link
+                      to={"https://github.com/ClaudiaSgalippa"}
+                      target="_blank"
+                    >
+                      <i className="fa-brands fa-github"></i>
+                    </Link>
+                    <Link to={"https://www.linkdn.com"} target="_blank">
+                      <i class="fa-brands fa-linkedin"></i>
+                    </Link>
+                    <Link to={"https://www.facebook.com"} target="_blank">
+                      <i class="fa-brands fa-facebook"></i>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </Link>
 
             {/* DANIEL */}
             <Link to={"https://github.com/Daniel-Di-Fraia"} target="_blank">
-              <div
-                className="team-card"
-                style={{
-                  backgroundImage: "url(/img/Daniel.png)",
-                  backgroundPosition: "center 15%",
-                }}
-              >
-                <div className="team-overlay">
-                  <h3>Daniel</h3>
+              <div className="team-card daniel">
+                <div className="team-personal-links">
+                  <div className="team-overlay">
+                    <h3>Daniel</h3>
+                  </div>
+                  <div className="socials-container">
+                    <Link
+                      to={"https://github.com/Daniel-Di-Fraia"}
+                      target="_blank"
+                    >
+                      <i className="fa-brands fa-github"></i>
+                    </Link>
+                    <Link to={"https://www.linkdn.com"} target="_blank">
+                      <i class="fa-brands fa-linkedin"></i>
+                    </Link>
+                    <Link to={"https://www.facebook.com"} target="_blank">
+                      <i class="fa-brands fa-facebook"></i>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </Link>
 
             {/* STEFANO */}
             <Link to={"https://github.com/StefanoSalaa98"} target="_blank">
-              <div
-                className="team-card"
-                style={{
-                  backgroundImage: "url(/img/Stefano.png)",
-                  backgroundPosition: "center 20%",
-                }}
-              >
-                <div className="team-overlay">
-                  <h3>Stefano</h3>
+              <div className="team-card stefano">
+                <div className="team-personal-links">
+                  <div className="team-overlay">
+                    <h3>Stefano</h3>
+                  </div>
+                  <div className="socials-container">
+                    <Link
+                      to={"https://github.com/Daniel-Di-Fraia"}
+                      target="_blank"
+                    >
+                      <i className="fa-brands fa-github"></i>
+                    </Link>
+                    <Link to={"https://www.linkdn.com"} target="_blank">
+                      <i class="fa-brands fa-linkedin"></i>
+                    </Link>
+                    <Link to={"https://www.facebook.com"} target="_blank">
+                      <i class="fa-brands fa-facebook"></i>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </Link>
