@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import galaxyIcon from "/img/galaxy-icon.png";     // <--- IMPORT AGGIUNTO
+import galaxyIcon from "/img/galaxy-icon.png"; // <--- IMPORT AGGIUNTO
 import "./GalaxiesPage.css";
 
 export default function GalaxiesPage() {
@@ -15,6 +15,12 @@ export default function GalaxiesPage() {
       .catch((err) => console.error("Errore nel caricamento galassie:", err));
   }, []);
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   return (
     <div className="galaxy-page pos-gal">
       <div className="galaxies-section">
@@ -29,6 +35,7 @@ export default function GalaxiesPage() {
               to={`/galaxies/${galaxy.slug}`}
               key={galaxy.id}
               className="galaxy-card-link"
+              onClick={scrollToTop}
             >
               <div className="galaxy-card">
                 <img

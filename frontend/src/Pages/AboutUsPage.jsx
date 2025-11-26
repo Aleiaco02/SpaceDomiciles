@@ -4,6 +4,12 @@ import { Link } from "react-router-dom";
 import GradientText from "../Components/ReactBits/GradientText";
 
 export default function AboutUsPage() {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   return (
     <>
       <div className="galaxy-page pos">
@@ -185,7 +191,7 @@ export default function AboutUsPage() {
             <li>Team giovane, creativo e full-stack ready</li>
           </ul>
 
-          <div className="gal-dim">
+          <div className="gal-dim" onClick={scrollToTop}>
             <Link to="/">
               <img
                 src={galaxyIcon}

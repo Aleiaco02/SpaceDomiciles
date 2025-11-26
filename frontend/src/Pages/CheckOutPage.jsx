@@ -214,12 +214,18 @@ export default function CheckOutPage() {
     await updateStockAfterPurchase();
     clearCart();
     navigate("/success");
+    scrollToTop();
   };
 
   // PAGAMENTO NON COMPLETATO
   const [isError, setIsError] = useState(true);
   useEffect(() => setIsError(false), []);
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+    });
+  };
   return (
     <div className="galaxy-page">
       <div className="checkout-page">
@@ -356,7 +362,10 @@ export default function CheckOutPage() {
         <div className="checkout-btn-row">
           <button
             className="back-to-cart-btn"
-            onClick={() => navigate("/cart")}
+            onClick={() => {
+              navigate("/cart");
+              scrollToTop();
+            }}
           >
             ⬅ Torna al carrello
           </button>

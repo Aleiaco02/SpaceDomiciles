@@ -73,7 +73,12 @@ export default function SearchPage() {
 
   // crea la lista visibile
   const displayedPlanets = planets.slice(0, visibleCount);
-
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   return (
     <div className="galaxy-page pos">
       <h1 className="mw-subtitle-s">Cerca il tuo pianeta nell'universo</h1>
@@ -101,6 +106,7 @@ export default function SearchPage() {
               to={`/galaxies/${planet.galaxy_slug}/${planet.slug}`}
               key={planet.id}
               className="mw-card-search-s"
+              onClick={scrollToTop}
             >
               <div>
                 <div className="mw-explore-s">

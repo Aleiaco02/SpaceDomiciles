@@ -14,11 +14,21 @@ export default function NavBar({ setDrawerOpen }) {
     }
   }, [mobileOpen]);
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+  const clicknav = () => {
+    setMobileOpen(false);
+    scrollToTop();
+  };
   return (
     <nav>
       <div className="nav-cont">
         <NavLink to="/">
-          <div className="rocket">
+          <div className="rocket" onClick={scrollToTop}>
             <img
               src={galaxyIcon}
               alt="Galassia"
@@ -39,7 +49,7 @@ export default function NavBar({ setDrawerOpen }) {
             <NavLink
               to="/galaxies"
               className={({ isActive }) => (isActive ? "active" : "")}
-              onClick={() => setMobileOpen(false)}
+              onClick={() => clicknav()}
             >
               <span>
                 Galassie
@@ -49,7 +59,7 @@ export default function NavBar({ setDrawerOpen }) {
             <NavLink
               to="/search"
               className={({ isActive }) => (isActive ? "active" : "")}
-              onClick={() => setMobileOpen(false)}
+              onClick={() => clicknav()}
             >
               <span>
                 Cerca
@@ -60,7 +70,7 @@ export default function NavBar({ setDrawerOpen }) {
             <NavLink
               to="/about-us"
               className={({ isActive }) => (isActive ? "active" : "")}
-              onClick={() => setMobileOpen(false)}
+              onClick={() => clicknav()}
             >
               <span>
                 Chi Siamo
@@ -71,7 +81,7 @@ export default function NavBar({ setDrawerOpen }) {
             <NavLink
               to="/contact-us"
               className={({ isActive }) => (isActive ? "active" : "")}
-              onClick={() => setMobileOpen(false)}
+              onClick={() => clicknav()}
             >
               <span>
                 Contattaci!

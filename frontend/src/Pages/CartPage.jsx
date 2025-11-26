@@ -29,7 +29,12 @@ export default function CarrelloPage() {
   const FREE_SHIPPING_THRESHOLD = 1500;
 
   if (loading) return <p>Caricamento carrello...</p>;
-
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   return (
     <div className="galaxy-page">
       <AnimatePresence>
@@ -72,7 +77,10 @@ export default function CarrelloPage() {
         <div className="cart-buttons-container">
           <button
             className="checkout-btn"
-            onClick={() => navigate("/checkout")}
+            onClick={() => {
+              navigate("/checkout");
+              scrollToTop();
+            }}
             disabled={itemsArray.length === 0}
           >
             Vai al checkout

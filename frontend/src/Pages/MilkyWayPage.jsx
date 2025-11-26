@@ -18,7 +18,11 @@ export default function MilkyWayPage() {
       .then((data) => setCurrGalaxy(data), console.log(currGalaxy))
       .catch((err) => console.error("Errore nel caricamento galassia:", err));
   }, []);
-
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+    });
+  };
   // recupero i pianeti di questa galassia
   useEffect(() => {
     fetch("http://localhost:3000/api/planets/from/" + galaxySlug)
@@ -48,7 +52,7 @@ export default function MilkyWayPage() {
             <p>{currGalaxy?.description}</p>
           </div>
           {currPlanets?.length > 0 && (
-            <div>
+            <div onClick={scrollToTop}>
               <h2 className="mw-subtitle">I pianeti</h2>
               <div className="mw-cards-grid">
                 {currPlanets?.map((planet) => (
