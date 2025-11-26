@@ -33,9 +33,9 @@ export default function FilterDrawer({ open, onClose }) {
   return (
     <>
       {/* ✨ OVERLAY SEPARATO CON CLASSE OPEN ✨ */}
-      <div 
-        className={`Fcart-drawer-overlay ${open ? "open" : ""}`} 
-        onClick={onClose} 
+      <div
+        className={`Fcart-drawer-overlay ${open ? "open" : ""}`}
+        onClick={onClose}
       />
 
       {/* ✨ DRAWER ✨ */}
@@ -82,7 +82,7 @@ export default function FilterDrawer({ open, onClose }) {
                 }
               />
 
-              <label style={{ marginTop: '12px' }}>Temperatura max</label>
+              <label style={{ marginTop: "12px" }}>Temperatura max</label>
               <input
                 type="number"
                 value={localFilters.temperatureMax}
@@ -101,7 +101,7 @@ export default function FilterDrawer({ open, onClose }) {
                 onChange={(e) => updateLocal("sizeMin", Number(e.target.value))}
               />
 
-              <label style={{ marginTop: '12px' }}>Dimensione max</label>
+              <label style={{ marginTop: "12px" }}>Dimensione max</label>
               <input
                 type="number"
                 value={localFilters.sizeMax}

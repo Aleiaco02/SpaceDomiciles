@@ -11,6 +11,7 @@ export function DefaultProvider({ children }) {
     sizeMax: 7e10,
     price: 5000,
     category: "",
+    galaxy_slug: "",
   };
 
   const [filters, setFilters] = useState(defaultFilter);

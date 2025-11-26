@@ -23,9 +23,10 @@ nav {
   color: white;
 }
 .links {
-  padding-right: 190px;
   display: flex;
-  gap: 80px;
+  min-width: 90%;
+  flex-shrink: 1;
+  gap: 50px;
 }
 
 /*logo*/
@@ -40,7 +41,9 @@ nav {
   transition: transform 0.35s ease, text-shadow 0.35s ease;
   cursor: pointer;
 }
-
+.rocket p {
+  white-space: nowrap;
+}
 .rocket i {
   font-size: 3rem;
   filter: drop-shadow(0 0 10px #c59bff);
@@ -140,6 +143,18 @@ nav a span:hover::after {
   flex-flow: nowrap row;
   align-items: center;
 }
+.nav-cont-right {
+  display: flex;
+  flex-flow: nowrap row;
+  align-items: center;
+  min-width: 71%;
+  justify-content: space-between;
+}
+@media (max-width: 1277px) {
+  .links {
+    gap: 0px;
+  }
+}
 /* ============================================ */
 /* MEDIA QUERIES - TABLET */
 /* ============================================ */
@@ -149,16 +164,39 @@ nav a span:hover::after {
     padding: 18px 30px;
   }
 
-  .links {
-    padding-right: 60px;
-    gap: 45px;
+  .nav-cont {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
   }
-
+  .hamburger {
+    display: block;
+  }
+  .nav-cont-right {
+    display: flex;
+    flex-flow: nowrap row;
+    align-items: center;
+    min-width: auto;
+  }
+  .links {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: rgb(9, 5, 15); /* O il colore della tua nav */
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    padding: 20px 0;
+    display: none;
+  }
   nav a span {
     font-size: 1.02rem;
     padding: 8px 12px;
   }
-
+  .links.open {
+    display: flex;
+  }
   .rocket {
     font-size: 1.3rem;
     gap: 10px;
@@ -182,8 +220,7 @@ nav a span:hover::after {
     position: absolute;
     top: 70px;
     left: 0;
-    width: 100%;
-    background: #0d0d0d; /* O il colore della tua nav */
+    width: 100%; /* O il colore della tua nav */
     flex-direction: column;
     align-items: center;
     gap: 25px;
@@ -197,7 +234,9 @@ nav a span:hover::after {
     font-size: 0.88rem;
     padding: 7px 10px;
   }
-
+  .nav-cont-right {
+    justify-content: end;
+  }
   .rocket {
     font-size: 1.1rem;
   }
@@ -220,8 +259,7 @@ nav a span:hover::after {
     position: absolute;
     top: 70px;
     left: 0;
-    width: 100%;
-    background: #0d0d0d; /* O il colore della tua nav */
+    width: 100%; /* O il colore della tua nav */
     flex-direction: column;
     align-items: center;
     gap: 25px;
@@ -271,13 +309,13 @@ nav a span:hover::after {
     display: flex;
     flex-flow: nowrap row;
     align-items: center;
+    min-width: auto;
   }
   .links {
     position: absolute;
     top: 70px;
     left: 0;
-    width: 100%;
-    background: #0d0d0d; /* O il colore della tua nav */
+    width: 100%; /* O il colore della tua nav */
     flex-direction: column;
     align-items: center;
     gap: 25px;
@@ -328,8 +366,7 @@ nav a span:hover::after {
     position: absolute;
     top: 70px;
     left: 0;
-    width: 100%;
-    background: #0d0d0d; /* O il colore della tua nav */
+    width: 100%; /* O il colore della tua nav */
     flex-direction: column;
     align-items: center;
     gap: 25px;
