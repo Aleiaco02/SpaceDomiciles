@@ -79,6 +79,9 @@ export default function NavBar({ setDrawerOpen }) {
               </span>
             </NavLink>
           </div>
+          <div
+            className={`menu-drawer-overlay ${mobileOpen ? "open" : ""}`}
+          ></div>
 
           <button onClick={() => setDrawerOpen(true)} className="cart">
             <CartBadge />

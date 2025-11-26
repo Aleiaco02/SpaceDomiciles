@@ -26,11 +26,14 @@
   height: 100vh;
   background: rgba(0, 0, 0, 0.52);
   z-index: 1099;
-  display: none;
+  opacity: 0;
+  transition: all 0.35s ease;
+  pointer-events: none;
 }
 
 .cart-drawer.open .cart-drawer-overlay {
-  display: block;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .cart-drawer-panel {
