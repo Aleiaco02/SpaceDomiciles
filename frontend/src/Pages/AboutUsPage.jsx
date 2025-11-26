@@ -9,7 +9,7 @@ export default function AboutUsPage() {
       <div className="galaxy-page pos">
         <div className="about-container">
           <GradientText
-            className="team-title-gradient"
+            className="team-title-gradient abouth1"
             style={{ display: "block", textAlign: "center" }}
           >
             Reclute full-stack del Programma Spaziale Dev
@@ -17,17 +17,14 @@ export default function AboutUsPage() {
 
           <div className="team-grid">
             {/* ALESSANDRO */}
-            <Link to={"https://github.com/Aleiaco02"} target="_blank">
+            <div>
               <div className="team-card alessandro">
                 <div className="team-personal-links">
                   <div className="team-overlay">
                     <h3>Alessandro</h3>
                   </div>
                   <div className="socials-container">
-                    <Link
-                      to={"https://github.com/ClaudiaSgalippa"}
-                      target="_blank"
-                    >
+                    <Link to={"https://github.com/Aleiaco02"} target="_blank">
                       <i className="fa-brands fa-github"></i>
                     </Link>
                     <Link to={"https://www.linkdn.com"} target="_blank">
@@ -39,10 +36,10 @@ export default function AboutUsPage() {
                   </div>
                 </div>
               </div>
-            </Link>
+            </div>
 
             {/* CHRISTIAN */}
-            <Link to={"https://github.com/christianzaboli"} target="_blank">
+            <div>
               <div className="team-card christian">
                 <div className="team-personal-links">
                   <div className="team-overlay">
@@ -50,24 +47,32 @@ export default function AboutUsPage() {
                   </div>
                   <div className="socials-container">
                     <Link
-                      to={"https://github.com/ClaudiaSgalippa"}
+                      to={"https://github.com/christianzaboli"}
                       target="_blank"
                     >
                       <i className="fa-brands fa-github"></i>
                     </Link>
-                    <Link to={"https://www.linkdn.com"} target="_blank">
+                    <Link
+                      to={
+                        "https://www.linkedin.com/in/christian-zaboli-vedovi-b1b1a7260"
+                      }
+                      target="_blank"
+                    >
                       <i class="fa-brands fa-linkedin"></i>
                     </Link>
-                    <Link to={"https://www.facebook.com"} target="_blank">
+                    <Link
+                      to={"https://www.facebook.com/Osazeh"}
+                      target="_blank"
+                    >
                       <i class="fa-brands fa-facebook"></i>
                     </Link>
                   </div>
                 </div>
               </div>
-            </Link>
+            </div>
 
             {/* CLAUDIA */}
-            <Link to={"https://github.com/ClaudiaSgalippa"} target="_blank">
+            <div>
               <div className="team-card claudia">
                 <div className="team-personal-links">
                   <div className="team-overlay">
@@ -80,19 +85,27 @@ export default function AboutUsPage() {
                     >
                       <i className="fa-brands fa-github"></i>
                     </Link>
-                    <Link to={"https://www.linkdn.com"} target="_blank">
+                    <Link
+                      to={
+                        "https://www.linkedin.com/in/claudia-sgalippa-b966a7181/"
+                      }
+                      target="_blank"
+                    >
                       <i class="fa-brands fa-linkedin"></i>
                     </Link>
-                    <Link to={"https://www.facebook.com"} target="_blank">
+                    <Link
+                      to={"https://www.facebook.com/claudia.sgalippa"}
+                      target="_blank"
+                    >
                       <i class="fa-brands fa-facebook"></i>
                     </Link>
                   </div>
                 </div>
               </div>
-            </Link>
+            </div>
 
             {/* DANIEL */}
-            <Link to={"https://github.com/Daniel-Di-Fraia"} target="_blank">
+            <div>
               <div className="team-card daniel">
                 <div className="team-personal-links">
                   <div className="team-overlay">
@@ -108,16 +121,19 @@ export default function AboutUsPage() {
                     <Link to={"https://www.linkdn.com"} target="_blank">
                       <i class="fa-brands fa-linkedin"></i>
                     </Link>
-                    <Link to={"https://www.facebook.com"} target="_blank">
+                    <Link
+                      to={"https://www.facebook.com/daniel.difraia.1"}
+                      target="_blank"
+                    >
                       <i class="fa-brands fa-facebook"></i>
                     </Link>
                   </div>
                 </div>
               </div>
-            </Link>
+            </div>
 
             {/* STEFANO */}
-            <Link to={"https://github.com/StefanoSalaa98"} target="_blank">
+            <div>
               <div className="team-card stefano">
                 <div className="team-personal-links">
                   <div className="team-overlay">
@@ -125,7 +141,7 @@ export default function AboutUsPage() {
                   </div>
                   <div className="socials-container">
                     <Link
-                      to={"https://github.com/Daniel-Di-Fraia"}
+                      to={"https://github.com/StefanoSalaa98"}
                       target="_blank"
                     >
                       <i className="fa-brands fa-github"></i>
@@ -139,7 +155,7 @@ export default function AboutUsPage() {
                   </div>
                 </div>
               </div>
-            </Link>
+            </div>
           </div>
 
           <h1>Chi Siamo</h1>

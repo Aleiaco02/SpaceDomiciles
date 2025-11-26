@@ -1,7 +1,9 @@
 .pos {
   padding: 150px 0 80px;
 }
-
+.abouth1 {
+  cursor: default;
+}
 .about-container {
   width: 85%;
   margin: 0 auto;
@@ -55,7 +57,7 @@
 }
 
 .about-container a {
-  color: #75eaff;
+  color: white;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s ease;
@@ -97,35 +99,60 @@
   background-image: url(/img/Daniel.png);
 }
 .daniel:hover {
-  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.521)),
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      80%,
+      rgba(69, 0, 97, 0.521)
+    ),
     url(/img/Daniel.png);
 }
 .claudia {
   background-image: url(/img/Claudia.png);
 }
 .claudia:hover {
-  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.521)),
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      80%,
+      rgba(69, 0, 97, 0.521)
+    ),
     url(/img/Claudia.png);
 }
 .christian {
   background-image: url(/img/Christian.png);
 }
 .christian:hover {
-  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.521)),
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      80%,
+      rgba(69, 0, 97, 0.521)
+    ),
     url(/img/Christian.png);
 }
 .alessandro {
   background-image: url(/img/Alessandro.png);
 }
 .alessandro:hover {
-  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.521)),
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      80%,
+      rgba(69, 0, 97, 0.521)
+    ),
     url(/img/Alessandro.png);
 }
 .stefano {
   background-image: url(/img/Stefano.png);
 }
 .stefano:hover {
-  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.521)),
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      80%,
+      rgba(69, 0, 97, 0.521)
+    ),
     url(/img/Stefano.png);
 }
 .team-card:hover {
@@ -133,6 +160,10 @@
   box-shadow: 0 0 26px rgba(117, 234, 255, 0.45);
   background-position: center 15%;
   background-size: 260px auto;
+  .socials-container {
+    opacity: 1;
+    gap: 3px;
+  }
 }
 
 .team-personal-links {
@@ -146,6 +177,11 @@
 
 .socials-container {
   opacity: 0;
+  display: flex;
+  flex-flow: column;
+  font-size: 1.4rem;
+  transition: all ease 0.3s;
+  gap: 0px;
 }
 /* TESTI */
 .team-card h3 {
