@@ -5,6 +5,7 @@ export default function BraintreeDropIn({ amount, invoiceId, onSuccess, onError 
   const instanceRef = useRef(null);
   const containerRef = useRef(null);
   const [loading, setLoading] = useState(true);
+  const [isPaying, setIsPaying] = useState(false); // 🔥 BLOCCA DOPPIO CLICK
 
   useEffect(() => {
     let isCancelled = false;
@@ -50,16 +51,18 @@ export default function BraintreeDropIn({ amount, invoiceId, onSuccess, onError 
     return () => {
       isCancelled = true;
       if (instanceRef.current) {
-        instanceRef.current.teardown().catch(() => {});
+        instanceRef.current.teardown().catch(() => { });
       }
     };
   }, [amount, onError]);
 
   const handlePayment = async () => {
-    if (!instanceRef.current) return;
+    if (!instanceRef.current || isPaying) return; // ⛔ Se sta pagando → blocca
+    setIsPaying(true);
 
     if (!invoiceId) {
       onError?.(new Error("Invoice mancante: conferma prima l'ordine."));
+      setIsPaying(false);
       return;
     }
 
@@ -87,6 +90,7 @@ export default function BraintreeDropIn({ amount, invoiceId, onSuccess, onError 
         error.details = data;
         console.error("Errore pagamento:", data);
         onError?.(error);
+        setIsPaying(false); // 🔥 Riabilita bottone solo se fallisce
         return;
       }
 
@@ -94,6 +98,7 @@ export default function BraintreeDropIn({ amount, invoiceId, onSuccess, onError 
     } catch (err) {
       console.error("Errore richiesta metodo di pagamento:", err);
       onError?.(err);
+      setIsPaying(false); // 🔥 Riabilita bottone solo se fallisce
     }
   };
 
@@ -103,11 +108,15 @@ export default function BraintreeDropIn({ amount, invoiceId, onSuccess, onError 
 
       <button
         className="checkout-btn"
-        disabled={loading}
+        disabled={loading || isPaying} // 🔥 BOTTONE bloccato mentre paga
         onClick={handlePayment}
         style={{ marginTop: "15px" }}
       >
-        {loading ? "Caricamento pagamento..." : `Paga €${amount}`}
+        {loading
+          ? "Caricamento pagamento..."
+          : isPaying
+            ? "Elaborazione pagamento..."
+            : `Paga €${amount}`}
       </button>
     </div>
   );
