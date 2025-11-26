@@ -1,10 +1,11 @@
 import "./FilterDrawer.css";
 import { useDefaultContext } from "../../Contexts/DefaultContext";
+import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 export default function FilterDrawer({ open, onClose }) {
-  const { filters, updateFilters, setFilters, defaultFilter } =
-    useDefaultContext();
+  const { filters, updateFiltersBatch, defaultFilter } = useDefaultContext();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // Stato locale temporaneo
   const [localFilters, setLocalFilters] = useState(filters);
@@ -14,22 +15,34 @@ export default function FilterDrawer({ open, onClose }) {
     if (open) setLocalFilters(filters);
   }, [open, filters]);
 
-  // Funzione helper per aggiornare localFilters
-  const updateLocal = (key, value) => {
+  const handleChange = (key, value) => {
     setLocalFilters((prev) => ({
       ...prev,
       [key]: value,
     }));
   };
 
-  // Applicazione finale
-  const handleApply = () => {
+  const handleSubmit = () => {
+    updateFiltersBatch(localFilters);
+
+    const params = new URLSearchParams();
+
     Object.entries(localFilters).forEach(([key, value]) => {
-      updateFilters(key, value);
+      if (value !== defaultFilter[key]) {
+        params.set(key, value);
+      }
     });
+
+    setSearchParams(params);
+
     onClose();
   };
-
+  const resetFilters = () => {
+    updateFiltersBatch(defaultFilter);
+    setLocalFilters(defaultFilter);
+    setSearchParams({});
+    onClose();
+  };
   return (
     <>
       {/* ✨ OVERLAY SEPARATO CON CLASSE OPEN ✨ */}
@@ -38,7 +51,7 @@ export default function FilterDrawer({ open, onClose }) {
         onClick={onClose}
       />
 
-      {/* ✨ DRAWER ✨ */}
+      {/*  DRAWER  */}
       <div className={`Fcart-drawer ${open ? "open" : ""}`}>
         <div className="Fcart-drawer-panel">
           <button className="Fcart-drawer-close" onClick={onClose}>
@@ -54,7 +67,7 @@ export default function FilterDrawer({ open, onClose }) {
               <input
                 type="text"
                 value={localFilters.search}
-                onChange={(e) => updateLocal("search", e.target.value)}
+                onChange={(e) => handleChange("search", e.target.value)}
                 placeholder="Cerca pianeti..."
               />
             </div>
@@ -67,7 +80,7 @@ export default function FilterDrawer({ open, onClose }) {
                 min="0"
                 max="5000"
                 value={localFilters.price}
-                onChange={(e) => updateLocal("price", Number(e.target.value))}
+                onChange={(e) => handleChange("price", e.target.value)}
               />
             </div>
 
@@ -77,18 +90,14 @@ export default function FilterDrawer({ open, onClose }) {
               <input
                 type="number"
                 value={localFilters.temperatureMin}
-                onChange={(e) =>
-                  updateLocal("temperatureMin", Number(e.target.value))
-                }
+                onChange={(e) => handleChange("temperatureMin", e.target.value)}
               />
 
               <label style={{ marginTop: "12px" }}>Temperatura max</label>
               <input
                 type="number"
                 value={localFilters.temperatureMax}
-                onChange={(e) =>
-                  updateLocal("temperatureMax", Number(e.target.value))
-                }
+                onChange={(e) => handleChange("temperatureMax", e.target.value)}
               />
             </div>
 
@@ -98,14 +107,14 @@ export default function FilterDrawer({ open, onClose }) {
               <input
                 type="number"
                 value={localFilters.sizeMin}
-                onChange={(e) => updateLocal("sizeMin", Number(e.target.value))}
+                onChange={(e) => handleChange("sizeMin", e.target.value)}
               />
 
               <label style={{ marginTop: "12px" }}>Dimensione max</label>
               <input
                 type="number"
                 value={localFilters.sizeMax}
-                onChange={(e) => updateLocal("sizeMax", Number(e.target.value))}
+                onChange={(e) => handleChange("sizeMax", e.target.value)}
               />
             </div>
 
@@ -114,7 +123,8 @@ export default function FilterDrawer({ open, onClose }) {
               <label>Galassia</label>
               <select
                 value={localFilters.galaxy_slug || ""}
-                onChange={(e) => updateLocal("galaxy_slug", e.target.value)}
+                onChange={(e) => handleChange("galaxy_slug", e.target.value)}
+                className="selectGalaxies"
               >
                 <option value="">Tutte</option>
                 <option value="milky-way">Via Lattea</option>
@@ -128,14 +138,12 @@ export default function FilterDrawer({ open, onClose }) {
           <div className="Ffilter-actions">
             <button
               className="Fcart-drawer-btn reset-btn"
-              onClick={() => {
-                setLocalFilters(defaultFilter);
-              }}
+              onClick={resetFilters}
             >
               Reset
             </button>
 
-            <button className="Fcart-drawer-btn" onClick={handleApply}>
+            <button className="Fcart-drawer-btn" onClick={handleSubmit}>
               Applica
             </button>
           </div>

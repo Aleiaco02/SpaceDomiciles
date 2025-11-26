@@ -50,7 +50,10 @@
   flex-direction: column;
   overflow-y: auto;
 }
-
+.selectGalaxies option {
+  background-color: #2a2540;
+  color: white;
+}
 /* --- CLOSE BUTTON --- */
 
 .Fcart-drawer-close {

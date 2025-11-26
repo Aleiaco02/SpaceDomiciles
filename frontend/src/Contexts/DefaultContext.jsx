@@ -18,10 +18,11 @@ export function DefaultProvider({ children }) {
   const defaultFilter = {
     search: "",
     temperatureMin: -273,
-    temperatureMax: 500,
+    temperatureMax: 550,
     sizeMin: 0,
     sizeMax: 7e10, // 70 miliardi
     price: 5000,
+    galaxy_slug: "",
   };
 
   // variabile di stato che contiene l'elenco dei filtri

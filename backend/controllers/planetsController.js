@@ -103,6 +103,7 @@ export function indexFilter(req, res) {
     sizeMin = -Infinity,
     sizeMax = Infinity,
     price = Infinity,
+    galaxy_slug = "",
   } = req.query;
 
   const sql = `SELECT DISTINCT p.*, galaxies.slug as galaxy_slug, galaxies.name as galaxy_name
@@ -113,7 +114,8 @@ export function indexFilter(req, res) {
       AND p.temperature_min >= ? 
       AND p.temperature_max <= ?
       AND p.planet_size BETWEEN ? AND ?
-      AND s.price <= ?`;
+      AND s.price <= ?
+      AND galaxies.slug LIKE CONCAT('%', ?, '%')`;
 
   // ripulisco la stringa search
   function convertSearch(str) {
@@ -130,6 +132,7 @@ export function indexFilter(req, res) {
     Number(sizeMin),
     Number(sizeMax),
     Number(price),
+    convertSearch(galaxy_slug),
   ];
 
   console.log(params);
