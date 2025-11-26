@@ -3,7 +3,12 @@ import PDFDocument from "pdfkit";
 import fs from "fs";
 import path from "path";
 
-export default function generateInvoicePDF(invoiceId, billingData, orderData, itemsDetail) {
+export default function generateInvoicePDF(
+  invoiceId,
+  billingData,
+  orderData,
+  itemsDetail
+) {
   return new Promise((resolve, reject) => {
     const fileName = `Fattura-${invoiceId}.pdf`;
 
@@ -24,15 +29,12 @@ export default function generateInvoicePDF(invoiceId, billingData, orderData, it
     // ----------------------------------------------------------
     // HEADER
     // ----------------------------------------------------------
-    doc
-      .fontSize(28)
-      .fillColor("black")
-      .text("SpaceDomiciles", offsetX, 50);
+    doc.fontSize(28).fillColor("black").text("SpaceDomiciles", offsetX, 50);
 
     doc
       .fontSize(20)
       .fillColor("black")
-      .text("FATTURA", -offsetX, 55, { align: "right" });
+      .text(`FATTURA #${invoiceId}`, -offsetX, 55, { align: "right" });
 
     doc
       .moveTo(offsetX, 90)
@@ -56,9 +58,13 @@ export default function generateInvoicePDF(invoiceId, billingData, orderData, it
 
     doc.text(`${billingData.nome} ${billingData.cognome}`, offsetX);
     doc.text(`Email: ${billingData.email}`, offsetX);
-    if (billingData.telefono) doc.text(`Telefono: ${billingData.telefono}`, offsetX);
+    if (billingData.telefono)
+      doc.text(`Telefono: ${billingData.telefono}`, offsetX);
     doc.text(`${billingData.indirizzo} ${billingData.civico}`, offsetX);
-    doc.text(`${billingData.CAP} ${billingData.città} (${billingData.provincia})`, offsetX);
+    doc.text(
+      `${billingData.CAP} ${billingData.città} (${billingData.provincia})`,
+      offsetX
+    );
     doc.text(billingData.paese, offsetX);
 
     if (billingData.azienda) {
@@ -81,12 +87,18 @@ export default function generateInvoicePDF(invoiceId, billingData, orderData, it
 
     doc.moveDown();
 
+    // 🔢 Calcoliamo il totale dai dettagli, così è SEMPRE coerente
+    let grandTotal = 0;
+
     doc.fontSize(12);
     itemsDetail.forEach((item) => {
+      const rowTotal = Number(item.price) * Number(item.quantity);
+      grandTotal += rowTotal;
+
       doc.text(
-        `${item.stack_name} — Pianeta ${item.planet_name} ×${item.quantity} — €${(
-          item.price * item.quantity
-        ).toFixed(2)}`,
+        `${item.stack_name} — Pianeta ${item.planet_name} ×${item.quantity} — €${rowTotal.toFixed(
+          2
+        )}`,
         offsetX
       );
       doc.moveDown(0.4);
@@ -100,7 +112,7 @@ export default function generateInvoicePDF(invoiceId, billingData, orderData, it
     doc
       .fontSize(16)
       .fillColor("black")
-      .text(`TOTALE: €${orderData.total_price.toFixed(2)}`, offsetX);
+      .text(`TOTALE: €${grandTotal.toFixed(2)}`, offsetX);
 
     doc.moveDown(3);
 
@@ -110,9 +122,10 @@ export default function generateInvoicePDF(invoiceId, billingData, orderData, it
     doc
       .fontSize(10)
       .fillColor("black")
-      .text("Grazie per aver scelto SpaceDomiciles — Esplora Nuovi Mondi", {
-        align: "center",
-      });
+      .text(
+        "Grazie per aver scelto SpaceDomiciles — Esplora Nuovi Mondi",
+        { align: "center" }
+      );
 
     doc.end();
 

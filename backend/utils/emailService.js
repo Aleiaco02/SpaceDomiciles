@@ -60,12 +60,11 @@ export async function sendAllCertificatesEmail(to, certificates, orderData, item
   const certsHTML = certificates
     .map(
       (c) => `
-      <div style="padding:12px; background:#0b0f2b; border:1px solid #232a60; border-radius:8px; margin-bottom:12px;">
-        <p style="margin:0; color:#d0d4ff;">
-          🔹 <strong>Certificate Code:</strong> ${c.certificate_code}<br>
-          📘 <strong>Download:</strong> <a href="${c.pdf_url}" style="color:#7aa2ff;">${c.pdf_url}</a><br>
-        </p>
-      </div>`
+        <div style="padding:12px; background:#0b0f2b; border:1px solid #232a60; border-radius:8px; margin-bottom:12px;">
+          <p style="margin:0; color:#d0d4ff;">
+            🔹 <strong>Certificate Code:</strong> ${c.certificate_code}
+          </p>
+        </div>`
     )
     .join("");
 
