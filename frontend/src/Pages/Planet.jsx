@@ -1,69 +1,84 @@
-// import axios
+// La pagina Planet recupera lo slug del pianeta dall’URL, poi scarica dal backend sia i dati del pianeta che i pacchetti (ovvero gli stack) associati.
+// Inoltre scarico tutti i pianeti della stessa galassia per trovare dinamicamente il ‘previous’ e ‘next’ planet tramite il loro indice nell’array.
+// La pagina mostra le specifiche del pianeta, tutti gli stack acquistabili e i pianeti vicini.
+// Quando si aggiunge un pacchetto al carrello, non aggiorno ancora lo stock: lo stock viene aggiornato solo a pagamento avvenuto.
+
+// Axios per effettuare richieste HTTP verso il backend
 import axios from "axios";
 
-// import di router-dom per link
+// Strumenti di react-router-dom:
+// - Link per navigare tramite link
+// - useParams per leggere parametri dell’URL (es: :planetSlug)
+// - useNavigate per reindirizzare
 import { Link, useParams, useNavigate } from "react-router-dom";
 
-// import state e effect
+// Hook React per gestire stato ed effetti
 import { useState, useEffect } from "react";
 
-// importo funzionalità carrello
+// Funzionalità del carrello tramite context
 import { useCart } from "../Contexts/CartContext";
 
-// importo gli stili css della pagina
+// Stili CSS della pagina
 import "../styles/Planet.css";
 
-// IMPORT CONVENZIONALE COMPONENTE REACT (MAIUSCOLA)
+// Componente che mostra il singolo pacchetto (stack)
 import PackageCard from "../Components/MicroComponents/packageCard";
 
 const Planet = () => {
-  // Creo istanza di Navigate
+  // Hook per effettuare redirect programmati (es: se 404)
   const redirect = useNavigate();
 
-  // Stato pagina
+  // STATE LOCALE DELLA PAGINA
   const [planet, setPlanet] = useState();
   const [stacks, setStacks] = useState();
-  const { planetSlug } = useParams();
+  const { planetSlug } = useParams(); // slug del pianeta preso dall’URL
+
+  // Per i pianeti vicini (navigazione next/prev)
   const [nextId, setNextId] = useState();
   const [prevId, setPrevId] = useState();
-  const [planets, setPlanets] = useState();
+  const [planets, setPlanets] = useState(); // tutti i pianeti della stessa galassia
   const [nextPlanet, setNextPlanet] = useState();
   const [prevPlanet, setPrevPlanet] = useState();
 
-  // Funzionalità carrello
+  // Funzione presa dal contesto del carrello
   const { addToCart } = useCart();
 
-  // Funzioni per chiamate API
+  // FETCH DATI PIANETA
   const fecthPlanet = () => {
     axios
       .get("http://localhost:3000/api/planets/" + planetSlug)
       .then((response) => {
-        setPlanet(response.data);
+        setPlanet(response.data); // salvo dati pianeta
       })
       .catch((error) => {
         console.log(error);
-        if (error.status === 404) redirect("/404");
+        if (error.status === 404) redirect("/404"); // se non esiste → pagina not found
       });
   };
 
+  // FETCH STACK (PACCHETTI DEL PIANETA)
   const fetchStack = () => {
     axios
       .get("http://localhost:3000/api/stacks/planet/" + planetSlug)
       .then((response) => {
-        setStacks(response.data);
+        setStacks(response.data); // salvo i pacchetti
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
+  // FETCH DEI PIANETI DELLA STESSA GALASSIA
+  // serve per calcolare "pianeta successivo" e "precedente"
   const fetchClosePlanets = () => {
+    // Calcolo ID successivo e precedente (per compatibilità futura)
     setNextId(planet?.id + 1);
     setPrevId(planet?.id - 1);
+
     axios
       .get(`http://localhost:3000/api/planets/from/${planet.galaxy_slug}`)
       .then((response) => {
-        setPlanets(response.data);
+        setPlanets(response.data); // salvo tutti i pianeti di quella galassia
       })
       .catch((error) => {
         console.log(error);
@@ -71,18 +86,23 @@ const Planet = () => {
       });
   };
 
+  // TROVA INDICE DEL PIANETA ATTUALE NELLA LISTA E CALCOLA I CORRISPETTIVI VICINI
   const findClosePlanets = () => {
     if (!planets || !planet) return;
 
+    // Trovo l’indice del pianeta attuale nella lista dei pianeti
     const index = planets.findIndex((p) => p.slug === planet.slug);
 
     if (index === -1) return;
 
+    // Pianeta precedente se esiste
     setPrevPlanet(index > 0 ? planets[index - 1] : null);
+
+    // Pianeta successivo se esiste
     setNextPlanet(index < planets.length - 1 ? planets[index + 1] : null);
   };
 
-  /* funzione che permette di tornare a inizio pagina quando viene selezionato un pianeta correlato */
+  // Scroll to Top quando cambio pianeta
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -90,49 +110,57 @@ const Planet = () => {
     });
   };
 
-  // ✨ MODIFICATO: Solo aggiunge al carrello, NON decrementa lo stock ✨
+  // AGGIUNTA AL CARRELLO
   const handleAddToCart = (packageProps) => {
-    if (packageProps.stock <= 0) return;
+    if (packageProps.stock <= 0) return; // evita acquisto se out of stock
 
-    // Solo aggiungi al carrello
-    addToCart(packageProps);
+    addToCart(packageProps); // aggiunge al carrello
   };
 
-  // ✨ NUOVA FUNZIONE: Da chiamare dopo il checkout per confermare l'acquisto ✨
+  // COMPLETE PURCHASE
+  // (viene chiamata dopo il checkout per aggiornare lo stock)
   const completePurchase = async (cartItems) => {
     try {
-      // Per ogni item nel carrello, decrementa lo stock sul backend
       for (const item of cartItems) {
-        await axios.post(`http://localhost:3000/api/stacks/${item.id}/purchase`, {
-          quantity: 1
-        });
+        await axios.post(
+          `http://localhost:3000/api/stacks/${item.id}/purchase`,
+          { quantity: 1 }
+        );
       }
-      
-      // Ricarica gli stacks aggiornati dal database
+
+      // Aggiorno i pacchetti dopo l'acquisto
       fetchStack();
-      
+
       console.log("Acquisto completato con successo!");
     } catch (error) {
       console.error("Errore durante l'acquisto:", error);
     }
   };
 
-  // Effetti dati
+  // USE EFFECTS
+  // Quando cambia planetSlug → ricarica dati del pianeta
   useEffect(fecthPlanet, [planetSlug]);
+
+  // Quando cambio pianeta → ricarico i suoi stack
   useEffect(fetchStack, [planetSlug]);
+
+  // Quando ho caricato il pianeta → cerco i pianeti vicini nella stessa galassia
   useEffect(() => {
     if (!planet) return;
     fetchClosePlanets();
   }, [planet]);
+
+  // Quando ho la lista dei pianeti + id next/prev → li calcolo
   useEffect(() => {
     findClosePlanets();
   }, [planets, nextId, prevId]);
 
-  // Render completo
+  // RENDER DELLA PAGINA
   return (
     <>
       <div className="planet-page">
-        {/* Dettagli pianeta */}
+
+        {/* SEZIONE DETTAGLI PIANETA */}
         <section className="planet-details-section">
           <div className="planet-visual">
             <div className="planet-visual-container">
@@ -144,10 +172,15 @@ const Planet = () => {
               <div className="planet-visual-name">{planet?.name}</div>
             </div>
           </div>
+
           <div className="planet-details-content">
             <h1 className="planet-details-title">{planet?.name}</h1>
             <p className="planet-details-description">{planet?.description}</p>
+
+            {/* SPECIFICHE DEL PIANETA */}
             <div className="planet-specs">
+              
+              {/* Temperatura */}
               <div className="planet-spec-item">
                 <div className="planet-spec-icon">
                   <i className="fas fa-temperature-half"></i>
@@ -161,6 +194,8 @@ const Planet = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Superficie */}
               <div className="planet-spec-item">
                 <div className="planet-spec-icon">
                   <i className="fas fa-mountain"></i>
@@ -172,6 +207,8 @@ const Planet = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Galassia */}
               <div className="planet-spec-item">
                 <div className="planet-spec-icon">
                   <i className="fas fa-globe"></i>
@@ -185,16 +222,17 @@ const Planet = () => {
           </div>
         </section>
 
-        {/* ✨ Packages Section - USA stacks dal database ✨ */}
+        {/* PACKAGES (STACKS DISPONIBILI) */}
         <section className="packages-section">
           <div className="cosmic-container">
             <h2 className="section-title">Scegli il Tuo Pacchetto</h2>
+
             <div className="packages">
               {planet && stacks ? (
                 stacks.map((stack) => (
                   <PackageCard
                     key={stack.id}
-                    {...stack}
+                    {...stack} // passi dell'oggetto stack
                     planet_name={planet.name}
                     planet_image={planet.image}
                     onAddToCart={handleAddToCart}
@@ -207,10 +245,12 @@ const Planet = () => {
           </div>
         </section>
 
-        {/* Sezione prodotti correlati (pianeti vicini) */}
+        {/* PIANETI VICINI */}
         <section className="planet-close">
           <h2 className="section-title">Pianeti vicini</h2>
           <div className="planet-close-container">
+
+            {/* PREVIOUS */}
             {prevPlanet && (
               <div className="planet-close-card">
                 <h2 className="section-title">Previous</h2>
@@ -230,6 +270,8 @@ const Planet = () => {
                 </Link>
               </div>
             )}
+
+            {/* NEXT */}
             {nextPlanet && (
               <div className="planet-close-card">
                 <h2 className="section-title">Next</h2>

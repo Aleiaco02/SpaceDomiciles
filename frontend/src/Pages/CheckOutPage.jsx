@@ -1,19 +1,38 @@
+// Nel Checkout gestisco tutto il flusso finale dell’acquisto.
+// Inizio raccogliendo i dati di spedizione e, se l’utente lo richiede, anche i dati di fatturazione (anche opzione azienda).
+// Eseguo una validazione completa dei campi (email, telefono, CAP, partita IVA ecc.), poi preparo l’ordine creando un oggetto con tutti gli items del carrello e gli indirizzi formattati.
+// A questo punto chiamo un’API backend (POST /api/create_order) che genera l’ordine e la fattura e mi restituisce un invoiceId.
+// Una volta ricevuto l’ID, mostro il componente Braintree per il pagamento.
+// Se il pagamento va a buon fine, aggiorno lo stock dei prodotti nel database, svuoto il carrello, e reindirizzo l’utente alla pagina di successo.
+
+// Hook React
 import { useEffect, useState } from "react";
+
+// Context del carrello: items = prodotti nel carrello, clearCart = svuota carrello
 import { useCart } from "../Contexts/CartContext";
+
+// Navigazione (per tornare al carrello o andare alla pagina success)
 import { useNavigate } from "react-router-dom";
+
+// Stili della pagina checkout
 import "./Checkout.css";
+
+// Componente per il pagamento tramite Braintree
 import BraintreeDropIn from "../Components/MicroComponents/braintreeDropIn";
+
+// Axios per chiamate API
 import axios from "axios";
 
 export default function CheckOutPage() {
-  const { items, clearCart } = useCart();
+  const { items, clearCart } = useCart(); // prodotti nel carrello
   const navigate = useNavigate();
 
+  // ERRORI DEL FORM + GESTIONE STATO
   const [errors, setErrors] = useState({});
-  const [invoiceId, setInvoiceId] = useState(null);
-  const [creatingInvoice, setCreatingInvoice] = useState(false);
+  const [invoiceId, setInvoiceId] = useState(null); // ID fattura generata dal backend
+  const [creatingInvoice, setCreatingInvoice] = useState(false); // indica loading
 
-  // SHIPPING
+  // DATI DI SPEDIZIONE
   const [shipping, setShipping] = useState({
     nome: "",
     cognome: "",
@@ -27,7 +46,7 @@ export default function CheckOutPage() {
     paese: "",
   });
 
-  // BILLING
+  // DATI DI FATTURAZIONE (usati solo se si vuole la fattura)
   const [billing, setBilling] = useState({
     nome: "",
     cognome: "",
@@ -45,17 +64,19 @@ export default function CheckOutPage() {
     sdi: "",
   });
 
-  const [wantInvoice, setWantInvoice] = useState(false);
-  const [sameAsShipping, setSameAsShipping] = useState(false);
-  const [isCompany, setIsCompany] = useState(false);
+  // Flags per attivare o disattivare sezioni
+  const [wantInvoice, setWantInvoice] = useState(false); // richiesta fattura
+  const [sameAsShipping, setSameAsShipping] = useState(false); // fatturazione = spedizione
+  const [isCompany, setIsCompany] = useState(false); // acquisto aziendale
 
-  // HANDLERS
+  // HANDLERS PER GESTIRE I CAMBI DI INPUT
   const handleShipping = (e) =>
     setShipping({ ...shipping, [e.target.name]: e.target.value });
 
   const handleBilling = (e) =>
     setBilling({ ...billing, [e.target.name]: e.target.value });
 
+  // Copia i dati di spedizione nella fatturazione
   const handleSameAsShipping = () => {
     const v = !sameAsShipping;
     setSameAsShipping(v);
@@ -77,14 +98,16 @@ export default function CheckOutPage() {
     }
   };
 
-  // VALIDAZIONE
+  // VALIDAZIONE FORM
   const validateForm = () => {
     let newErrors = {};
 
+    // Regex per validare email, telefono, CAP italiano
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[0-9+ ]{7,20}$/;
     const capRegex = /^[0-9]{5}$/;
 
+    // Funzione riutilizzabile per controlli base
     const check = (key, value, message = "Campo obbligatorio") => {
       if (!value.trim()) newErrors[key] = message;
     };
@@ -103,7 +126,7 @@ export default function CheckOutPage() {
     check("shipping_provincia", shipping.provincia);
     check("shipping_paese", shipping.paese);
 
-    // BILLING SOLO SE wantInvoice
+    // BILLING (solo se fattura attivata)
     if (wantInvoice) {
       check("billing_nome", billing.nome);
       check("billing_cognome", billing.cognome);
@@ -120,6 +143,7 @@ export default function CheckOutPage() {
       check("billing_provincia", billing.provincia);
       check("billing_paese", billing.paese);
 
+      // Se acquisti come azienda → controlli extra
       if (isCompany) {
         check("billing_azienda", billing.azienda);
         if (!/^[0-9]{11}$/.test(billing.piva))
@@ -132,26 +156,27 @@ export default function CheckOutPage() {
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return Object.keys(newErrors).length === 0; // true se nessun errore
   };
 
-  // TOTALE
+  // TOTALE CARRELLO + SPEDIZIONE
   const totale = Object.values(items).reduce(
     (a, item) => a + item.price * item.quantity,
     0
   );
+
+  // Spedizione gratuita sopra 1500€
   const shippingCost = totale >= 1500 ? 0 : 4.99;
+
   const totaleFinale = totale + shippingCost;
 
-  // STOCK UPDATE
+  // AGGIORNA STOCK DEGLI STACK DOPO ACQUISTO
   const updateStockAfterPurchase = async () => {
     try {
       for (const item of Object.values(items)) {
         await axios.post(
           `http://localhost:3000/api/stacks/${item.id}/purchase`,
-          {
-            quantity: item.quantity,
-          }
+          { quantity: item.quantity }
         );
       }
       console.log("Stock aggiornato");
@@ -160,24 +185,27 @@ export default function CheckOutPage() {
     }
   };
 
-  // CREA ORDER + INVOICE
+  // CREA ORDINE + FATTURA (API create_order)
   const handleCreateOrder = async () => {
     if (!validateForm()) return;
 
     try {
       setCreatingInvoice(true);
 
+      // Creazione indirizzo in una stringa unica
       const shippingAddress = `${shipping.indirizzo} ${shipping.civico}, ${shipping.città} ${shipping.CAP}, ${shipping.provincia}, ${shipping.paese}`;
 
       const billingAddress = wantInvoice
         ? `${billing.indirizzo} ${billing.civico}, ${billing.città} ${billing.CAP}, ${billing.provincia}, ${billing.paese}`
         : shippingAddress;
 
+      // Array dei prodotti da mandare al backend
       const itemsArray = Object.values(items).map((item) => ({
         stack_id: item.id,
         quantity: item.quantity,
       }));
 
+      // Chiamata al backend
       const res = await fetch("http://localhost:3000/api/create_order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -196,43 +224,45 @@ export default function CheckOutPage() {
 
       if (!res.ok) {
         console.error("Errore create_order:", data);
-        console.log("Errore creazione ordine");
         return;
       }
 
+      // Backend ritorna la fattura creata → salvo ID
       setInvoiceId(data.invoice.id);
     } catch (err) {
       console.error("Errore rete:", err);
-      console.log("Errore rete");
     } finally {
       setCreatingInvoice(false);
     }
   };
 
-  // PAGAMENTO OK
+  // PAGAMENTO COMPLETATO
   const handlePaymentSuccess = async () => {
-    await updateStockAfterPurchase();
-    clearCart();
-    navigate("/success");
-    scrollToTop();
+    await updateStockAfterPurchase(); // aggiorna database
+    clearCart();                      // svuota carrello
+    navigate("/success");             // vai a pagina di successo
+    scrollToTop();                    // torna in cima
   };
 
-  // PAGAMENTO NON COMPLETATO
+  // GESTIONE ERRORI DI PAGAMENTO
   const [isError, setIsError] = useState(true);
   useEffect(() => setIsError(false), []);
 
+  // Per gli scroll
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-    });
+    window.scrollTo({ top: 0 });
   };
+
+  // RENDER COMPLETO DEL CHECKOUT
   return (
     <div className="galaxy-page">
       <div className="checkout-page">
+
         <h2>Checkout ordine</h2>
 
         <div className="checkout-row">
-          {/* SHIPPING */}
+
+          {/* SEZIONE DATI SPEDIZIONE */}
           <div className="checkout-panel">
             <h3>Dati di spedizione</h3>
             <form>
@@ -251,6 +281,7 @@ export default function CheckOutPage() {
               ))}
             </form>
 
+            {/* Checkbox per attivare la richiesta fattura */}
             <label>
               <input
                 style={{ marginTop: "15px" }}
@@ -269,6 +300,8 @@ export default function CheckOutPage() {
             </label>
 
             <br />
+
+            {/* Copia automatica dei dati */}
             <label>
               <input
                 style={{ marginTop: "15px" }}
@@ -281,7 +314,7 @@ export default function CheckOutPage() {
             </label>
           </div>
 
-          {/* BILLING */}
+          {/* SEZIONE DATI FATTURAZIONE */}
           <div
             className="checkout-panel"
             style={{
@@ -293,12 +326,7 @@ export default function CheckOutPage() {
 
             <form>
               {Object.keys(billing).map((key) => {
-                const isCompanyField = [
-                  "azienda",
-                  "piva",
-                  "pec",
-                  "sdi",
-                ].includes(key);
+                const isCompanyField = ["azienda", "piva", "pec", "sdi"].includes(key);
 
                 const mustShow = wantInvoice && (!isCompanyField || isCompany);
                 if (!mustShow) return null;
@@ -310,9 +338,7 @@ export default function CheckOutPage() {
                       placeholder={key}
                       value={billing[key]}
                       onChange={handleBilling}
-                      disabled={
-                        !wantInvoice || (sameAsShipping && !isCompanyField)
-                      }
+                      disabled={!wantInvoice || (sameAsShipping && !isCompanyField)}
                     />
                     {errors[`billing_${key}`] && (
                       <p className="error">{errors[`billing_${key}`]}</p>
@@ -322,6 +348,7 @@ export default function CheckOutPage() {
               })}
             </form>
 
+            {/* Checkbox per attivare campi aziendali */}
             {wantInvoice && (
               <label>
                 <input
@@ -335,9 +362,10 @@ export default function CheckOutPage() {
             )}
           </div>
 
-          {/* RIEPILOGO */}
+          {/* SEZIONE RIEPILOGO ORDINE */}
           <div className="checkout-panel order-summary">
             <h3>Riepilogo ordine</h3>
+
             <ul>
               {Object.values(items).map((item) => (
                 <li key={item.id}>
@@ -360,6 +388,8 @@ export default function CheckOutPage() {
 
         {/* BOTTONI */}
         <div className="checkout-btn-row">
+
+          {/* Torna al carrello */}
           <button
             className="back-to-cart-btn"
             onClick={() => {
@@ -370,11 +400,13 @@ export default function CheckOutPage() {
             ⬅ Torna al carrello
           </button>
 
+          {/* Se l'ordine non è ancora stato creato → bottone */}
           {!invoiceId ? (
             <button className="checkout-btn" onClick={handleCreateOrder}>
               {creatingInvoice ? "Creazione ordine..." : "Procedi al pagamento"}
             </button>
           ) : (
+            // Se invoiceId esiste → mostra il Braintree
             <BraintreeDropIn
               amount={totaleFinale.toFixed(2)}
               invoiceId={invoiceId}
@@ -383,6 +415,7 @@ export default function CheckOutPage() {
             />
           )}
         </div>
+
         {isError && <p className="payerror">Errore nel pagamento</p>}
       </div>
     </div>

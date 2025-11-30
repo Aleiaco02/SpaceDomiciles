@@ -1,19 +1,35 @@
+// L’AboutUsPage è una pagina statica che presenta il nostro team tramite una griglia di card personalizzate, ognuna con immagine di background, overlay e link ai profili social.
+// Utilizza il componente GradientText per rendere il titolo animato e in tema con il resto del sito.
+// Includiamo un’icona interattiva che, se cliccata, riporta l’utente alla Home.
+
+// Stili dedicati alla pagina "Chi Siamo"
 import "./AboutUsPage.css";
+
+// Icona della galassia, usata come pulsante per tornare alla Home
 import galaxyIcon from "/img/galaxy-icon.png";
+
+// Link di React Router per navigazione senza refresh
 import { Link } from "react-router-dom";
+
+// Testo colorato animato (effetto gradiente)
 import GradientText from "../Components/ReactBits/GradientText";
 
 export default function AboutUsPage() {
+
+  // Funzione per riportare l’utente all’inizio della pagina
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
   };
+
   return (
     <>
       <div className="galaxy-page pos">
         <div className="about-container">
+
+          {/*Titolo animato con effetto gradiente*/}
           <GradientText
             className="team-title-gradient abouth1"
             style={{ display: "block", textAlign: "center" }}
@@ -21,8 +37,10 @@ export default function AboutUsPage() {
             Reclute full-stack del Programma Spaziale Dev
           </GradientText>
 
+          {/*SEZIONE TEAM — CARDS DEI MEMBRI*/}
           <div className="team-grid">
-            {/* ALESSANDRO */}
+
+            {/*ALESSANDRO*/}
             <div>
               <div className="team-card alessandro">
                 <div className="team-personal-links">
@@ -34,17 +52,17 @@ export default function AboutUsPage() {
                       <i className="fa-brands fa-github"></i>
                     </Link>
                     <Link to={"https://www.linkdn.com"} target="_blank">
-                      <i class="fa-brands fa-linkedin"></i>
+                      <i className="fa-brands fa-linkedin"></i>
                     </Link>
                     <Link to={"https://www.facebook.com"} target="_blank">
-                      <i class="fa-brands fa-facebook"></i>
+                      <i className="fa-brands fa-facebook"></i>
                     </Link>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* CHRISTIAN */}
+            {/*CHRISTIAN*/}
             <div>
               <div className="team-card christian">
                 <div className="team-personal-links">
@@ -52,32 +70,24 @@ export default function AboutUsPage() {
                     <h3>Christian</h3>
                   </div>
                   <div className="socials-container">
-                    <Link
-                      to={"https://github.com/christianzaboli"}
-                      target="_blank"
-                    >
+                    <Link to={"https://github.com/christianzaboli"} target="_blank">
                       <i className="fa-brands fa-github"></i>
                     </Link>
                     <Link
-                      to={
-                        "https://www.linkedin.com/in/christian-zaboli-vedovi-b1b1a7260"
-                      }
+                      to={"https://www.linkedin.com/in/christian-zaboli-vedovi-b1b1a7260"}
                       target="_blank"
                     >
-                      <i class="fa-brands fa-linkedin"></i>
+                      <i className="fa-brands fa-linkedin"></i>
                     </Link>
-                    <Link
-                      to={"https://www.facebook.com/Osazeh"}
-                      target="_blank"
-                    >
-                      <i class="fa-brands fa-facebook"></i>
+                    <Link to={"https://www.facebook.com/Osazeh"} target="_blank">
+                      <i className="fa-brands fa-facebook"></i>
                     </Link>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* CLAUDIA */}
+            {/*CLAUDIA*/}
             <div>
               <div className="team-card claudia">
                 <div className="team-personal-links">
@@ -85,32 +95,27 @@ export default function AboutUsPage() {
                     <h3>Claudia</h3>
                   </div>
                   <div className="socials-container">
-                    <Link
-                      to={"https://github.com/ClaudiaSgalippa"}
-                      target="_blank"
-                    >
+                    <Link to={"https://github.com/ClaudiaSgalippa"} target="_blank">
                       <i className="fa-brands fa-github"></i>
                     </Link>
                     <Link
-                      to={
-                        "https://www.linkedin.com/in/claudia-sgalippa-b966a7181/"
-                      }
+                      to={"https://www.linkedin.com/in/claudia-sgalippa-b966a7181/"}
                       target="_blank"
                     >
-                      <i class="fa-brands fa-linkedin"></i>
+                      <i className="fa-brands fa-linkedin"></i>
                     </Link>
                     <Link
                       to={"https://www.facebook.com/claudia.sgalippa"}
                       target="_blank"
                     >
-                      <i class="fa-brands fa-facebook"></i>
+                      <i className="fa-brands fa-facebook"></i>
                     </Link>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* DANIEL */}
+            {/*DANIEL*/}
             <div>
               <div className="team-card daniel">
                 <div className="team-personal-links">
@@ -118,27 +123,24 @@ export default function AboutUsPage() {
                     <h3>Daniel</h3>
                   </div>
                   <div className="socials-container">
-                    <Link
-                      to={"https://github.com/Daniel-Di-Fraia"}
-                      target="_blank"
-                    >
+                    <Link to={"https://github.com/Daniel-Di-Fraia"} target="_blank">
                       <i className="fa-brands fa-github"></i>
                     </Link>
                     <Link to={"https://www.linkdn.com"} target="_blank">
-                      <i class="fa-brands fa-linkedin"></i>
+                      <i className="fa-brands fa-linkedin"></i>
                     </Link>
                     <Link
                       to={"https://www.facebook.com/daniel.difraia.1"}
                       target="_blank"
                     >
-                      <i class="fa-brands fa-facebook"></i>
+                      <i className="fa-brands fa-facebook"></i>
                     </Link>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* STEFANO */}
+            {/*STEFANO*/}
             <div>
               <div className="team-card stefano">
                 <div className="team-personal-links">
@@ -146,17 +148,14 @@ export default function AboutUsPage() {
                     <h3>Stefano</h3>
                   </div>
                   <div className="socials-container">
-                    <Link
-                      to={"https://github.com/StefanoSalaa98"}
-                      target="_blank"
-                    >
+                    <Link to={"https://github.com/StefanoSalaa98"} target="_blank">
                       <i className="fa-brands fa-github"></i>
                     </Link>
                     <Link to={"https://www.linkdn.com"} target="_blank">
-                      <i class="fa-brands fa-linkedin"></i>
+                      <i className="fa-brands fa-linkedin"></i>
                     </Link>
                     <Link to={"https://www.facebook.com"} target="_blank">
-                      <i class="fa-brands fa-facebook"></i>
+                      <i className="fa-brands fa-facebook"></i>
                     </Link>
                   </div>
                 </div>
@@ -191,6 +190,7 @@ export default function AboutUsPage() {
             <li>Team giovane, creativo e full-stack ready</li>
           </ul>
 
+          {/* Pulsante icona per tornare alla home */}
           <div className="gal-dim" onClick={scrollToTop}>
             <Link to="/">
               <img
