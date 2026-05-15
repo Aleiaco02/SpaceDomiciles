@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 export const DefaultContext = createContext();
 
 export function DefaultProvider({ children }) {
-  const apiBaseUrl = "http://localhost:3000";
+  const apiBaseUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
   // caricamento pianeti
   const [planets, setPlanets] = useState([]);
   useEffect(() => {

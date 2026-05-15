@@ -36,7 +36,7 @@ const Planet = () => {
   // Funzioni per chiamate API
   const fecthPlanet = () => {
     axios
-      .get("http://localhost:3000/api/planets/" + planetSlug)
+      .get(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/planets/${planetSlug}`)
       .then((response) => {
         setPlanet(response.data);
       })
@@ -48,7 +48,7 @@ const Planet = () => {
 
   const fetchStack = () => {
     axios
-      .get("http://localhost:3000/api/stacks/planet/" + planetSlug)
+      .get(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/stacks/planet/${planetSlug}`)
       .then((response) => {
         setStacks(response.data);
       })
@@ -61,7 +61,7 @@ const Planet = () => {
     setNextId(planet?.id + 1);
     setPrevId(planet?.id - 1);
     axios
-      .get(`http://localhost:3000/api/planets/from/${planet.galaxy_slug}`)
+      .get(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/planets/from/${planet.galaxy_slug}`)
       .then((response) => {
         setPlanets(response.data);
       })
@@ -103,7 +103,7 @@ const Planet = () => {
     try {
       // Per ogni item nel carrello, decrementa lo stock sul backend
       for (const item of cartItems) {
-        await axios.post(`http://localhost:3000/api/stacks/${item.id}/purchase`, {
+        await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/stacks/${item.id}/purchase`, {
           quantity: 1
         });
       }

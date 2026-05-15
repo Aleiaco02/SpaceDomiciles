@@ -6,7 +6,7 @@ import "./GalaxiesPage.css";
 export default function GalaxiesPage() {
   const [galaxies, setGalaxies] = useState([]);
 
-  const apiBaseUrl = "http://localhost:3000";
+  const apiBaseUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
   useEffect(() => {
     fetch(apiBaseUrl + "/api/galaxies")

@@ -43,7 +43,7 @@ export default function SearchPage() {
   // Converto l'oggetto filter in query string
   const queryString = new URLSearchParams(filters).toString();
 
-  const apiBaseUrl = "http://localhost:3000";
+  const apiBaseUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
   const [planets, setPlanets] = useState([]);
 

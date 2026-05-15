@@ -59,10 +59,11 @@ export default function HomePage() {
 
   const fetchPlanets = async () => {
     try {
+      const apiBaseUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
       const [p1, p2, p3] = await Promise.all([
-        axios.get("http://localhost:3000/api/planets/mars"),
-        axios.get("http://localhost:3000/api/planets/jupiter"),
-        axios.get("http://localhost:3000/api/planets/saturn"),
+        axios.get(`${apiBaseUrl}/api/planets/mars`),
+        axios.get(`${apiBaseUrl}/api/planets/jupiter`),
+        axios.get(`${apiBaseUrl}/api/planets/saturn`),
       ]);
 
 

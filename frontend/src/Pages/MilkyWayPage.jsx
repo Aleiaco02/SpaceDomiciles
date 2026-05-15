@@ -13,7 +13,7 @@ export default function MilkyWayPage() {
   const navigate = useNavigate();
   // recupero i dati della galassia
   useEffect(() => {
-    fetch(`http://localhost:3000/api/galaxies/${galaxySlug}`)
+    fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/galaxies/${galaxySlug}`)
       .then((res) => res.json())
       .then((data) => setCurrGalaxy(data), console.log(currGalaxy))
       .catch((err) => console.error("Errore nel caricamento galassia:", err));
@@ -25,7 +25,7 @@ export default function MilkyWayPage() {
   };
   // recupero i pianeti di questa galassia
   useEffect(() => {
-    fetch("http://localhost:3000/api/planets/from/" + galaxySlug)
+    fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/planets/from/${galaxySlug}`)
       .then((res) => {
         if (!res.ok) {
           if (res.status === 404) {

@@ -148,7 +148,7 @@ export default function CheckOutPage() {
     try {
       for (const item of Object.values(items)) {
         await axios.post(
-          `http://localhost:3000/api/stacks/${item.id}/purchase`,
+          `${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/stacks/${item.id}/purchase`,
           {
             quantity: item.quantity,
           }
@@ -178,7 +178,7 @@ export default function CheckOutPage() {
         quantity: item.quantity,
       }));
 
-      const res = await fetch("http://localhost:3000/api/create_order", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/create_order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -10,8 +10,8 @@ import setImagePath from "./middlewares/imagePath.js";
 import certificatesRouter from "./routers/certificatesRouter.js";
 import galaxiesRouter from "./routers/galaxiesRouter.js";
 import stacksRouter from "./routers/stacksRouter.js";
-import customersRouter from "./routers/customersRouter.js";
-import invoicesStackRouter from "./routers/invoicesStackRouter.js";
+import customersRouter from "./routers/CustomersRouter.js";
+import invoicesStackRouter from "./routers/InvoicesStackRouter.js";
 import invoicesRouter from "./routers/invoicesRouter.js";
 import planetsRouter from "./routers/planetsRouter.js";
 import paymentsRouter from "./routers/paymentsRouter.js";
@@ -30,10 +30,15 @@ app.use(express.json());
 // middleware static
 app.use(express.static("public"));
 
+app.use(express.static("test"));
+
 // middleware cors
 app.use(
   cors({
-    origin: process.env.FE_APP,
+    origin: [
+      "http://localhost:5173",
+      process.env.FE_APP,
+    ].filter(Boolean),
   })
 );
 
@@ -79,6 +84,7 @@ app.use("/api/create-invoice", invoiceCreateRouter);
 app.use(errorsHandler);
 app.use(notFound);
 
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

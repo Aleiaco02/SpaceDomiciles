@@ -17,7 +17,7 @@ export default function BraintreeDropIn({ amount, invoiceId, onSuccess, onError 
         if (!containerRef.current) return;
         containerRef.current.innerHTML = "";
 
-        const res = await fetch("http://localhost:3000/api/payment/token");
+        const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/payment/token`);
         const data = await res.json();
 
         if (!res.ok) {
@@ -72,7 +72,7 @@ export default function BraintreeDropIn({ amount, invoiceId, onSuccess, onError 
 
       const method = payload.type === "PayPalAccount" ? "paypal" : "credit_card";
 
-      const res = await fetch("http://localhost:3000/api/payment/checkout", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/payment/checkout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
