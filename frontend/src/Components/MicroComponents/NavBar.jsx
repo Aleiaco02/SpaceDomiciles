@@ -42,8 +42,9 @@ export default function NavBar({ setDrawerOpen }) {
           <button
             className="hamburger"
             onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Menu"
           >
-            <i className="fa-solid fa-bars" style={{ color: "#ffffff" }}></i>
+            <i className={`fa-solid ${mobileOpen ? "fa-xmark" : "fa-bars"}`} style={{ color: "#ffffff" }}></i>
           </button>
           <div className={`links ${mobileOpen ? "open" : ""}`}>
             <NavLink
@@ -91,6 +92,7 @@ export default function NavBar({ setDrawerOpen }) {
           </div>
           <div
             className={`menu-drawer-overlay ${mobileOpen ? "open" : ""}`}
+            onClick={() => setMobileOpen(false)}
           ></div>
 
           <button onClick={() => setDrawerOpen(true)} className="cart">
