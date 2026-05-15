@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import galaxyIcon from "/img/galaxy-icon.png";
+import galaxyIcon from "/img/galaxy-icon.webp";
 
 export default function NotFoundPage() {
   return (
@@ -8,7 +8,7 @@ export default function NotFoundPage() {
       <p>La pagina da che cerchi é persa nello spazio piú profondo</p>
       <div className="gal-dim">
         <Link to="/">
-          <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon" />
+          <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon" loading="lazy" />
         </Link>
       </div>
       <p className="go-back-text">

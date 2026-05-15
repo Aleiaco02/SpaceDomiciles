@@ -1,5 +1,5 @@
 import "./ContactUsPage.css";
-import galaxyIcon from "/img/galaxy-icon.png";
+import galaxyIcon from "/img/galaxy-icon.webp";
 import { Link } from "react-router-dom";
 
 export default function ContactUs() {
@@ -36,7 +36,7 @@ export default function ContactUs() {
       </div>
       <div className="gal-dim" onClick={scrollToTop}>
         <Link to="/">
-          <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon" />
+          <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon" loading="lazy" />
         </Link>
       </div>
       <p className="go-back-text">Tocca la galassia per il respawn in Home</p>

@@ -96,7 +96,7 @@
   transition: all 0.35s ease;
 }
 .daniel {
-  background-image: url(/img/Daniel.png);
+  background-image: url(/img/Daniel.webp);
 }
 .daniel:hover {
   background: linear-gradient(
@@ -105,10 +105,10 @@
       80%,
       rgba(69, 0, 97, 0.521)
     ),
-    url(/img/Daniel.png);
+    url(/img/Daniel.webp);
 }
 .claudia {
-  background-image: url(/img/Claudia.png);
+  background-image: url(/img/Claudia.webp);
 }
 .claudia:hover {
   background: linear-gradient(
@@ -117,10 +117,10 @@
       80%,
       rgba(69, 0, 97, 0.521)
     ),
-    url(/img/Claudia.png);
+    url(/img/Claudia.webp);
 }
 .christian {
-  background-image: url(/img/Christian.png);
+  background-image: url(/img/Christian.webp);
 }
 .christian:hover {
   background: linear-gradient(
@@ -129,10 +129,10 @@
       80%,
       rgba(69, 0, 97, 0.521)
     ),
-    url(/img/Christian.png);
+    url(/img/Christian.webp);
 }
 .alessandro {
-  background-image: url(/img/Alessandro.png);
+  background-image: url(/img/Alessandro.webp);
 }
 .alessandro:hover {
   background: linear-gradient(
@@ -141,10 +141,10 @@
       80%,
       rgba(69, 0, 97, 0.521)
     ),
-    url(/img/Alessandro.png);
+    url(/img/Alessandro.webp);
 }
 .stefano {
-  background-image: url(/img/Stefano.png);
+  background-image: url(/img/Stefano.webp);
 }
 .stefano:hover {
   background: linear-gradient(
@@ -153,7 +153,7 @@
       80%,
       rgba(69, 0, 97, 0.521)
     ),
-    url(/img/Stefano.png);
+    url(/img/Stefano.webp);
 }
 .team-card:hover {
   transform: translateY(-8px);

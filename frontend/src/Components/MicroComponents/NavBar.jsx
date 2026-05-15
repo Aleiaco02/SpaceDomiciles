@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import "./NavBar.css";
-import galaxyIcon from "/img/galaxy-icon.png";
+import galaxyIcon from "/img/galaxy-icon.webp";
 import CartBadge from "./CartBadge";
 import { useState, useEffect } from "react";
 

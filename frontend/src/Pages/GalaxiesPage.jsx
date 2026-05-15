@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import galaxyIcon from "/img/galaxy-icon.png"; // <--- IMPORT AGGIUNTO
+import galaxyIcon from "/img/galaxy-icon.webp"; // <--- IMPORT AGGIUNTO
 import "./GalaxiesPage.css";
 
 export default function GalaxiesPage() {

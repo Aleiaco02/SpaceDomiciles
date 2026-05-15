@@ -10,9 +10,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import milkyWay from "/img/milky-way.png";
-import andromeda from "/img/andromeda.png";
-import sombrero from "/img/sombrero.png";
+import milkyWay from "/img/milky-way.webp";
+import andromeda from "/img/andromeda.webp";
+import sombrero from "/img/sombrero.webp";
 import axios from "axios";
 
 
@@ -194,7 +194,7 @@ export default function HomePage() {
         <div className="container-galassie">
           <div className="cards-container-2">
             <Link to="/galaxies/milky-way" className="glass-card-2">
-              <img src={milkyWay} alt="Via Lattea" className="card-image" />
+              <img src={milkyWay} alt="Via Lattea" className="card-image" loading="lazy" />
               <GradientText className="card-title">
                 <h2>Esplora la Via Lattea</h2>
               </GradientText>
@@ -205,7 +205,7 @@ export default function HomePage() {
 
           <div className="cards-container-2">
             <Link to="/galaxies/andromeda" className="glass-card-2">
-              <img src={andromeda} alt="Andromeda" className="card-image" />
+              <img src={andromeda} alt="Andromeda" className="card-image" loading="lazy" />
               <GradientText className="card-title">
                 <h2>Esplora Andromeda</h2>
               </GradientText>

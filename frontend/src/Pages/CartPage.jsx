@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useCart } from "../Contexts/CartContext";
 import { AnimatePresence } from "framer-motion";
 
-import galaxyIcon from "/img/galaxy-icon.png";
+import galaxyIcon from "/img/galaxy-icon.webp";
 
 import CartItem from "../Components/MicroComponents/CartItem";
 import DeleteCartOverlay from "../Components/MicroComponents/DeleteCartOverlay";
@@ -98,7 +98,7 @@ export default function CarrelloPage() {
 
       <div className="gal-dim">
         <Link to="/">
-          <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon" />
+          <img src={galaxyIcon} alt="Galassia" className="galaxy-header-icon" loading="lazy" />
         </Link>
       </div>
       <p className="go-back-text">

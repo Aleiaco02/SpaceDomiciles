@@ -1,4 +1,4 @@
-import galaxyIcon from "/img/galaxy-icon.png";
+import galaxyIcon from "/img/galaxy-icon.webp";
 import { Link } from "react-router-dom";
 import "./Success.css";
 
