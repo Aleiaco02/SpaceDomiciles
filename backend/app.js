@@ -37,6 +37,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
+      "https://space-domiciles-two.vercel.app",
       process.env.FE_APP,
     ].filter(Boolean),
   })
