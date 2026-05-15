@@ -7,7 +7,7 @@ import { AnimatePresence } from "framer-motion";
 import galaxyIcon from "/img/galaxy-icon.png";
 
 import CartItem from "../Components/MicroComponents/CartItem";
-import DeleteCartOverlay from "../Components/MicroComponents/deleteCartOverlay";
+import DeleteCartOverlay from "../Components/MicroComponents/DeleteCartOverlay";
 
 export default function CarrelloPage() {
   const { items, onQtyChange, loading, clearCart } = useCart();
