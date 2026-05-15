@@ -11,7 +11,7 @@ export default function GalaxiesPage() {
   useEffect(() => {
     fetch(apiBaseUrl + "/api/galaxies")
       .then((res) => res.json())
-      .then((data) => setGalaxies(data))
+      .then((data) => Array.isArray(data) && setGalaxies(data))
       .catch((err) => console.error("Errore nel caricamento galassie:", err));
   }, []);
 
