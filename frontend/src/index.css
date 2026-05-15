@@ -13,6 +13,22 @@
   height: 100vh;
 }
 
+/* ICONA GALASSIA CONDIVISA */
+@keyframes galaxySpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.galaxy-header-icon {
+  width: 200px;
+  display: block;
+  margin: 0 auto 20px;
+  animation: galaxySpin 20s linear infinite;
+  filter: drop-shadow(0 0 18px rgba(150, 90, 255, 0.9));
+}
+@media (max-width: 1024px) { .galaxy-header-icon { width: 170px; } }
+@media (max-width: 768px)  { .galaxy-header-icon { width: 150px; } }
+@media (max-width: 480px)  { .galaxy-header-icon { width: 130px; } }
+
 /* SFONDO CONDIVISO TRA TUTTE LE PAGINE */
 .galaxy-page {
   min-height: 100vh;
