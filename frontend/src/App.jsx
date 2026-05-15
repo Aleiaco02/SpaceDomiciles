@@ -1,4 +1,6 @@
 import "./App.css";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 // DIPENDENZE REACT
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -38,6 +40,8 @@ function App() {
   }, [drawerOpen]);
   return (
     <>
+      <Analytics />
+      <SpeedInsights />
       <CartProvider setDrawerOpen={setDrawerOpen}>
         <DefaultProvider>
           <BrowserRouter>
