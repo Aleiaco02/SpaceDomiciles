@@ -8,6 +8,7 @@ import DefaultLayout from "./Layout/DefaultLayout";
 import { DefaultProvider } from "./Contexts/DefaultContext";
 import { CartProvider } from "./Contexts/CartContext";
 import CartDrawer from "./Components/MicroComponents/CartDrawer";
+import CookieBanner from "./Components/MicroComponents/CookieBanner";
 
 const HomePage = lazy(() => import("./Pages/HomePage"));
 const MilkyWayPage = lazy(() => import("./Pages/MilkyWayPage"));
@@ -35,6 +36,7 @@ function App() {
     <>
       <Analytics />
       <SpeedInsights />
+      <CookieBanner />
       <CartProvider setDrawerOpen={setDrawerOpen}>
         <DefaultProvider>
           <BrowserRouter>
